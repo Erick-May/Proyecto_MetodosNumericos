@@ -1,8 +1,8 @@
 namespace Proyecto_MetodosNumericos
 {
-    public partial class Form1 : Form
+    public partial class FormInicioSesion : Form
     {
-        public Form1()
+        public FormInicioSesion()
         {
             InitializeComponent();
         }

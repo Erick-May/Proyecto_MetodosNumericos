@@ -1,6 +1,6 @@
 ﻿namespace Proyecto_MetodosNumericos
 {
-    partial class Form1
+    partial class FormInicioSesion
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,12 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            label1 = new Label();
+            SuspendLayout();
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(198, 30);
+            label1.Name = "label1";
+            label1.Size = new Size(158, 25);
+            label1.TabIndex = 0;
+            label1.Text = "INICIO DE SESION";
+            // 
+            // FormInicioSesion
+            // 
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Text = "Form1";
+            ClientSize = new Size(728, 813);
+            Controls.Add(label1);
+            Name = "FormInicioSesion";
+            Text = "FormInicioSesion";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private Label label1;
     }
 }
