@@ -67,7 +67,7 @@ namespace Proyecto_MetodosNumericos
 
             try
             {
-                if (metodoSeleccionado == "Bisección")
+                if (metodoSeleccionado == "Biseccion")
                 {
                     double fa = EvaluarFuncion(funcion, a);
                     double fb = EvaluarFuncion(funcion, b);
