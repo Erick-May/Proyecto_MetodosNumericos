@@ -59,17 +59,33 @@ namespace Proyecto_MetodosNumericos
                 // 1. Arreglamos las potencias (x^2 -> Pow(x, 2))
                 string funcionCorregida = Regex.Replace(funcion, @"([a-zA-Z0-9_.]+)\^([a-zA-Z0-9_.-]+)", "Pow($1, $2)");
 
-                // 2. NUEVO: Arreglamos el logaritmo natural (ln -> Log)
-                // Ignoramos si lo escriben en mayúscula o minúscula
-                funcionCorregida = Regex.Replace(funcionCorregida, "ln", "Log", RegexOptions.IgnoreCase);
-
+                // Borramos el Regex.Replace del "ln"
                 Expression e = new Expression(funcionCorregida);
                 e.Parameters["x"] = valorX;
+
+                // 2. Le enseñamos a NCalc qué hacer cuando lea "ln"
+                e.EvaluateFunction += delegate (string name, FunctionArgs args)
+                {
+                    if (name.ToLower() == "ln")
+                    {
+                        // Evaluamos el valor de x que está dentro del paréntesis
+                        double numero = Convert.ToDouble(args.Parameters[0].Evaluate());
+
+                        // Math.Log en C# calcula directamente el logaritmo natural (base e)
+                        args.Result = Math.Log(numero);
+
+                        // ¡Importante! Le avisamos a NCalc que sí pudimos resolverlo
+                        args.HasResult = true;
+                    }
+                };
+
                 return Convert.ToDouble(e.Evaluate());
             }
-            catch
+            catch (Exception ex)
             {
-                throw new Exception("Error al evaluar la función. Revisa la sintaxis.");
+                // Mejoramos el mensaje de error para que si te equivocas de sintaxis, 
+                // te diga exactamente qué parte falló en lugar de un mensaje genérico.
+                throw new Exception("Error al evaluar la función: " + ex.Message);
             }
         }
 

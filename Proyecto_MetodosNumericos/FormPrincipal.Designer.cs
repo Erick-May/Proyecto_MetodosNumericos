@@ -53,14 +53,14 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1111, 47);
+            panel1.Size = new Size(1516, 47);
             panel1.TabIndex = 0;
             // 
             // cmbMetodos
             // 
             cmbMetodos.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodos.FormattingEnabled = true;
-            cmbMetodos.Items.AddRange(new object[] { "Biseccion" });
+            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa" });
             cmbMetodos.Location = new Point(142, 9);
             cmbMetodos.Name = "cmbMetodos";
             cmbMetodos.Size = new Size(232, 33);
@@ -114,10 +114,10 @@
             // dgvIteraciones
             // 
             dgvIteraciones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvIteraciones.Location = new Point(15, 264);
+            dgvIteraciones.Location = new Point(15, 251);
             dgvIteraciones.Name = "dgvIteraciones";
             dgvIteraciones.RowHeadersWidth = 62;
-            dgvIteraciones.Size = new Size(1084, 378);
+            dgvIteraciones.Size = new Size(1489, 378);
             dgvIteraciones.TabIndex = 5;
             // 
             // txtFuncion
@@ -150,7 +150,7 @@
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(627, 209);
+            btnCalcular.Location = new Point(764, 153);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(112, 34);
             btnCalcular.TabIndex = 10;
@@ -161,7 +161,7 @@
             // lblResultado
             // 
             lblResultado.AutoSize = true;
-            lblResultado.Location = new Point(782, 213);
+            lblResultado.Location = new Point(764, 209);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(94, 25);
             lblResultado.TabIndex = 11;
@@ -171,7 +171,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1111, 641);
+            ClientSize = new Size(1516, 641);
             Controls.Add(lblResultado);
             Controls.Add(btnCalcular);
             Controls.Add(txtTolerancia);
