@@ -60,7 +60,7 @@
             // 
             cmbMetodos.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodos.FormattingEnabled = true;
-            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa" });
+            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson" });
             cmbMetodos.Location = new Point(142, 9);
             cmbMetodos.Name = "cmbMetodos";
             cmbMetodos.Size = new Size(232, 33);
@@ -113,6 +113,7 @@
             // 
             // dgvIteraciones
             // 
+            dgvIteraciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvIteraciones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvIteraciones.Location = new Point(15, 251);
             dgvIteraciones.Name = "dgvIteraciones";
