@@ -21,6 +21,9 @@ namespace Proyecto_MetodosNumericos
             idUsuarioActual = idUsuario;
             cmbMetodos.SelectedIndex = 0;
             ConfigurarTabla(cmbMetodos.SelectedItem.ToString());
+
+            cmbMetodos.SelectedIndexChanged += cmbMetodos_SelectedIndexChanged;
+            ActualizarEtiquetas(cmbMetodos.SelectedItem.ToString());
         }
 
         private void ConfigurarTabla(string metodo)
@@ -59,6 +62,18 @@ namespace Proyecto_MetodosNumericos
                 dgvIteraciones.Columns.Add("FpCi", "f'(ci) Numérica"); // Aclaramos que la hace la máquina
                 dgvIteraciones.Columns.Add("Ci_1", "CI + 1");
                 dgvIteraciones.Columns.Add("Ea", "Ea");
+                dgvIteraciones.Columns.Add("Er", "Er%");
+            }
+            else if (metodo == "Secante")
+            {
+                // Estructura exacta de tu Excel de Secante
+                dgvIteraciones.Columns.Add("Iteracion", "iteración");
+                dgvIteraciones.Columns.Add("Ci", "Ci");
+                dgvIteraciones.Columns.Add("F_Ci", "F(Ci)");
+                dgvIteraciones.Columns.Add("C_menos1", "C-1");
+                dgvIteraciones.Columns.Add("F_C_menos1", "F(C-1)");
+                dgvIteraciones.Columns.Add("C_mas1", "Ci+1");
+                dgvIteraciones.Columns.Add("F_C_mas1", "F(Ci+1)");
                 dgvIteraciones.Columns.Add("Er", "Er%");
             }
         }
@@ -113,7 +128,6 @@ namespace Proyecto_MetodosNumericos
             dgvIteraciones.Rows.Clear();
             lblResultado.Text = "Resultado: ";
 
-            // Newton usa solo "A" como valor inicial. Si es otro método, exigimos "B"
             double b_val = 0;
             if (metodoSeleccionado != "Newton-Raphson" && !double.TryParse(txtB.Text, out b_val))
             {
@@ -130,7 +144,7 @@ namespace Proyecto_MetodosNumericos
             try
             {
                 // ==========================================
-                // LÓGICA PARA BISECCIÓN (FRENO ARREGLADO)
+                // BISECCIÓN
                 // ==========================================
                 if (metodoSeleccionado == "Biseccion")
                 {
@@ -164,9 +178,8 @@ namespace Proyecto_MetodosNumericos
                             erMostrar = Math.Round(errorRelativo, 2).ToString() + "%";
                         }
 
-                        dgvIteraciones.Rows.Add(iteracion, Math.Round(a, 5), Math.Round(b, 5), Math.Round(xm, 5), Math.Round(fa, 5), Math.Round(fxm, 5), Math.Round(errorAbsoluto, 5), erMostrar);
+                        dgvIteraciones.Rows.Add(iteracion, Math.Round(a, 8), Math.Round(b, 8), Math.Round(xm, 8), Math.Round(fa, 8), Math.Round(fxm, 8), Math.Round(errorAbsoluto, 5), erMostrar);
 
-                        // FRENO EXACTO: Error relativo < Tolerancia
                         if (Math.Abs(fxm) < 0.0000001 || (iteracion > 1 && errorRelativo < tolerancia)) break;
 
                         if (fa * fxm < 0) b = xm;
@@ -176,12 +189,12 @@ namespace Proyecto_MetodosNumericos
                         iteracion++;
                         if (iteracion > 100) break;
                     }
-                    lblResultado.Text = $"Resultado: {Math.Round(xm, 6)}";
+                    lblResultado.Text = $"Resultado: {Math.Round(xm, 8)}";
                     GuardarHistorial(metodoSeleccionado, funcion);
                 }
 
                 // ==========================================
-                // LÓGICA PARA REGLA FALSA
+                // REGLA FALSA
                 // ==========================================
                 else if (metodoSeleccionado == "Regla Falsa")
                 {
@@ -227,21 +240,20 @@ namespace Proyecto_MetodosNumericos
                         iteracion++;
                         if (iteracion > 100) break;
                     }
-                    lblResultado.Text = $"Resultado: {Math.Round(c, 6)}";
+                    lblResultado.Text = $"Resultado: {Math.Round(c, 8)}";
                     GuardarHistorial(metodoSeleccionado, funcion);
                 }
 
                 // ==========================================
-                // LÓGICA PARA NEWTON-RAPHSON (MÁGICO)
+                // NEWTON-RAPHSON
                 // ==========================================
                 else if (metodoSeleccionado == "Newton-Raphson")
                 {
-                    double ci = a; // Usamos el cuadro "A" como el valor inicial (CI)
+                    double ci = a;
                     double ci_anterior = 0;
                     double errorRelativo = 100.0;
-                    int iteracion = 0; // Tu Excel inicia en 0
+                    int iteracion = 0;
 
-                    // Diferencial minúsculo para calcular la derivada automáticamente
                     double h = 0.000001;
 
                     while (true)
@@ -271,15 +283,15 @@ namespace Proyecto_MetodosNumericos
                             errorRelativo = Math.Abs((ci - ci_anterior) / ci) * 100.0;
 
                             eaMostrar = Math.Round(ea, 5).ToString();
-                            erMostrar = Math.Round(errorRelativo, 2).ToString() + "%";
+                            erMostrar = Math.Round(errorRelativo, 3).ToString() + "%";
                         }
 
-                        dgvIteraciones.Rows.Add(iteracion, Math.Round(ci, 5), Math.Round(f_ci, 5), Math.Round(fp_ci, 5), Math.Round(c_nuevo, 5), eaMostrar, erMostrar);
+                        dgvIteraciones.Rows.Add(iteracion, Math.Round(ci, 8), Math.Round(f_ci, 8), Math.Round(fp_ci, 8), Math.Round(c_nuevo, 8), eaMostrar, erMostrar);
 
                         // Freno: Si llegamos a la tolerancia, salimos del ciclo
                         if (Math.Abs(f_ci) < 0.0000001 || (iteracion > 0 && errorRelativo < tolerancia))
                         {
-                            lblResultado.Text = $"Resultado: {Math.Round(c_nuevo, 6)}";
+                            lblResultado.Text = $"Resultado: {Math.Round(c_nuevo, 8)}";
                             break;
                         }
 
@@ -287,6 +299,84 @@ namespace Proyecto_MetodosNumericos
                         ci = c_nuevo;
                         iteracion++;
                         if (iteracion > 100) break;
+                    }
+                    GuardarHistorial(metodoSeleccionado, funcion);
+                }
+                // ==========================================
+                // MÉTODO DE LA SECANTE
+                // ==========================================
+                else if (metodoSeleccionado == "Secante")
+                {
+                    // Secante exige A (como C-1) y B (como Ci)
+                    if (string.IsNullOrEmpty(txtB.Text))
+                    {
+                        MessageBox.Show("Para el método de la Secante necesitas ingresar dos valores iniciales en A y B.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    double c_menos1 = a;     // El valor más viejo (C-1) entra por A
+                    double ci = b_val;       // El valor más reciente (Ci) entra por B
+
+                    double errorRelativo = 100.0;
+                    int iteracion = 1;
+
+                    while (true)
+                    {
+                        double f_c_menos1 = EvaluarFuncion(funcion, c_menos1);
+                        double f_ci = EvaluarFuncion(funcion, ci);
+
+                        double denominador = f_ci - f_c_menos1;
+
+                        // Medida de seguridad: Si el denominador es cero, hay división entre cero
+                        if (Math.Abs(denominador) < 0.0000001)
+                        {
+                            MessageBox.Show("El denominador se hizo cero (o casi cero). El método se indefine porque la recta secante es horizontal.", "Error Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        }
+
+                        // Fórmula de la Secante: Ci+1 = Ci - [f(Ci) * (Ci - C-1)] / [f(Ci) - f(C-1)]
+                        double c_mas1 = ci - ((f_ci * (ci - c_menos1)) / denominador);
+
+                        double f_c_mas1 = EvaluarFuncion(funcion, c_mas1);
+
+                        string erMostrar = "";
+
+                        // Calculamos el Er% evaluando la diferencia entre el nuevo (c_mas1) y el actual (ci)
+                        if (iteracion > 1)
+                        {
+                            errorRelativo = Math.Abs((c_mas1 - ci) / c_mas1) * 100.0;
+                            erMostrar = Math.Round(errorRelativo, 4).ToString() + "%";
+                        }
+
+                        // Imprimimos la fila en el orden exacto de tu Excel
+                        dgvIteraciones.Rows.Add(
+                            iteracion,
+                            Math.Round(ci, 6),
+                            Math.Round(f_ci, 6),
+                            Math.Round(c_menos1, 6),
+                            Math.Round(f_c_menos1, 6),
+                            Math.Round(c_mas1, 6),
+                            Math.Round(f_c_mas1, 6),
+                            erMostrar
+                        );
+
+                        // Freno: Si llegamos a la raíz exacta o si vencimos a la tolerancia
+                        if (Math.Abs(f_c_mas1) < 0.0000001 || (iteracion > 1 && errorRelativo < tolerancia))
+                        {
+                            lblResultado.Text = $"Resultado: {Math.Round(c_mas1, 6)}";
+                            break;
+                        }
+
+                        // ==========================================
+                        // LA ROTACIÓN DE VARIABLES (CRÍTICO)
+                        // ==========================================
+                        // El valor que era actual (ci) ahora envejece y pasa a ser el anterior
+                        c_menos1 = ci;
+                        // El nuevo valor recién calculado (c_mas1) pasa a ser el actual para la otra vuelta
+                        ci = c_mas1;
+
+                        iteracion++;
+                        if (iteracion > 50) break; // Límite de seguridad
                     }
                     GuardarHistorial(metodoSeleccionado, funcion);
                 }
@@ -317,6 +407,43 @@ namespace Proyecto_MetodosNumericos
             catch (Exception ex)
             {
                 // Ignoramos error visual en base de datos si ocurre, para no molestar el flujo
+            }
+        }
+
+        private void cmbMetodos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string metodo = cmbMetodos.SelectedItem?.ToString() ?? "";
+
+            // Actualizamos las columnas de la tabla en vivo
+            ConfigurarTabla(metodo);
+
+            // Actualizamos los textos de Label6 y Label7
+            ActualizarEtiquetas(metodo);
+        }
+
+        private void ActualizarEtiquetas(string metodo)
+        {
+            // Verificamos que existan por seguridad
+            if (label6 == null || label7 == null) return;
+
+            if (metodo == "Biseccion" || metodo == "Regla Falsa")
+            {
+                label6.Text = ".";
+                label7.Text = ".";
+                txtB.Enabled = true; // Aseguramos que B esté activo
+            }
+            else if (metodo == "Newton-Raphson")
+            {
+                label6.Text = "Ci (Valor Inicial)";
+                label7.Text = ". (No se usa)";
+                txtB.Enabled = false; // ¡Bloqueamos el cuadro B para evitar errores!
+                txtB.Clear();         // Lo limpiamos por si tenía algo escrito
+            }
+            else if (metodo == "Secante")
+            {
+                label6.Text = "C-1";
+                label7.Text = "Ci";
+                txtB.Enabled = true;  // Lo volvemos a activar
             }
         }
     }

@@ -42,6 +42,8 @@
             txtTolerancia = new TextBox();
             btnCalcular = new Button();
             lblResultado = new Label();
+            label6 = new Label();
+            label7 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvIteraciones).BeginInit();
             SuspendLayout();
@@ -60,11 +62,12 @@
             // 
             cmbMetodos.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodos.FormattingEnabled = true;
-            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson" });
+            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson", "Secante" });
             cmbMetodos.Location = new Point(142, 9);
             cmbMetodos.Name = "cmbMetodos";
             cmbMetodos.Size = new Size(232, 33);
             cmbMetodos.TabIndex = 1;
+            cmbMetodos.SelectedIndexChanged += cmbMetodos_SelectedIndexChanged;
             // 
             // label1
             // 
@@ -168,11 +171,31 @@
             lblResultado.TabIndex = 11;
             lblResultado.Text = "Resultado:";
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(350, 107);
+            label6.Name = "label6";
+            label6.Size = new Size(59, 25);
+            label6.TabIndex = 12;
+            label6.Text = "label6";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(349, 157);
+            label7.Name = "label7";
+            label7.Size = new Size(59, 25);
+            label7.TabIndex = 13;
+            label7.Text = "label7";
+            // 
             // FormPrincipal
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1516, 641);
+            Controls.Add(label7);
+            Controls.Add(label6);
             Controls.Add(lblResultado);
             Controls.Add(btnCalcular);
             Controls.Add(txtTolerancia);
@@ -210,5 +233,7 @@
         private TextBox txtTolerancia;
         private Button btnCalcular;
         private Label lblResultado;
+        private Label label6;
+        private Label label7;
     }
 }

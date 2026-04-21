@@ -8,6 +8,12 @@ namespace Proyecto_MetodosNumericos.Data
 {
     public class AppMetodosContext : DbContext
     {
+        public AppMetodosContext()
+        {
+            // Esto le dice a EF Core que si la base de datos o las tablas no existen, las cree.
+            this.Database.EnsureCreated();
+        }
+
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<HistorialOperacion> HistorialOperaciones { get; set; }
 
