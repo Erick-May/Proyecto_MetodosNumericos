@@ -53,9 +53,11 @@
             panel1.Controls.Add(cmbMetodos);
             panel1.Controls.Add(label1);
             panel1.Dock = DockStyle.Top;
+            panel1.Font = new Font("Times New Roman", 9.75F);
             panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(2, 2, 2, 2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1516, 47);
+            panel1.Size = new Size(959, 28);
             panel1.TabIndex = 0;
             // 
             // cmbMetodos
@@ -63,54 +65,64 @@
             cmbMetodos.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodos.FormattingEnabled = true;
             cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson", "Secante" });
-            cmbMetodos.Location = new Point(142, 9);
+            cmbMetodos.Location = new Point(125, 3);
+            cmbMetodos.Margin = new Padding(2, 2, 2, 2);
             cmbMetodos.Name = "cmbMetodos";
-            cmbMetodos.Size = new Size(232, 33);
+            cmbMetodos.Size = new Size(231, 23);
             cmbMetodos.TabIndex = 1;
             cmbMetodos.SelectedIndexChanged += cmbMetodos_SelectedIndexChanged;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 9);
+            label1.Location = new Point(8, 6);
+            label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(124, 25);
+            label1.Size = new Size(83, 15);
             label1.TabIndex = 0;
             label1.Text = "Elegir Metodo";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(13, 61);
+            label2.Font = new Font("Times New Roman", 9.75F);
+            label2.Location = new Point(8, 43);
+            label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
-            label2.Size = new Size(135, 25);
+            label2.Size = new Size(94, 15);
             label2.TabIndex = 1;
             label2.Text = "Escribir Funcion";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(15, 103);
+            label3.Font = new Font("Times New Roman", 9.75F);
+            label3.Location = new Point(399, 48);
+            label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
-            label3.Size = new Size(24, 25);
+            label3.Size = new Size(17, 15);
             label3.TabIndex = 2;
             label3.Text = "A";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(15, 159);
+            label4.Font = new Font("Times New Roman", 9.75F);
+            label4.Location = new Point(625, 48);
+            label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
-            label4.Size = new Size(22, 25);
+            label4.Size = new Size(15, 15);
             label4.TabIndex = 3;
             label4.Text = "B";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(9, 209);
+            label5.Font = new Font("Times New Roman", 9.75F);
+            label5.Location = new Point(8, 90);
+            label5.Margin = new Padding(2, 0, 2, 0);
             label5.Name = "label5";
-            label5.Size = new Size(89, 25);
+            label5.Size = new Size(62, 15);
             label5.TabIndex = 4;
             label5.Text = "Tolerancia";
             // 
@@ -118,45 +130,56 @@
             // 
             dgvIteraciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvIteraciones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvIteraciones.Location = new Point(15, 251);
+            dgvIteraciones.Location = new Point(0, 140);
+            dgvIteraciones.Margin = new Padding(2, 2, 2, 2);
             dgvIteraciones.Name = "dgvIteraciones";
             dgvIteraciones.RowHeadersWidth = 62;
-            dgvIteraciones.Size = new Size(1489, 378);
+            dgvIteraciones.Size = new Size(1052, 238);
             dgvIteraciones.TabIndex = 5;
             // 
             // txtFuncion
             // 
-            txtFuncion.Location = new Point(178, 58);
+            txtFuncion.Font = new Font("Times New Roman", 9.75F);
+            txtFuncion.Location = new Point(125, 40);
+            txtFuncion.Margin = new Padding(2, 2, 2, 2);
             txtFuncion.Name = "txtFuncion";
-            txtFuncion.Size = new Size(328, 31);
+            txtFuncion.Size = new Size(231, 22);
             txtFuncion.TabIndex = 6;
             // 
             // txtA
             // 
-            txtA.Location = new Point(178, 103);
+            txtA.Font = new Font("Times New Roman", 9.75F);
+            txtA.Location = new Point(418, 43);
+            txtA.Margin = new Padding(2, 2, 2, 2);
             txtA.Name = "txtA";
-            txtA.Size = new Size(150, 31);
+            txtA.Size = new Size(106, 22);
             txtA.TabIndex = 7;
             // 
             // txtB
             // 
-            txtB.Location = new Point(178, 153);
+            txtB.Font = new Font("Times New Roman", 9.75F);
+            txtB.Location = new Point(644, 43);
+            txtB.Margin = new Padding(2, 2, 2, 2);
             txtB.Name = "txtB";
-            txtB.Size = new Size(150, 31);
+            txtB.Size = new Size(106, 22);
             txtB.TabIndex = 8;
             // 
             // txtTolerancia
             // 
-            txtTolerancia.Location = new Point(178, 206);
+            txtTolerancia.Font = new Font("Times New Roman", 9.75F);
+            txtTolerancia.Location = new Point(125, 82);
+            txtTolerancia.Margin = new Padding(2, 2, 2, 2);
             txtTolerancia.Name = "txtTolerancia";
-            txtTolerancia.Size = new Size(150, 31);
+            txtTolerancia.Size = new Size(106, 22);
             txtTolerancia.TabIndex = 9;
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(764, 153);
+            btnCalcular.Font = new Font("Times New Roman", 9.75F);
+            btnCalcular.Location = new Point(847, 41);
+            btnCalcular.Margin = new Padding(2, 2, 2, 2);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(112, 34);
+            btnCalcular.Size = new Size(86, 28);
             btnCalcular.TabIndex = 10;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -165,35 +188,42 @@
             // lblResultado
             // 
             lblResultado.AutoSize = true;
-            lblResultado.Location = new Point(764, 209);
+            lblResultado.Font = new Font("Times New Roman", 9.75F);
+            lblResultado.Location = new Point(474, 90);
+            lblResultado.Margin = new Padding(2, 0, 2, 0);
             lblResultado.Name = "lblResultado";
-            lblResultado.Size = new Size(94, 25);
+            lblResultado.Size = new Size(64, 15);
             lblResultado.TabIndex = 11;
             lblResultado.Text = "Resultado:";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(350, 107);
+            label6.Font = new Font("Times New Roman", 9.75F);
+            label6.Location = new Point(535, 48);
+            label6.Margin = new Padding(2, 0, 2, 0);
             label6.Name = "label6";
-            label6.Size = new Size(59, 25);
+            label6.Size = new Size(38, 15);
             label6.TabIndex = 12;
             label6.Text = "label6";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(349, 157);
+            label7.Font = new Font("Times New Roman", 9.75F);
+            label7.Location = new Point(763, 48);
+            label7.Margin = new Padding(2, 0, 2, 0);
             label7.Name = "label7";
-            label7.Size = new Size(59, 25);
+            label7.Size = new Size(38, 15);
             label7.TabIndex = 13;
             label7.Text = "label7";
             // 
             // FormPrincipal
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1516, 641);
+            BackColor = SystemColors.ActiveCaption;
+            ClientSize = new Size(959, 385);
             Controls.Add(label7);
             Controls.Add(label6);
             Controls.Add(lblResultado);
@@ -208,6 +238,7 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(panel1);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "FormPrincipal";
             Text = "FormPrincipal";
             panel1.ResumeLayout(false);

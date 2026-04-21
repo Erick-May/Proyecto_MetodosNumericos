@@ -15,7 +15,7 @@ namespace Proyecto_MetodosNumericos.Data
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<HistorialOperacion> HistorialOperaciones { get; set; }
+        public DbSet<HistorialOperacion> HistorialOperaciones { get; set; } 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
