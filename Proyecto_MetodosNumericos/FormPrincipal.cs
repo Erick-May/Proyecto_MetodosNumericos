@@ -92,14 +92,37 @@ namespace Proyecto_MetodosNumericos
                 e.Parameters["x"] = valorX;
                 e.Parameters["e"] = Math.E; // Cuánto vale 'e' (2.71828...)
 
-                // 4. Le enseñamos a NCalc qué hacer cuando lea "ln"
+                // 4. EL CEREBRO MATEMÁTICO: Le enseñamos a NCalc a procesar todo en minúsculas y en español/inglés
                 e.EvaluateFunction += delegate (string name, FunctionArgs args)
                 {
-                    if (name.ToLower() == "ln")
+                    string nombreFuncion = name.ToLower(); // Convertimos todo a minúscula para que no importe cómo lo escriba el usuario
+
+                    if (args.Parameters.Length > 0)
                     {
+                        // Evaluamos lo que sea que esté dentro del paréntesis, ej: (x/2)
                         double numero = Convert.ToDouble(args.Parameters[0].Evaluate());
-                        args.Result = Math.Log(numero);
-                        args.HasResult = true;
+
+                        if (nombreFuncion == "ln" || nombreFuncion == "Ln")
+                        {
+                            args.Result = Math.Log(numero);
+                            args.HasResult = true;
+                        }
+                        else if (nombreFuncion == "tan" || nombreFuncion == "tng" || nombreFuncion == "tangente")
+                        {
+                            args.Result = Math.Tan(numero);
+                            args.HasResult = true;
+                        }
+                        // ¡Aceptamos "sin", "sen" y "seno"!
+                        else if (nombreFuncion == "sin" || nombreFuncion == "sen" || nombreFuncion == "seno")
+                        {
+                            args.Result = Math.Sin(numero);
+                            args.HasResult = true;
+                        }
+                        else if (nombreFuncion == "cos" || nombreFuncion == "coseno")
+                        {
+                            args.Result = Math.Cos(numero);
+                            args.HasResult = true;
+                        }
                     }
                 };
 
