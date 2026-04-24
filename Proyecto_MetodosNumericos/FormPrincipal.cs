@@ -74,53 +74,79 @@ namespace Proyecto_MetodosNumericos
                 dgvIteraciones.Columns.Add("F_C_mas1", "F(Ci+1)");
                 dgvIteraciones.Columns.Add("Er", "Er%");
             }
+            else if (metodo == "Punto Fijo")
+            {
+                dgvIteraciones.Columns.Add("Iteracion", "Iteración");
+                dgvIteraciones.Columns.Add("Ci", "Ci");
+                dgvIteraciones.Columns.Add("GCi", "g(Ci)");
+                dgvIteraciones.Columns.Add("Er", "Er%");
+            }
         }
 
         private double EvaluarFuncion(string funcion, double valorX)
         {
             try
             {
-                // 1. Arreglamos las potencias que tienen paréntesis en el exponente (Ej: e^(2*x) -> Pow(e, 2*x))
+                // 1. Arreglamos potencias con paréntesis (Ej: e^(2*x) -> Pow(e, 2*x))
                 string funcionCorregida = Regex.Replace(funcion, @"([a-zA-Z0-9_.]+)\^\(([^)]+)\)", "Pow($1, $2)");
 
-                // 2. Arreglamos las potencias simples sin paréntesis (Ej: x^2 -> Pow(x, 2))
+                // 2. Arreglamos potencias simples sin paréntesis (Ej: x^2 -> Pow(x, 2))
                 funcionCorregida = Regex.Replace(funcionCorregida, @"([a-zA-Z0-9_.]+)\^([a-zA-Z0-9_.]+)", "Pow($1, $2)");
 
                 Expression e = new Expression(funcionCorregida);
 
                 // 3. Parámetros principales
                 e.Parameters["x"] = valorX;
-                e.Parameters["e"] = Math.E; // Cuánto vale 'e' (2.71828...)
+                e.Parameters["e"] = Math.E;
 
-                // 4. EL CEREBRO MATEMÁTICO: Le enseñamos a NCalc a procesar todo en minúsculas y en español/inglés
+                // 4. EL CEREBRO MATEMÁTICO EXPANDIDO
                 e.EvaluateFunction += delegate (string name, FunctionArgs args)
                 {
-                    string nombreFuncion = name.ToLower(); // Convertimos todo a minúscula para que no importe cómo lo escriba el usuario
+                    string nombreFuncion = name.ToLower();
 
                     if (args.Parameters.Length > 0)
                     {
-                        // Evaluamos lo que sea que esté dentro del paréntesis, ej: (x/2)
                         double numero = Convert.ToDouble(args.Parameters[0].Evaluate());
 
-                        if (nombreFuncion == "ln" || nombreFuncion == "Ln")
+                        // --- Funciones Básicas ---
+                        if (nombreFuncion == "ln")
                         {
                             args.Result = Math.Log(numero);
                             args.HasResult = true;
                         }
-                        else if (nombreFuncion == "tan" || nombreFuncion == "tng" || nombreFuncion == "tangente")
+                        else if (nombreFuncion == "tan")
                         {
                             args.Result = Math.Tan(numero);
                             args.HasResult = true;
                         }
-                        // ¡Aceptamos "sin", "sen" y "seno"!
                         else if (nombreFuncion == "sin" || nombreFuncion == "sen" || nombreFuncion == "seno")
                         {
                             args.Result = Math.Sin(numero);
                             args.HasResult = true;
                         }
-                        else if (nombreFuncion == "cos" || nombreFuncion == "coseno")
+                        else if (nombreFuncion == "cos")
                         {
                             args.Result = Math.Cos(numero);
+                            args.HasResult = true;
+                        }
+
+                        // --- Funciones Recíprocas (Las que preguntaste) ---
+                        else if (nombreFuncion == "sec")
+                        {
+                            // Secante = 1 / Coseno
+                            args.Result = 1.0 / Math.Cos(numero);
+                            args.HasResult = true;
+                        }
+                        else if (nombreFuncion == "csc" || nombreFuncion == "cosec")
+                        {
+                            // Cosecante = 1 / Seno
+                            args.Result = 1.0 / Math.Sin(numero);
+                            args.HasResult = true;
+                        }
+                        else if (nombreFuncion == "cot" || nombreFuncion == "cotan")
+                        {
+                            // Cotangente = 1 / Tangente
+                            args.Result = 1.0 / Math.Tan(numero);
                             args.HasResult = true;
                         }
                     }
@@ -150,7 +176,7 @@ namespace Proyecto_MetodosNumericos
             lblResultado.Text = "Resultado: ";
 
             double b_val = 0;
-            if (metodoSeleccionado != "Newton-Raphson" && !double.TryParse(txtB.Text, out b_val))
+            if (metodoSeleccionado != "Newton-Raphson" && !double.TryParse(txtB.Text, out b_val) && metodoSeleccionado != "Punto Fijo" && !double.TryParse(txtB.Text, out b_val))
             {
                 MessageBox.Show("Ingresa el valor B.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -401,6 +427,58 @@ namespace Proyecto_MetodosNumericos
                     }
                     GuardarHistorial(metodoSeleccionado, funcion);
                 }
+                // ==========================================
+                // MÉTODO DEL PUNTO FIJO
+                // ==========================================
+                else if (metodoSeleccionado == "Punto Fijo")
+                {
+                    double ci = a; // Usamos el cuadro A como valor inicial
+                    double ci_anterior = 0; // NUEVO: Para guardar el histórico y calcular el error como en Excel
+                    double errorRelativo = 100.0;
+                    int iteracion = 0; // Tu Excel inicia en 0
+
+                    while (true)
+                    {
+                        // Evaluamos la función g(x)
+                        double g_ci = EvaluarFuncion(funcion, ci);
+
+                        string erMostrar = "";
+
+                        // Calculamos el error imitando exactamente las celdas de tu Excel
+                        if (iteracion > 0)
+                        {
+                            // Excel usa: |(Ci actual - Ci anterior) / Ci actual|
+                            errorRelativo = Math.Abs((ci - ci_anterior) / ci) * 100.0;
+                            erMostrar = Math.Round(errorRelativo, 6).ToString() + "%";
+                        }
+
+                        // Agregamos a la tabla
+                        dgvIteraciones.Rows.Add(iteracion, Math.Round(ci, 8), Math.Round(g_ci, 8), erMostrar);
+
+                        // Freno: Si llegamos a la tolerancia
+                        if (iteracion > 0 && errorRelativo < tolerancia)
+                        {
+                            // Imprimimos el Ci que acaba de cumplir la tolerancia
+                            lblResultado.Text = $"Resultado: {Math.Round(ci, 8)}";
+                            break;
+                        }
+
+                        // ==========================================
+                        // ROTACIÓN DE VARIABLES (Como en tu Excel)
+                        // ==========================================
+                        ci_anterior = ci; // El Ci actual se vuelve el viejo
+                        ci = g_ci;        // El g(Ci) recién calculado se vuelve el nuevo Ci de entrada
+                        iteracion++;
+
+                        // Freno de emergencia por si la función diverge (g'(x) > 1)
+                        if (iteracion > 100)
+                        {
+                            MessageBox.Show("El método no convergió después de 100 iteraciones. Probablemente la función diverge porque su derivada es mayor a 1 en este punto.", "Aviso de Divergencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            break;
+                        }
+                    }
+                    GuardarHistorial(metodoSeleccionado, funcion);
+                }
             }
             catch (Exception ex)
             {
@@ -444,28 +522,40 @@ namespace Proyecto_MetodosNumericos
 
         private void ActualizarEtiquetas(string metodo)
         {
-            // Verificamos que existan por seguridad
-            if (label6 == null || label7 == null) return;
+            if (label6 == null || label7 == null || label8 == null) return;
+
+            // Por defecto, la etiqueta pide la f(x) normal
+            label8.Text = ".";
 
             if (metodo == "Biseccion" || metodo == "Regla Falsa")
             {
                 label6.Text = ".";
                 label7.Text = ".";
-                txtB.Enabled = true; 
+                txtB.Enabled = true;
             }
             else if (metodo == "Newton-Raphson")
             {
                 label6.Text = "Ci (Valor Inicial)";
                 label7.Text = ". (No se usa)";
-                txtB.Enabled = false; 
-                txtB.Clear();         
+                txtB.Enabled = false;
+                txtB.Clear();
+            }
+            else if (metodo == "Punto Fijo")
+            {
+                // ¡AQUÍ ESTÁ LA MAGIA VISUAL!
+                label8.Text = "Nota: Tienes que despejar X de la funcion f(x) para obtener g(x) y escribe g(x) para buscar su raiz ☝️";
+                label6.Text = "Ci (Valor Inicial)";
+                label7.Text = ". (No se usa)";
+                txtB.Enabled = false;
+                txtB.Clear();
             }
             else if (metodo == "Secante")
             {
                 label6.Text = "C-1";
                 label7.Text = "Ci";
-                txtB.Enabled = true; 
+                txtB.Enabled = true;
             }
         }
     }
+    
 }
