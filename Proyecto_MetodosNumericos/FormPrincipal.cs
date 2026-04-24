@@ -55,18 +55,16 @@ namespace Proyecto_MetodosNumericos
             }
             else if (metodo == "Newton-Raphson")
             {
-                // Estructura exacta de tu Excel de Newton
                 dgvIteraciones.Columns.Add("Iteracion", "iteración");
                 dgvIteraciones.Columns.Add("Ci", "ci");
                 dgvIteraciones.Columns.Add("FCi", "f(ci)");
-                dgvIteraciones.Columns.Add("FpCi", "f'(ci) Numérica"); // Aclaramos que la hace la máquina
+                dgvIteraciones.Columns.Add("FpCi", "f'(ci) Numérica");
                 dgvIteraciones.Columns.Add("Ci_1", "CI + 1");
                 dgvIteraciones.Columns.Add("Ea", "Ea");
                 dgvIteraciones.Columns.Add("Er", "Er%");
             }
             else if (metodo == "Secante")
             {
-                // Estructura exacta de tu Excel de Secante
                 dgvIteraciones.Columns.Add("Iteracion", "iteración");
                 dgvIteraciones.Columns.Add("Ci", "Ci");
                 dgvIteraciones.Columns.Add("F_Ci", "F(Ci)");
@@ -92,7 +90,7 @@ namespace Proyecto_MetodosNumericos
 
                 // 3. Parámetros principales
                 e.Parameters["x"] = valorX;
-                e.Parameters["e"] = Math.E; // ¡MAGIA! Ahora el programa entiende cuánto vale 'e' (2.71828...)
+                e.Parameters["e"] = Math.E; // Cuánto vale 'e' (2.71828...)
 
                 // 4. Le enseñamos a NCalc qué hacer cuando lea "ln"
                 e.EvaluateFunction += delegate (string name, FunctionArgs args)
@@ -430,20 +428,20 @@ namespace Proyecto_MetodosNumericos
             {
                 label6.Text = ".";
                 label7.Text = ".";
-                txtB.Enabled = true; // Aseguramos que B esté activo
+                txtB.Enabled = true; 
             }
             else if (metodo == "Newton-Raphson")
             {
                 label6.Text = "Ci (Valor Inicial)";
                 label7.Text = ". (No se usa)";
-                txtB.Enabled = false; // ¡Bloqueamos el cuadro B para evitar errores!
-                txtB.Clear();         // Lo limpiamos por si tenía algo escrito
+                txtB.Enabled = false; 
+                txtB.Clear();         
             }
             else if (metodo == "Secante")
             {
                 label6.Text = "C-1";
                 label7.Text = "Ci";
-                txtB.Enabled = true;  // Lo volvemos a activar
+                txtB.Enabled = true; 
             }
         }
     }
