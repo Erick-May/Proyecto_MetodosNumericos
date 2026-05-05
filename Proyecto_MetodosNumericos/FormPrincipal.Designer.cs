@@ -64,7 +64,7 @@
             // 
             cmbMetodos.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodos.FormattingEnabled = true;
-            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson", "Secante", "Punto Fijo" });
+            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson", "Secante", "Punto Fijo", "Otros Metodos (Polinomios)" });
             cmbMetodos.Location = new Point(179, 5);
             cmbMetodos.Name = "cmbMetodos";
             cmbMetodos.Size = new Size(328, 30);

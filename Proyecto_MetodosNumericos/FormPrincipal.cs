@@ -513,6 +513,14 @@ namespace Proyecto_MetodosNumericos
         {
             string metodo = cmbMetodos.SelectedItem?.ToString() ?? "";
 
+            if (metodo == "Otros Metodos (Polinomios)")
+            {
+                FormPolinomios formPolinomios = new FormPolinomios();
+                formPolinomios.ShowDialog(); // Abre la nueva ventana bloqueando la de atrás
+                cmbMetodos.SelectedIndex = 0; // Regresa el combobox para evitar bugs
+                return;
+            }
+
             // Actualizamos las columnas de la tabla en vivo
             ConfigurarTabla(metodo);
 
