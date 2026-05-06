@@ -530,9 +530,10 @@ namespace Proyecto_MetodosNumericos
 
         private void ActualizarEtiquetas(string metodo)
         {
-            if (label6 == null || label7 == null || label8 == null) return;
+            if (label6 == null || label7 == null || label8 == null || label2 == null) return;
 
             // Por defecto, la etiqueta pide la f(x) normal
+            label2.Text = "Escribir Funcion f(x)";
             label8.Text = ".";
 
             if (metodo == "Biseccion" || metodo == "Regla Falsa")
@@ -551,6 +552,7 @@ namespace Proyecto_MetodosNumericos
             else if (metodo == "Punto Fijo")
             {
                 // ¡AQUÍ ESTÁ LA MAGIA VISUAL!
+                label2.Text = "Escribir Funcion g(x)";
                 label8.Text = "Nota: Tienes que despejar X de la funcion f(x) para obtener g(x) y escribe g(x) para buscar su raiz ☝️";
                 label6.Text = "Ci (Valor Inicial)";
                 label7.Text = ". (No se usa)";
