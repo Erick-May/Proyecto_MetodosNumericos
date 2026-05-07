@@ -516,8 +516,8 @@ namespace Proyecto_MetodosNumericos
             if (metodo == "Otros Metodos (Polinomios)")
             {
                 FormPolinomios formPolinomios = new FormPolinomios();
-                formPolinomios.ShowDialog(); // Abre la nueva ventana bloqueando la de atrás
-                cmbMetodos.SelectedIndex = 0; // Regresa el combobox para evitar bugs
+                formPolinomios.ShowDialog();
+                cmbMetodos.SelectedIndex = 0;
                 return;
             }
 
@@ -532,7 +532,6 @@ namespace Proyecto_MetodosNumericos
         {
             if (label6 == null || label7 == null || label8 == null || label2 == null) return;
 
-            // Por defecto, la etiqueta pide la f(x) normal
             label2.Text = "Escribir Funcion f(x)";
             label8.Text = ".";
 
@@ -551,7 +550,6 @@ namespace Proyecto_MetodosNumericos
             }
             else if (metodo == "Punto Fijo")
             {
-                // ¡AQUÍ ESTÁ LA MAGIA VISUAL!
                 label2.Text = "Escribir Funcion g(x)";
                 label8.Text = "Nota: Tienes que despejar X de la funcion f(x) para obtener g(x) y escribe g(x) para buscar su raiz ☝️";
                 label6.Text = "Ci (Valor Inicial)";
