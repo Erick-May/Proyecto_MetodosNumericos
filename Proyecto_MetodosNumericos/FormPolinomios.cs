@@ -66,11 +66,24 @@ namespace Proyecto_MetodosNumericos
             return resultado;
         }
 
+        private string FormatearValor(double valor)
+        {
+            // Limpiamos la "basura" de precisión de la CPU para igualar el motor de Excel
+            if (Math.Abs(valor) < 1E-14) return "0";
+
+            // G10 le dice a C# que use hasta 10 dígitos y que cambie a 
+            // notación científica (ej. 3.69E-11) automáticamente si el número es muy pequeño
+            return valor.ToString("G10");
+        }
+
         private string FormatearComplejo(Complex c)
         {
-            if (Math.Abs(c.Imaginary) < 0.0000001) return Math.Round(c.Real, 8).ToString();
+            // Si la parte imaginaria es prácticamente cero, mostramos solo la real
+            if (Math.Abs(c.Imaginary) < 1E-10)
+                return FormatearValor(c.Real);
+
             string signo = c.Imaginary >= 0 ? "+" : "-";
-            return $"{Math.Round(c.Real, 8)} {signo} {Math.Round(Math.Abs(c.Imaginary), 8)}i";
+            return $"{FormatearValor(c.Real)} {signo} {FormatearValor(Math.Abs(c.Imaginary))}i";
         }
 
         private void btnCalcularBairstow_Click(object sender, EventArgs e)
@@ -186,9 +199,10 @@ namespace Proyecto_MetodosNumericos
                     dgvBairstow.Columns.Add("a", "a");
                     dgvBairstow.Columns.Add("b", "b");
                     dgvBairstow.Columns.Add("c", "c");
-                    dgvBairstow.Columns.Add("Col1", "Raiz1");
-                    dgvBairstow.Columns.Add("Col2", "Raiz2");
+                    dgvBairstow.Columns.Add("Col1", "Raiz +");
+                    dgvBairstow.Columns.Add("Col2", "Raiz -");
                     dgvBairstow.Columns.Add("Er", "Error %");
+                    dgvBairstow.Columns.Add("Continuar", "Continuar");
 
                     Complex x0 = Convert.ToDouble(txtX0.Text);
                     Complex x1 = Convert.ToDouble(txtX1.Text);
@@ -196,6 +210,7 @@ namespace Proyecto_MetodosNumericos
 
                     int iteracion = 0;
                     double errorRelativo = 100.0;
+                    Complex x0_anterior = x0;
 
                     while (true)
                     {
@@ -206,10 +221,20 @@ namespace Proyecto_MetodosNumericos
                         Complex fx1 = EvaluarPolinomio(a, x1);
                         Complex fx2 = EvaluarPolinomio(a, x2);
 
-                        Complex d0 = (fx1 - fx0) / h0;
-                        Complex d1 = (fx2 - fx1) / h1;
+                        // ==========================================
+                        // MAGIA: Limpiador de punto flotante
+                        // Si la función está peligrosamente cerca de 0, la forzamos a 0 
+                        // para evitar que divida basura y genere resultados como tu "24"
+                        // ==========================================
+                        if (Complex.Abs(fx0) < 1E-12) fx0 = 0;
+                        if (Complex.Abs(fx1) < 1E-12) fx1 = 0;
+                        if (Complex.Abs(fx2) < 1E-12) fx2 = 0;
 
-                        Complex a_m = (d1 - d0) / (h1 + h0);
+                        // Validamos que h no sea cero absoluto para evitar división entre cero
+                        Complex d0 = h0 != 0 ? (fx1 - fx0) / h0 : 0;
+                        Complex d1 = h1 != 0 ? (fx2 - fx1) / h1 : 0;
+
+                        Complex a_m = (h1 + h0) != 0 ? (d1 - d0) / (h1 + h0) : 0;
                         Complex b_m = (a_m * h1) + d1;
                         Complex c_m = fx2;
 
@@ -220,23 +245,32 @@ namespace Proyecto_MetodosNumericos
 
                         Complex denom = (Complex.Abs(col1) > Complex.Abs(col2)) ? col1 : col2;
 
-                        Complex x3 = x2 - ((2.0 * c_m) / denom);
+                        Complex x3 = x2;
+                        if (denom != 0)
+                        {
+                            x3 = x2 - ((2.0 * c_m) / denom);
+                        }
 
-                        // ¡Filtro Sanitizador Intacto!
                         if (Math.Abs(x3.Imaginary) < 0.00001)
                         {
                             x3 = new Complex(x3.Real, 0);
                         }
 
-                        // ==========================================
-                        // CORRECCIÓN MATEMÁTICA DEL ERROR
-                        // Evaluamos la raíz NUEVA (x3) vs la ANTERIOR (x2)
-                        // ==========================================
                         string erMostrar = "-";
+                        string continuar = "-";
+
                         if (iteracion > 0)
                         {
-                            errorRelativo = Math.Abs(((x3 - x2) / x3).Real) * 100.0;
-                            erMostrar = Math.Round(errorRelativo, 6).ToString() + "%";
+                            // Error desfasado igual al de tu Excel
+                            errorRelativo = Math.Abs(((x0 - x0_anterior) / x0).Real) * 100.0;
+
+                            // Usamos el nuevo formato que respeta la notación científica
+                            erMostrar = FormatearValor(errorRelativo);
+
+                            if (errorRelativo < tolerancia)
+                                continuar = "Finalizar";
+                            else
+                                continuar = "Continuar";
                         }
 
                         dgvBairstow.Rows.Add(
@@ -254,13 +288,15 @@ namespace Proyecto_MetodosNumericos
                             FormatearComplejo(c_m),
                             FormatearComplejo(col1),
                             FormatearComplejo(col2),
-                            erMostrar
+                            erMostrar,
+                            continuar
                         );
 
-                        // Freno en tiempo real
+                        // Freno si el error ya cumplió la meta de Excel
                         if (iteracion > 0 && errorRelativo < tolerancia) break;
 
-                        // Rotación
+                        // Rotación de puntos
+                        x0_anterior = x0;
                         x0 = x1;
                         x1 = x2;
                         x2 = x3;
