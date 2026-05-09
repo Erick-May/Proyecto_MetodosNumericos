@@ -223,7 +223,7 @@
             // 
             cmbMetodosPolinomio.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodosPolinomio.FormattingEnabled = true;
-            cmbMetodosPolinomio.Location = new Point(138, 54);
+            cmbMetodosPolinomio.Location = new Point(137, 32);
             cmbMetodosPolinomio.Name = "cmbMetodosPolinomio";
             cmbMetodosPolinomio.Size = new Size(229, 33);
             cmbMetodosPolinomio.TabIndex = 19;
@@ -232,7 +232,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(8, 54);
+            label10.Location = new Point(7, 32);
             label10.Name = "label10";
             label10.Size = new Size(124, 25);
             label10.TabIndex = 20;
@@ -243,25 +243,25 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1470, 682);
+            Controls.Add(label8);
+            Controls.Add(txtX1);
+            Controls.Add(txtS);
+            Controls.Add(label5);
+            Controls.Add(txtX0);
+            Controls.Add(txtR);
+            Controls.Add(label7);
+            Controls.Add(label4);
+            Controls.Add(txtCoeficientes);
+            Controls.Add(label3);
+            Controls.Add(label2);
             Controls.Add(label10);
             Controls.Add(cmbMetodosPolinomio);
             Controls.Add(label9);
-            Controls.Add(label8);
-            Controls.Add(label7);
             Controls.Add(txtX2);
-            Controls.Add(txtX1);
-            Controls.Add(txtX0);
             Controls.Add(btnRegresar);
             Controls.Add(dgvBairstow);
             Controls.Add(label6);
             Controls.Add(txtToleranciaP);
-            Controls.Add(label5);
-            Controls.Add(txtS);
-            Controls.Add(txtR);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(txtCoeficientes);
-            Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(btnCalcularBairstow);
             Name = "FormPolinomios";
