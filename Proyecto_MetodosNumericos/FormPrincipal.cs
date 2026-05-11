@@ -520,6 +520,13 @@ namespace Proyecto_MetodosNumericos
                 cmbMetodos.SelectedIndex = 0;
                 return;
             }
+            else if (metodo == "Otros Metodos (Matrices)")
+            {
+                FormMatrices formMatrices = new FormMatrices();
+                formMatrices.ShowDialog();
+                cmbMetodos.SelectedIndex = 0;
+                return;
+            }
 
             // Actualizamos las columnas de la tabla en vivo
             ConfigurarTabla(metodo);
@@ -540,12 +547,14 @@ namespace Proyecto_MetodosNumericos
                 label6.Text = ".";
                 label7.Text = ".";
                 txtB.Enabled = true;
+                btnCalcular.Text = "Calcular";
             }
             else if (metodo == "Newton-Raphson")
             {
                 label6.Text = "Ci (Valor Inicial)";
                 label7.Text = ". (No se usa)";
                 txtB.Enabled = false;
+                btnCalcular.Text = "Calcular Newton-Raphson";
                 txtB.Clear();
             }
             else if (metodo == "Punto Fijo")
@@ -554,6 +563,7 @@ namespace Proyecto_MetodosNumericos
                 label8.Text = "Nota: Tienes que despejar X de la funcion f(x) para obtener g(x) y escribe g(x) para buscar su raiz ☝️";
                 label6.Text = "Ci (Valor Inicial)";
                 label7.Text = ". (No se usa)";
+                btnCalcular.Text = "Calcular Punto Fijo";
                 txtB.Enabled = false;
                 txtB.Clear();
             }
@@ -561,6 +571,7 @@ namespace Proyecto_MetodosNumericos
             {
                 label6.Text = "C-1";
                 label7.Text = "Ci";
+                btnCalcular.Text = "Calcular Secante";
                 txtB.Enabled = true;
             }
         }

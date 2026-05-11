@@ -58,7 +58,7 @@
             btnCalcularBairstow.Name = "btnCalcularBairstow";
             btnCalcularBairstow.Size = new Size(171, 34);
             btnCalcularBairstow.TabIndex = 0;
-            btnCalcularBairstow.Text = "Calcular Bairstow";
+            btnCalcularBairstow.Text = "Calcular";
             btnCalcularBairstow.UseVisualStyleBackColor = true;
             btnCalcularBairstow.Click += btnCalcularBairstow_Click;
             // 
@@ -151,6 +151,8 @@
             // 
             // dgvBairstow
             // 
+            dgvBairstow.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvBairstow.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvBairstow.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBairstow.Location = new Point(12, 265);
             dgvBairstow.Name = "dgvBairstow";
@@ -264,8 +266,11 @@
             Controls.Add(txtToleranciaP);
             Controls.Add(label1);
             Controls.Add(btnCalcularBairstow);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormPolinomios";
             Text = "FormPolinomios";
+            WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)dgvBairstow).EndInit();
             ResumeLayout(false);
             PerformLayout();

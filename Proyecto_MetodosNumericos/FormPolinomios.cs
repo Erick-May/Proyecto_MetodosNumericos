@@ -328,16 +328,19 @@ namespace Proyecto_MetodosNumericos
         private void ActualizarEtiquetas(string metodo)
         {
             if (label1 == null) return;
+            if (btnCalcularBairstow == null) return;
 
             label1.Text = "METODOS DE POLINOMIOS";
 
             if (metodo == "Bairstow")
             {
                 label1.Text = "METODO DE BAIRSTOW";
+                btnCalcularBairstow.Text = "Calcular Bairstow";
             }
             else if (metodo == "Muller")
             {
                 label1.Text = "METODO DE MULLER";
+                btnCalcularBairstow.Text = "Calcular Muller";
             }
            
         }

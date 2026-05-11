@@ -64,7 +64,7 @@
             // 
             cmbMetodos.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodos.FormattingEnabled = true;
-            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson", "Secante", "Punto Fijo", "Otros Metodos (Polinomios)" });
+            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson", "Secante", "Punto Fijo", "Otros Metodos (Polinomios)", "Otros Metodos (Matrices)" });
             cmbMetodos.Location = new Point(179, 5);
             cmbMetodos.Name = "cmbMetodos";
             cmbMetodos.Size = new Size(328, 30);
@@ -122,6 +122,7 @@
             // 
             // dgvIteraciones
             // 
+            dgvIteraciones.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvIteraciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvIteraciones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvIteraciones.Location = new Point(0, 233);
@@ -165,9 +166,9 @@
             // btnCalcular
             // 
             btnCalcular.Font = new Font("Times New Roman", 9.75F);
-            btnCalcular.Location = new Point(1220, 63);
+            btnCalcular.Location = new Point(1164, 138);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(123, 47);
+            btnCalcular.Size = new Size(194, 47);
             btnCalcular.TabIndex = 10;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
