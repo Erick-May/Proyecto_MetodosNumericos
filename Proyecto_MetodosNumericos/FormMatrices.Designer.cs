@@ -69,9 +69,9 @@
             label1.Font = new Font("Times New Roman", 16F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             label1.Location = new Point(508, 9);
             label1.Name = "label1";
-            label1.Size = new Size(170, 36);
+            label1.Size = new Size(425, 36);
             label1.TabIndex = 21;
-            label1.Text = "METODOS";
+            label1.Text = "METODOS PARA MATRICES";
             // 
             // txtSistemasNL
             // 
