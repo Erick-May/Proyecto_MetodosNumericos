@@ -297,62 +297,85 @@ namespace Proyecto_MetodosNumericos
                     lblResultado.Text = $"Resultado: {Math.Round(c, 8)}";
                     GuardarHistorial(metodoSeleccionado, funcion);
                 }
-
                 // ==========================================
                 // NEWTON-RAPHSON
                 // ==========================================
                 else if (metodoSeleccionado == "Newton-Raphson")
                 {
-                    double ci = a;
+                    double ci = a; // Valor inicial Xi
                     double ci_anterior = 0;
                     double errorRelativo = 100.0;
-                    int iteracion = 0;
+                    double ea = 0;
+                    int iteracion = 1; // Tus amigos empiezan en la iteración 1
 
-                    double h = 0.000001;
+                    // h = 0.00001 es el balance perfecto para la Diferencia Central
+                    double h = 0.00001;
 
                     while (true)
                     {
                         double f_ci = EvaluarFuncion(funcion, ci);
 
-                        // EL TRUCO MAESTRO: Derivación numérica f'(ci) = (f(ci + h) - f(ci)) / h
+                        // EL TRUCO DEFINITIVO: Derivada Numérica por DIFERENCIAS CENTRALES
+                        // Esto evita que la función diverja y hace que las iteraciones cuadren
                         double f_ci_mas_h = EvaluarFuncion(funcion, ci + h);
-                        double fp_ci = (f_ci_mas_h - f_ci) / h;
+                        double f_ci_menos_h = EvaluarFuncion(funcion, ci - h);
+                        double fp_ci = (f_ci_mas_h - f_ci_menos_h) / (2.0 * h);
 
-                        if (Math.Abs(fp_ci) < 0.0000001) // Para evitar dividir entre cero
+                        if (Math.Abs(fp_ci) < 1E-12)
                         {
-                            MessageBox.Show("La derivada se hizo cero (o casi cero). El método se indefine porque la recta es paralela al eje X.", "Error Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("La derivada se hizo cero. Tangente horizontal, el método diverge.", "Error Matemático", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
                         }
 
-                        // Fórmula de Newton: CI_nuevo = CI_viejo - f(CI) / f'(CI)
+                        // Fórmula de Newton: Xi+1 = Xi - ( f(Xi) / f'(Xi) )
                         double c_nuevo = ci - (f_ci / fp_ci);
 
-                        string eaMostrar = "";
-                        string erMostrar = "";
+                        string eaMostrar = "-";
+                        string erMostrar = "-";
 
-                        // Calculamos errores imitando tu Excel
-                        if (iteracion > 0)
+                        // Calculamos el error verificando la diferencia entre el actual y el de la vuelta anterior
+                        if (iteracion > 1)
                         {
-                            double ea = Math.Abs(c_nuevo - ci);
-                            errorRelativo = Math.Abs((ci - ci_anterior) / ci);
+                            ea = Math.Abs(ci - ci_anterior);
 
-                            eaMostrar = Math.Round(ea, 5).ToString();
-                            erMostrar = Math.Round(errorRelativo, 3).ToString() + "%";
+                            // EL * 100.0 REGRESÓ: Es vital para que la tolerancia funcione como porcentaje
+                            if (ci != 0)
+                            {
+                                errorRelativo = Math.Abs(ea / ci) * 100.0;
+                            }
+
+                            eaMostrar = Math.Round(ea, 6).ToString();
+                            erMostrar = Math.Round(errorRelativo, 4).ToString() + "%";
                         }
 
-                        dgvIteraciones.Rows.Add(iteracion, Math.Round(ci, 8), Math.Round(f_ci, 8), Math.Round(fp_ci, 8), Math.Round(c_nuevo, 8), eaMostrar, erMostrar);
+                        // Imprimimos la fila limpia
+                        dgvIteraciones.Rows.Add(
+                            iteracion,
+                            Math.Round(ci, 6),
+                            Math.Round(f_ci, 6),
+                            Math.Round(fp_ci, 6),
+                            Math.Round(c_nuevo, 6),
+                            eaMostrar,
+                            erMostrar
+                        );
 
-                        // Freno: Si llegamos a la tolerancia, salimos del ciclo
-                        if (Math.Abs(f_ci) < 0.0000001 || (iteracion > 0 && errorRelativo < tolerancia))
+                        // FRENOS DE ÉXITO (Igual que tus compañeros)
+                        if (Math.Abs(f_ci) < 1E-12 || (iteracion > 1 && errorRelativo < tolerancia))
                         {
                             lblResultado.Text = $"Resultado: {Math.Round(c_nuevo, 8)}";
                             break;
                         }
 
+                        // Rotación de variables para la siguiente vuelta
                         ci_anterior = ci;
                         ci = c_nuevo;
                         iteracion++;
-                        if (iteracion > 100) break;
+
+                        if (iteracion > 100)
+                        {
+                            MessageBox.Show("Se alcanzó el límite de 100 iteraciones sin converger. Prueba con otro valor inicial.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            break;
+                        }
                     }
                     GuardarHistorial(metodoSeleccionado, funcion);
                 }
