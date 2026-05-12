@@ -85,6 +85,7 @@
             txtUsuario.Name = "txtUsuario";
             txtUsuario.Size = new Size(313, 30);
             txtUsuario.TabIndex = 3;
+            txtUsuario.Text = "Erick";
             // 
             // txtContrasena
             // 
@@ -94,6 +95,7 @@
             txtContrasena.PasswordChar = '*';
             txtContrasena.Size = new Size(310, 30);
             txtContrasena.TabIndex = 4;
+            txtContrasena.Text = "2006";
             txtContrasena.UseSystemPasswordChar = true;
             // 
             // btnIniciarSesion

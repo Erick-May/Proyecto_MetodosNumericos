@@ -99,6 +99,7 @@ namespace Proyecto_MetodosNumericos
                 // 3. Parámetros principales
                 e.Parameters["x"] = valorX;
                 e.Parameters["e"] = Math.E;
+                e.Parameters["pi"] = Math.PI;
 
                 // 4. EL CEREBRO MATEMÁTICO EXPANDIDO
                 e.EvaluateFunction += delegate (string name, FunctionArgs args)
@@ -222,7 +223,7 @@ namespace Proyecto_MetodosNumericos
 
                         if (iteracion > 1)
                         {
-                            errorRelativo = Math.Abs((xm - xm_anterior) / xm) * 100.0;
+                            errorRelativo = Math.Abs((xm - xm_anterior) / xm);
                             erMostrar = Math.Round(errorRelativo, 2).ToString() + "%";
                         }
 
@@ -273,7 +274,7 @@ namespace Proyecto_MetodosNumericos
 
                         if (iteracion > 1)
                         {
-                            errorRelativo = Math.Abs((c - c_anterior) / c) * 100.0;
+                            errorRelativo = Math.Abs((c - c_anterior) / c);
                             errorMostrar = Math.Round(errorRelativo, 2).ToString() + "%";
                         }
 
@@ -328,7 +329,7 @@ namespace Proyecto_MetodosNumericos
                         if (iteracion > 0)
                         {
                             double ea = Math.Abs(c_nuevo - ci);
-                            errorRelativo = Math.Abs((ci - ci_anterior) / ci) * 100.0;
+                            errorRelativo = Math.Abs((ci - ci_anterior) / ci);
 
                             eaMostrar = Math.Round(ea, 5).ToString();
                             erMostrar = Math.Round(errorRelativo, 3).ToString() + "%";
@@ -392,7 +393,7 @@ namespace Proyecto_MetodosNumericos
                         // Calculamos el Er% evaluando la diferencia entre el nuevo (c_mas1) y el actual (ci)
                         if (iteracion > 1)
                         {
-                            errorRelativo = Math.Abs((c_mas1 - ci) / c_mas1) * 100.0;
+                            errorRelativo = Math.Abs((c_mas1 - ci) / c_mas1);
                             erMostrar = Math.Round(errorRelativo, 4).ToString() + "%";
                         }
 
@@ -449,7 +450,7 @@ namespace Proyecto_MetodosNumericos
                         if (iteracion > 0)
                         {
                             // Excel usa: |(Ci actual - Ci anterior) / Ci actual|
-                            errorRelativo = Math.Abs((ci - ci_anterior) / ci) * 100.0;
+                            errorRelativo = Math.Abs((ci - ci_anterior) / ci);
                             erMostrar = Math.Round(errorRelativo, 6).ToString() + "%";
                         }
 
