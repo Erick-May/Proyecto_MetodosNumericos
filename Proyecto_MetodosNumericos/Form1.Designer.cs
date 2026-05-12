@@ -231,6 +231,7 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            MaximizeBox = false;
             Name = "FormInicioSesion";
             Text = "FormInicioSesion";
             pnlRegistro.ResumeLayout(false);

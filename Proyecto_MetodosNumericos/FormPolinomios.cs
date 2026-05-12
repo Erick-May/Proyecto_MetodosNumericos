@@ -11,6 +11,7 @@ namespace Proyecto_MetodosNumericos
 {
     public partial class FormPolinomios : Form
     {
+        private List<TextBox> cajasCoeficientes = new List<TextBox>();
         public FormPolinomios()
         {
             InitializeComponent();
@@ -19,6 +20,7 @@ namespace Proyecto_MetodosNumericos
             {
                 cmbMetodosPolinomio.Items.Add("Bairstow");
                 cmbMetodosPolinomio.Items.Add("Muller");
+                cmbMetodosPolinomio.Items.Add("Horner-Newton");
             }
             cmbMetodosPolinomio.SelectedIndex = 0;
             cmbMetodosPolinomio.SelectedIndexChanged += cmbMetodosPolinomio_SelectedIndexChanged;
@@ -90,18 +92,6 @@ namespace Proyecto_MetodosNumericos
         {
             try
             {
-                string[] partes = txtCoeficientes.Text.Split(',');
-                int grado = partes.Length - 1;
-
-                if (grado < 2)
-                {
-                    MessageBox.Show("El polinomio debe ser de al menos grado 2.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                double[] a = new double[grado + 1];
-                for (int i = 0; i <= grado; i++) a[grado - i] = Convert.ToDouble(partes[i].Trim());
-
                 double tolerancia = Convert.ToDouble(txtToleranciaP.Text);
                 string metodo = cmbMetodosPolinomio.SelectedItem.ToString();
 
@@ -113,6 +103,18 @@ namespace Proyecto_MetodosNumericos
                 // --------------------------------------------------------
                 if (metodo == "Bairstow")
                 {
+                    string[] partes = txtCoeficientes.Text.Split(',');
+                    int grado = partes.Length - 1;
+
+                    if (grado < 2)
+                    {
+                        MessageBox.Show("El polinomio debe ser de al menos grado 2.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    double[] a = new double[grado + 1];
+                    for (int i = 0; i <= grado; i++) a[grado - i] = Convert.ToDouble(partes[i].Trim());
+
                     double r = Convert.ToDouble(txtR.Text);
                     double s = Convert.ToDouble(txtS.Text);
 
@@ -187,6 +189,18 @@ namespace Proyecto_MetodosNumericos
                 // --------------------------------------------------------
                 else if (metodo == "Muller")
                 {
+                    string[] partes = txtCoeficientes.Text.Split(',');
+                    int grado = partes.Length - 1;
+
+                    if (grado < 2)
+                    {
+                        MessageBox.Show("El polinomio debe ser de al menos grado 2.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    double[] a = new double[grado + 1];
+                    for (int i = 0; i <= grado; i++) a[grado - i] = Convert.ToDouble(partes[i].Trim());
+
                     dgvBairstow.Columns.Add("Iteracion", "i");
                     dgvBairstow.Columns.Add("Xi", "Xi");
                     dgvBairstow.Columns.Add("Xi_1", "Xi+1");
@@ -305,7 +319,107 @@ namespace Proyecto_MetodosNumericos
                         if (iteracion > 100) break;
                     }
                 }
-                
+                // --------------------------------------------------------
+                // MÉTODO DE HORNER-NEWTON
+                // --------------------------------------------------------
+                else if (metodo == "Horner-Newton")
+                {
+                    if (cajasCoeficientes.Count == 0)
+                    {
+                        MessageBox.Show("Genera las cajas y llena los coeficientes primero.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    int gradoN = cajasCoeficientes.Count - 1;
+                    double[] A = new double[gradoN + 1];
+
+                    // Leer los coeficientes (caja 0 es a_n, caja 'gradoN' es a_0)
+                    for (int i = 0; i <= gradoN; i++)
+                    {
+                        // CORRECCIÓN 1: 'A' mayúscula
+                        if (!double.TryParse(cajasCoeficientes[i].Text, out A[gradoN - i]))
+                        {
+                            MessageBox.Show("Verifica que todos los coeficientes sean numéricos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+
+                    double xi = Convert.ToDouble(txtX0.Text);
+
+                    // Configurar columnas dinámicas
+                    dgvBairstow.Columns.Add("Iteracion", "i");
+                    dgvBairstow.Columns.Add("Xi", "Xi");
+
+                    for (int i = gradoN; i >= 0; i--) dgvBairstow.Columns.Add($"b{i}", $"b{i}");
+                    for (int i = gradoN - 1; i >= 0; i--) dgvBairstow.Columns.Add($"c{i}", $"c{i}");
+
+                    dgvBairstow.Columns.Add("fXi", "f(Xi)");
+                    dgvBairstow.Columns.Add("fpXi", "f'(Xi)");
+                    dgvBairstow.Columns.Add("Xi_1", "Xi+1");
+                    dgvBairstow.Columns.Add("Er", "Error %");
+
+                    double[] b = new double[gradoN + 1];
+                    double[] c = new double[gradoN];
+
+                    int iteracion = 0;
+                    double errorRelativo = 100.0;
+
+                    while (true)
+                    {
+                        // 1ra División Sintética: Polinomio
+                        // CORRECCIÓN 2: 'A' mayúscula
+                        b[gradoN] = A[gradoN];
+                        for (int i = gradoN - 1; i >= 0; i--)
+                        {
+                            // CORRECCIÓN 3: 'A' mayúscula
+                            b[i] = A[i] + (xi * b[i + 1]);
+                        }
+
+                        // 2da División Sintética: Derivada
+                        c[gradoN - 1] = b[gradoN];
+                        for (int i = gradoN - 2; i >= 0; i--)
+                        {
+                            c[i] = b[i + 1] + (xi * c[i + 1]);
+                        }
+
+                        double f_xi = b[0];       // f(x)
+                        double fp_xi = c[0];      // f'(x)
+
+                        if (Math.Abs(fp_xi) < 1E-15)
+                        {
+                            MessageBox.Show("La derivada se hizo cero. Tangente horizontal.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        }
+
+                        double xi_1 = xi - (f_xi / fp_xi);
+
+                        string erMostrar = "-";
+                        if (iteracion > 0)
+                        {
+                            errorRelativo = Math.Abs((xi_1 - xi) / xi_1) * 100.0;
+                            // Ojo: Si no agregaste el método FormatearValor, puedes usar Math.Round(errorRelativo, 6)
+                            erMostrar = Math.Round(errorRelativo, 6).ToString() + "%";
+                        }
+
+                        // Llenar Fila
+                        List<object> fila = new List<object> { iteracion, Math.Round(xi, 6) };
+                        for (int i = gradoN; i >= 0; i--) fila.Add(Math.Round(b[i], 6));
+                        for (int i = gradoN - 1; i >= 0; i--) fila.Add(Math.Round(c[i], 6));
+
+                        fila.Add(Math.Round(f_xi, 6));
+                        fila.Add(Math.Round(fp_xi, 6));
+                        fila.Add(Math.Round(xi_1, 6));
+                        fila.Add(erMostrar);
+
+                        dgvBairstow.Rows.Add(fila.ToArray());
+
+                        if (iteracion > 0 && errorRelativo < tolerancia) break;
+
+                        xi = xi_1;
+                        iteracion++;
+                        if (iteracion > 100) break;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -327,22 +441,67 @@ namespace Proyecto_MetodosNumericos
 
         private void ActualizarEtiquetas(string metodo)
         {
-            if (label1 == null) return;
-            if (btnCalcularBairstow == null) return;
+            // Ocultar TODO por defecto
+            txtR.Visible = false; txtS.Visible = false;
+            label4.Visible = false; label5.Visible = false;
+            txtX0.Visible = false; txtX1.Visible = false; txtX2.Visible = false;
+            label7.Visible = false; label8.Visible = false; label9.Visible = false;
+            txtCoeficientes.Visible = false; label2.Visible = false; label3.Visible = false;
 
-            label1.Text = "METODOS DE POLINOMIOS";
+            // Ocultar lo nuevo de Horner-Newton
+            lblGradoHN.Visible = false; txtGradoHN.Visible = false;
+            btnGenerarCajas.Visible = false; flpCoeficientes.Visible = false;
 
             if (metodo == "Bairstow")
             {
-                label1.Text = "METODO DE BAIRSTOW";
-                btnCalcularBairstow.Text = "Calcular Bairstow";
+                txtCoeficientes.Visible = true; label2.Visible = true; label3.Visible = true;
+                txtR.Visible = true; txtS.Visible = true;
+                label4.Visible = true; label5.Visible = true;
             }
             else if (metodo == "Muller")
             {
-                label1.Text = "METODO DE MULLER";
-                btnCalcularBairstow.Text = "Calcular Muller";
+                txtCoeficientes.Visible = true; label2.Visible = true; label3.Visible = true;
+                txtX0.Visible = true; txtX1.Visible = true; txtX2.Visible = true;
+                label7.Text = "X0"; label7.Visible = true;
+                label8.Text = "X1"; label8.Visible = true;
+                label9.Text = "X2"; label9.Visible = true;
             }
-           
+            else if (metodo == "Horner-Newton")
+            {
+                // Mostrar Horner y el X0
+                lblGradoHN.Visible = true; txtGradoHN.Visible = true;
+                btnGenerarCajas.Visible = true; flpCoeficientes.Visible = true;
+
+                txtX0.Visible = true;
+                label7.Text = "X0"; label7.Visible = true;
+            }
+        }
+        private void btnGenerarCajas_Click(object sender, EventArgs e)
+        {
+            // Limpiamos el contenedor por si el usuario cambia el grado y vuelve a darle clic
+            flpCoeficientes.Controls.Clear();
+            cajasCoeficientes.Clear();
+
+            if (int.TryParse(txtGradoHN.Text, out int grado) && grado > 0)
+            {
+                // Generamos desde a_n hasta a_0 y las metemos en tu FlowLayoutPanel
+                for (int i = grado; i >= 0; i--)
+                {
+                    Panel p = new Panel { Size = new Size(50, 50), Margin = new Padding(3) };
+                    Label l = new Label { Text = $"a{i}", Dock = DockStyle.Top, TextAlign = ContentAlignment.MiddleCenter };
+                    TextBox t = new TextBox { Dock = DockStyle.Bottom, Width = 40, TextAlign = HorizontalAlignment.Center };
+
+                    p.Controls.Add(l);
+                    p.Controls.Add(t);
+                    flpCoeficientes.Controls.Add(p);
+
+                    cajasCoeficientes.Add(t); // Guardamos la cajita para leerla después
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ingresa un grado válido (entero mayor a 0).", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }
