@@ -165,6 +165,11 @@ namespace Proyecto_MetodosNumericos
         private void btnCalcular_Click(object sender, EventArgs e)
         {
             string funcion = txtFuncion.Text.Trim();
+            if (string.IsNullOrEmpty(funcion))
+            {
+                MessageBox.Show("¡Ey! No has escrito ninguna función para evaluar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             string metodoSeleccionado = cmbMetodos.SelectedItem?.ToString() ?? "";
 
             if (string.IsNullOrEmpty(metodoSeleccionado))
@@ -627,6 +632,66 @@ TOLERANCIA:
                         MessageBox.Show("Hubo un error al guardar el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+            }
+        }
+
+        private void txtTolerancia_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // 1. Si el usuario presiona coma, la transformamos en punto automáticamente
+            if (e.KeyChar == ',') e.KeyChar = '.';
+
+            // 2. Si no es un número, ni la tecla de borrar, ni un punto, bloqueamos la tecla
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // 3. Evitar que ponga más de un punto (ej: 0.0.1)
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtA_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ',') e.KeyChar = '.';
+
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != '-'))
+            {
+                e.Handled = true;
+            }
+
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+
+            // El signo negativo '-' solo se puede poner al inicio
+            if (e.KeyChar == '-' && (sender as TextBox).SelectionStart != 0)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ',') e.KeyChar = '.';
+
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != '-'))
+            {
+                e.Handled = true;
+            }
+
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+
+            // El signo negativo '-' solo se puede poner al inicio
+            if (e.KeyChar == '-' && (sender as TextBox).SelectionStart != 0)
+            {
+                e.Handled = true;
             }
         }
     }

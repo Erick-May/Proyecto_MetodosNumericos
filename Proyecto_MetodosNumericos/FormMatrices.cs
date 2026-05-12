@@ -289,5 +289,24 @@ Luego, ingresa tu Tolerancia (ej: 0.01) y el programa generará la matriz Jacobi
                 }
             }
         }
+
+        private void txtTolerancia_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // 1. Si el usuario presiona coma, la transformamos en punto automáticamente
+            if (e.KeyChar == ',') e.KeyChar = '.';
+
+            // 2. Si no es un número, ni la tecla de borrar, ni un punto, bloqueamos la tecla
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // 3. Evitar que ponga más de un punto (ej: 0.0.1)
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
     }
 }

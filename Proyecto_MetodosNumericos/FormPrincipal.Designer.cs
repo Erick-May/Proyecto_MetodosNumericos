@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            label9 = new Label();
+            btnManual = new Button();
             cmbMetodos = new ComboBox();
             label1 = new Label();
             label2 = new Label();
@@ -45,8 +47,6 @@
             label6 = new Label();
             label7 = new Label();
             label8 = new Label();
-            btnManual = new Button();
-            label9 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvIteraciones).BeginInit();
             SuspendLayout();
@@ -63,6 +63,25 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1370, 47);
             panel1.TabIndex = 0;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(1109, 11);
+            label9.Name = "label9";
+            label9.Size = new Size(131, 22);
+            label9.TabIndex = 3;
+            label9.Text = "Manual de uso:";
+            // 
+            // btnManual
+            // 
+            btnManual.Location = new Point(1246, 5);
+            btnManual.Name = "btnManual";
+            btnManual.Size = new Size(112, 34);
+            btnManual.TabIndex = 2;
+            btnManual.Text = "Manual";
+            btnManual.UseVisualStyleBackColor = true;
+            btnManual.Click += btnManual_Click;
             // 
             // cmbMetodos
             // 
@@ -150,6 +169,7 @@
             txtA.Name = "txtA";
             txtA.Size = new Size(150, 30);
             txtA.TabIndex = 7;
+            txtA.KeyPress += txtA_KeyPress;
             // 
             // txtB
             // 
@@ -158,6 +178,7 @@
             txtB.Name = "txtB";
             txtB.Size = new Size(150, 30);
             txtB.TabIndex = 8;
+            txtB.KeyPress += txtB_KeyPress;
             // 
             // txtTolerancia
             // 
@@ -166,13 +187,14 @@
             txtTolerancia.Name = "txtTolerancia";
             txtTolerancia.Size = new Size(150, 30);
             txtTolerancia.TabIndex = 9;
+            txtTolerancia.KeyPress += txtTolerancia_KeyPress;
             // 
             // btnCalcular
             // 
             btnCalcular.Font = new Font("Times New Roman", 9.75F);
-            btnCalcular.Location = new Point(1164, 138);
+            btnCalcular.Location = new Point(1078, 152);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(194, 47);
+            btnCalcular.Size = new Size(280, 47);
             btnCalcular.TabIndex = 10;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -182,7 +204,7 @@
             // 
             lblResultado.AutoSize = true;
             lblResultado.Font = new Font("Times New Roman", 9.75F);
-            lblResultado.Location = new Point(677, 150);
+            lblResultado.Location = new Point(567, 174);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(95, 22);
             lblResultado.TabIndex = 11;
@@ -217,25 +239,6 @@
             label8.Size = new Size(51, 20);
             label8.TabIndex = 14;
             label8.Text = "label8";
-            // 
-            // btnManual
-            // 
-            btnManual.Location = new Point(1246, 5);
-            btnManual.Name = "btnManual";
-            btnManual.Size = new Size(112, 34);
-            btnManual.TabIndex = 2;
-            btnManual.Text = "Manual";
-            btnManual.UseVisualStyleBackColor = true;
-            btnManual.Click += btnManual_Click;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(1109, 11);
-            label9.Name = "label9";
-            label9.Size = new Size(131, 22);
-            label9.TabIndex = 3;
-            label9.Text = "Manual de uso:";
             // 
             // FormPrincipal
             // 

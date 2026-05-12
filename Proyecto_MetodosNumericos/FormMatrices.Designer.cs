@@ -106,6 +106,7 @@
             txtTolerancia.Name = "txtTolerancia";
             txtTolerancia.Size = new Size(150, 31);
             txtTolerancia.TabIndex = 28;
+            txtTolerancia.KeyPress += txtTolerancia_KeyPress;
             // 
             // label4
             // 

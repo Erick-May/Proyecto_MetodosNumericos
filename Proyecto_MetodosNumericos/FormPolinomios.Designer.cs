@@ -120,6 +120,7 @@
             txtR.Name = "txtR";
             txtR.Size = new Size(95, 31);
             txtR.TabIndex = 6;
+            txtR.KeyPress += txtR_KeyPress;
             // 
             // txtS
             // 
@@ -128,6 +129,7 @@
             txtS.Name = "txtS";
             txtS.Size = new Size(95, 31);
             txtS.TabIndex = 7;
+            txtS.KeyPress += txtS_KeyPress;
             // 
             // label5
             // 
@@ -145,6 +147,7 @@
             txtToleranciaP.Name = "txtToleranciaP";
             txtToleranciaP.Size = new Size(208, 31);
             txtToleranciaP.TabIndex = 9;
+            txtToleranciaP.KeyPress += txtToleranciaP_KeyPress;
             // 
             // label6
             // 
@@ -183,6 +186,7 @@
             txtX0.Name = "txtX0";
             txtX0.Size = new Size(95, 31);
             txtX0.TabIndex = 13;
+            txtX0.KeyPress += txtX0_KeyPress;
             // 
             // txtX1
             // 
@@ -191,6 +195,7 @@
             txtX1.Name = "txtX1";
             txtX1.Size = new Size(95, 31);
             txtX1.TabIndex = 14;
+            txtX1.KeyPress += txtX1_KeyPress;
             // 
             // txtX2
             // 
@@ -199,6 +204,7 @@
             txtX2.Name = "txtX2";
             txtX2.Size = new Size(95, 31);
             txtX2.TabIndex = 15;
+            txtX2.KeyPress += txtX2_KeyPress;
             // 
             // label7
             // 
