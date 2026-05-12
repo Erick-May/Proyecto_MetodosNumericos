@@ -458,6 +458,7 @@ namespace Proyecto_MetodosNumericos
                 txtCoeficientes.Visible = true; label2.Visible = true; label3.Visible = true;
                 txtR.Visible = true; txtS.Visible = true;
                 label4.Visible = true; label5.Visible = true;
+                label1.Text = "METODO DE BAIRSTOW";
             }
             else if (metodo == "Muller")
             {
@@ -466,6 +467,7 @@ namespace Proyecto_MetodosNumericos
                 label7.Text = "X0"; label7.Visible = true;
                 label8.Text = "X1"; label8.Visible = true;
                 label9.Text = "X2"; label9.Visible = true;
+                label1.Text = "METODO DE MULLER";
             }
             else if (metodo == "Horner-Newton")
             {
@@ -475,6 +477,7 @@ namespace Proyecto_MetodosNumericos
 
                 txtX0.Visible = true;
                 label7.Text = "X0"; label7.Visible = true;
+                label1.Text = "METODO DE HORNER-NEWTON";
             }
         }
         private void btnGenerarCajas_Click(object sender, EventArgs e)
@@ -680,6 +683,11 @@ namespace Proyecto_MetodosNumericos
             {
                 e.Handled = true;
             }
+        }
+
+        private void FormPolinomios_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

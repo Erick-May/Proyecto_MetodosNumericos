@@ -66,15 +66,19 @@
             // 
             // label9
             // 
+            label9.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             label9.AutoSize = true;
+            label9.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label9.Location = new Point(1109, 11);
             label9.Name = "label9";
-            label9.Size = new Size(131, 22);
+            label9.Size = new Size(137, 22);
             label9.TabIndex = 3;
             label9.Text = "Manual de uso:";
             // 
             // btnManual
             // 
+            btnManual.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnManual.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             btnManual.Location = new Point(1246, 5);
             btnManual.Name = "btnManual";
             btnManual.Size = new Size(112, 34);
@@ -86,6 +90,7 @@
             // cmbMetodos
             // 
             cmbMetodos.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMetodos.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             cmbMetodos.FormattingEnabled = true;
             cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson", "Secante", "Punto Fijo", "Otros Metodos (Polinomios)", "Otros Metodos (Matrices)" });
             cmbMetodos.Location = new Point(179, 5);
@@ -97,49 +102,50 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label1.Location = new Point(11, 10);
             label1.Name = "label1";
-            label1.Size = new Size(125, 22);
+            label1.Size = new Size(128, 22);
             label1.TabIndex = 0;
             label1.Text = "Elegir Metodo";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Times New Roman", 9.75F);
+            label2.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label2.Location = new Point(11, 72);
             label2.Name = "label2";
-            label2.Size = new Size(177, 22);
+            label2.Size = new Size(182, 22);
             label2.TabIndex = 1;
             label2.Text = "Escribir Funcion f(x)";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Times New Roman", 9.75F);
+            label3.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label3.Location = new Point(567, 75);
             label3.Name = "label3";
-            label3.Size = new Size(24, 22);
+            label3.Size = new Size(21, 22);
             label3.TabIndex = 2;
             label3.Text = "A";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Times New Roman", 9.75F);
+            label4.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label4.Location = new Point(893, 72);
             label4.Name = "label4";
-            label4.Size = new Size(23, 22);
+            label4.Size = new Size(22, 22);
             label4.TabIndex = 3;
             label4.Text = "B";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Times New Roman", 9.75F);
+            label5.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label5.Location = new Point(11, 177);
             label5.Name = "label5";
-            label5.Size = new Size(95, 22);
+            label5.Size = new Size(97, 22);
             label5.TabIndex = 4;
             label5.Text = "Tolerancia";
             // 
@@ -147,6 +153,7 @@
             // 
             dgvIteraciones.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvIteraciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvIteraciones.BackgroundColor = SystemColors.Control;
             dgvIteraciones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvIteraciones.Location = new Point(0, 233);
             dgvIteraciones.Name = "dgvIteraciones";
@@ -156,7 +163,7 @@
             // 
             // txtFuncion
             // 
-            txtFuncion.Font = new Font("Times New Roman", 9.75F);
+            txtFuncion.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             txtFuncion.Location = new Point(194, 67);
             txtFuncion.Name = "txtFuncion";
             txtFuncion.Size = new Size(328, 30);
@@ -164,7 +171,7 @@
             // 
             // txtA
             // 
-            txtA.Font = new Font("Times New Roman", 9.75F);
+            txtA.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             txtA.Location = new Point(597, 67);
             txtA.Name = "txtA";
             txtA.Size = new Size(150, 30);
@@ -173,7 +180,7 @@
             // 
             // txtB
             // 
-            txtB.Font = new Font("Times New Roman", 9.75F);
+            txtB.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             txtB.Location = new Point(922, 69);
             txtB.Name = "txtB";
             txtB.Size = new Size(150, 30);
@@ -182,7 +189,7 @@
             // 
             // txtTolerancia
             // 
-            txtTolerancia.Font = new Font("Times New Roman", 9.75F);
+            txtTolerancia.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             txtTolerancia.Location = new Point(179, 174);
             txtTolerancia.Name = "txtTolerancia";
             txtTolerancia.Size = new Size(150, 30);
@@ -191,7 +198,7 @@
             // 
             // btnCalcular
             // 
-            btnCalcular.Font = new Font("Times New Roman", 9.75F);
+            btnCalcular.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             btnCalcular.Location = new Point(1078, 152);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(280, 47);
@@ -203,40 +210,40 @@
             // lblResultado
             // 
             lblResultado.AutoSize = true;
-            lblResultado.Font = new Font("Times New Roman", 9.75F);
+            lblResultado.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             lblResultado.Location = new Point(531, 182);
             lblResultado.Name = "lblResultado";
-            lblResultado.Size = new Size(95, 22);
+            lblResultado.Size = new Size(98, 22);
             lblResultado.TabIndex = 11;
             lblResultado.Text = "Resultado:";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Font = new Font("Times New Roman", 9.75F);
+            label6.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label6.Location = new Point(753, 75);
             label6.Name = "label6";
-            label6.Size = new Size(60, 22);
+            label6.Size = new Size(61, 22);
             label6.TabIndex = 12;
             label6.Text = "label6";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Font = new Font("Times New Roman", 9.75F);
+            label7.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label7.Location = new Point(1078, 72);
             label7.Name = "label7";
-            label7.Size = new Size(60, 22);
+            label7.Size = new Size(61, 22);
             label7.TabIndex = 13;
             label7.Text = "label7";
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Font = new Font("Times New Roman", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label8.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label8.Location = new Point(11, 118);
             label8.Name = "label8";
-            label8.Size = new Size(51, 20);
+            label8.Size = new Size(61, 22);
             label8.TabIndex = 14;
             label8.Text = "label8";
             // 
@@ -244,7 +251,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
+            BackColor = Color.FromArgb(192, 192, 255);
             ClientSize = new Size(1370, 642);
             Controls.Add(label8);
             Controls.Add(label7);
@@ -261,8 +268,11 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(panel1);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormPrincipal";
             Text = "FormPrincipal";
+            WindowState = FormWindowState.Maximized;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvIteraciones).EndInit();

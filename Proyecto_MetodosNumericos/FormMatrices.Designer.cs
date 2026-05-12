@@ -48,30 +48,32 @@
             // label10
             // 
             label10.AutoSize = true;
+            label10.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label10.Location = new Point(11, 54);
             label10.Name = "label10";
-            label10.Size = new Size(124, 25);
+            label10.Size = new Size(128, 22);
             label10.TabIndex = 23;
             label10.Text = "Elegir Metodo";
             // 
             // cmbMetodosMatrices
             // 
             cmbMetodosMatrices.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbMetodosMatrices.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             cmbMetodosMatrices.FormattingEnabled = true;
             cmbMetodosMatrices.Items.AddRange(new object[] { "Newton-Raphson no lineales" });
             cmbMetodosMatrices.Location = new Point(141, 54);
             cmbMetodosMatrices.Name = "cmbMetodosMatrices";
-            cmbMetodosMatrices.Size = new Size(307, 33);
+            cmbMetodosMatrices.Size = new Size(307, 30);
             cmbMetodosMatrices.TabIndex = 22;
             cmbMetodosMatrices.SelectedIndexChanged += cmbMetodosMatrices_SelectedIndexChanged;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Times New Roman", 16F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label1.Location = new Point(508, 9);
             label1.Name = "label1";
-            label1.Size = new Size(425, 36);
+            label1.Size = new Size(247, 22);
             label1.TabIndex = 21;
             label1.Text = "METODOS PARA MATRICES";
             // 
@@ -94,9 +96,10 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label3.Location = new Point(450, 122);
             label3.Name = "label3";
-            label3.Size = new Size(140, 25);
+            label3.Size = new Size(151, 22);
             label3.TabIndex = 27;
             label3.Text = "Valores Iniciales ";
             // 
@@ -111,14 +114,16 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.Font = new Font("Times New Roman", 10F, FontStyle.Italic, GraphicsUnit.Point, 0);
             label4.Location = new Point(712, 122);
             label4.Name = "label4";
-            label4.Size = new Size(89, 25);
+            label4.Size = new Size(97, 22);
             label4.TabIndex = 29;
             label4.Text = "Tolerancia";
             // 
             // btnCalcular
             // 
+            btnCalcular.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             btnCalcular.Location = new Point(897, 161);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(272, 34);
@@ -129,6 +134,7 @@
             // 
             // btnRegresar
             // 
+            btnRegresar.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             btnRegresar.Location = new Point(1184, 158);
             btnRegresar.Name = "btnRegresar";
             btnRegresar.Size = new Size(150, 34);
@@ -141,6 +147,7 @@
             // 
             dgvMatrices.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvMatrices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvMatrices.BackgroundColor = SystemColors.Control;
             dgvMatrices.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvMatrices.Location = new Point(15, 343);
             dgvMatrices.Name = "dgvMatrices";
@@ -151,23 +158,26 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label2.Location = new Point(23, 109);
             label2.Name = "label2";
-            label2.Size = new Size(361, 50);
+            label2.Size = new Size(378, 44);
             label2.TabIndex = 33;
             label2.Text = "Escriba sus ecuaciones (toque enter\r\ndespues de escribir 1 ecuacion y asi separar)";
             // 
             // label9
             // 
             label9.AutoSize = true;
+            label9.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label9.Location = new Point(1085, 60);
             label9.Name = "label9";
-            label9.Size = new Size(133, 25);
+            label9.Size = new Size(137, 22);
             label9.TabIndex = 35;
             label9.Text = "Manual de uso:";
             // 
             // btnManual
             // 
+            btnManual.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             btnManual.Location = new Point(1222, 54);
             btnManual.Name = "btnManual";
             btnManual.Size = new Size(112, 34);
@@ -180,6 +190,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.LightBlue;
             ClientSize = new Size(1346, 723);
             Controls.Add(label9);
             Controls.Add(btnManual);
@@ -195,8 +206,11 @@
             Controls.Add(label10);
             Controls.Add(cmbMetodosMatrices);
             Controls.Add(label1);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormMatrices";
             Text = "FormMatrices";
+            WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)dgvMatrices).EndInit();
             ResumeLayout(false);
             PerformLayout();

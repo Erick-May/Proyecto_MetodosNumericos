@@ -51,7 +51,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Times New Roman", 9.75F);
+            label1.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label1.Location = new Point(249, 20);
             label1.Name = "label1";
             label1.Size = new Size(173, 22);
@@ -61,46 +61,46 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Times New Roman", 9.75F);
+            label2.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label2.Location = new Point(67, 108);
             label2.Name = "label2";
-            label2.Size = new Size(72, 22);
+            label2.Size = new Size(76, 22);
             label2.TabIndex = 1;
             label2.Text = "Usuario";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Times New Roman", 9.75F);
+            label3.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label3.Location = new Point(67, 180);
             label3.Name = "label3";
-            label3.Size = new Size(99, 22);
+            label3.Size = new Size(104, 22);
             label3.TabIndex = 2;
             label3.Text = "Contraseña";
             // 
             // txtUsuario
             // 
-            txtUsuario.Font = new Font("Times New Roman", 9.75F);
+            txtUsuario.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             txtUsuario.Location = new Point(194, 95);
             txtUsuario.Name = "txtUsuario";
             txtUsuario.Size = new Size(313, 30);
             txtUsuario.TabIndex = 3;
-            txtUsuario.Text = "Erick";
+            txtUsuario.Text = "Antonella";
             // 
             // txtContrasena
             // 
-            txtContrasena.Font = new Font("Times New Roman", 9.75F);
+            txtContrasena.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             txtContrasena.Location = new Point(194, 167);
             txtContrasena.Name = "txtContrasena";
             txtContrasena.PasswordChar = '*';
             txtContrasena.Size = new Size(310, 30);
             txtContrasena.TabIndex = 4;
-            txtContrasena.Text = "2006";
+            txtContrasena.Text = "123456";
             txtContrasena.UseSystemPasswordChar = true;
             // 
             // btnIniciarSesion
             // 
-            btnIniciarSesion.Font = new Font("Times New Roman", 9.75F);
+            btnIniciarSesion.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             btnIniciarSesion.Location = new Point(100, 253);
             btnIniciarSesion.Name = "btnIniciarSesion";
             btnIniciarSesion.Size = new Size(177, 50);
@@ -111,7 +111,7 @@
             // 
             // btnMostrarRegistro
             // 
-            btnMostrarRegistro.Font = new Font("Times New Roman", 9.75F);
+            btnMostrarRegistro.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             btnMostrarRegistro.Location = new Point(364, 253);
             btnMostrarRegistro.Name = "btnMostrarRegistro";
             btnMostrarRegistro.Size = new Size(171, 50);
@@ -131,7 +131,7 @@
             pnlRegistro.Controls.Add(label6);
             pnlRegistro.Controls.Add(label5);
             pnlRegistro.Controls.Add(label4);
-            pnlRegistro.Font = new Font("Times New Roman", 9.75F);
+            pnlRegistro.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             pnlRegistro.Location = new Point(46, 327);
             pnlRegistro.Name = "pnlRegistro";
             pnlRegistro.Size = new Size(589, 472);
@@ -188,7 +188,7 @@
             label7.AutoSize = true;
             label7.Location = new Point(21, 217);
             label7.Name = "label7";
-            label7.Size = new Size(185, 22);
+            label7.Size = new Size(194, 22);
             label7.TabIndex = 3;
             label7.Text = "Confirmar Contraseña";
             // 
@@ -197,7 +197,7 @@
             label6.AutoSize = true;
             label6.Location = new Point(21, 143);
             label6.Name = "label6";
-            label6.Size = new Size(155, 22);
+            label6.Size = new Size(160, 22);
             label6.TabIndex = 2;
             label6.Text = "Nueva Contraseña";
             // 
@@ -206,7 +206,7 @@
             label5.AutoSize = true;
             label5.Location = new Point(21, 77);
             label5.Name = "label5";
-            label5.Size = new Size(129, 22);
+            label5.Size = new Size(132, 22);
             label5.TabIndex = 1;
             label5.Text = "Nuevo Usuario";
             // 
@@ -215,7 +215,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(243, 17);
             label4.Name = "label4";
-            label4.Size = new Size(114, 22);
+            label4.Size = new Size(120, 22);
             label4.TabIndex = 0;
             label4.Text = "Crear Cuenta";
             // 
@@ -223,7 +223,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
+            BackColor = Color.FromArgb(192, 192, 255);
             ClientSize = new Size(699, 748);
             Controls.Add(pnlRegistro);
             Controls.Add(btnMostrarRegistro);
