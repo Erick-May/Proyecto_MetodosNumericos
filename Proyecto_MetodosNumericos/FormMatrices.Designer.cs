@@ -40,6 +40,8 @@
             btnRegresar = new Button();
             dgvMatrices = new DataGridView();
             label2 = new Label();
+            label9 = new Label();
+            btnManual = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvMatrices).BeginInit();
             SuspendLayout();
             // 
@@ -116,7 +118,7 @@
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(712, 217);
+            btnCalcular.Location = new Point(897, 161);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(272, 34);
             btnCalcular.TabIndex = 30;
@@ -126,7 +128,7 @@
             // 
             // btnRegresar
             // 
-            btnRegresar.Location = new Point(712, 271);
+            btnRegresar.Location = new Point(1184, 158);
             btnRegresar.Name = "btnRegresar";
             btnRegresar.Size = new Size(150, 34);
             btnRegresar.TabIndex = 31;
@@ -142,7 +144,7 @@
             dgvMatrices.Location = new Point(15, 343);
             dgvMatrices.Name = "dgvMatrices";
             dgvMatrices.RowHeadersWidth = 62;
-            dgvMatrices.Size = new Size(1241, 368);
+            dgvMatrices.Size = new Size(1319, 368);
             dgvMatrices.TabIndex = 32;
             // 
             // label2
@@ -154,11 +156,32 @@
             label2.TabIndex = 33;
             label2.Text = "Escriba sus ecuaciones (toque enter\r\ndespues de escribir 1 ecuacion y asi separar)";
             // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(1085, 60);
+            label9.Name = "label9";
+            label9.Size = new Size(133, 25);
+            label9.TabIndex = 35;
+            label9.Text = "Manual de uso:";
+            // 
+            // btnManual
+            // 
+            btnManual.Location = new Point(1222, 54);
+            btnManual.Name = "btnManual";
+            btnManual.Size = new Size(112, 34);
+            btnManual.TabIndex = 34;
+            btnManual.Text = "Manual";
+            btnManual.UseVisualStyleBackColor = true;
+            btnManual.Click += btnManual_Click;
+            // 
             // FormMatrices
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1268, 723);
+            ClientSize = new Size(1346, 723);
+            Controls.Add(label9);
+            Controls.Add(btnManual);
             Controls.Add(label2);
             Controls.Add(dgvMatrices);
             Controls.Add(btnRegresar);
@@ -192,5 +215,7 @@
         private Button btnRegresar;
         private DataGridView dgvMatrices;
         private Label label2;
+        private Label label9;
+        private Button btnManual;
     }
 }

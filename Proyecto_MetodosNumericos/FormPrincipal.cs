@@ -9,6 +9,7 @@ using NCalc;
 using Proyecto_MetodosNumericos.Data;
 using Proyecto_MetodosNumericos.Models;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Proyecto_MetodosNumericos
 {
@@ -575,6 +576,58 @@ namespace Proyecto_MetodosNumericos
                 txtB.Enabled = true;
             }
         }
+
+        private void btnManual_Click(object sender, EventArgs e)
+        {
+            // 1. Preguntamos si quiere descargar el manual
+            DialogResult respuesta = MessageBox.Show("¿Quieres descargar el manual de uso?", "Descargar Manual", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (respuesta == DialogResult.Yes)
+            {
+                // 2. Abrimos la ventana para guardar el archivo
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Archivo de Texto (*.txt)|*.txt";
+                saveFileDialog.Title = "Guardar Manual de Uso";
+                saveFileDialog.FileName = "Manual_MetodosCerradosAbiertos.txt"; // Nombre por defecto
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // 3. El texto que va a llevar el bloc de notas (Cámbialo según el Form)
+                    string contenido = @"==================================================
+      MANUAL DE USUARIO - ECUACIONES GENERALES
+==================================================
+¡Bienvenido! Aquí podrás resolver ecuaciones normales de forma automática.
+
+¿CÓMO ESCRIBIR TU ECUACIÓN?
+- Usa la letra 'x' minúscula.
+- Para potencias usa el símbolo '^' (Ejemplo: x^2 - 4).
+- Para funciones matemáticas escribe: sin(x), cos(x), log(x), exp(x).
+
+MÉTODOS DISPONIBLES:
+1. MÉTODOS CERRADOS (Bisección, Falsa Posición):
+   - Necesitas ingresar un Límite Inferior (Xi) y un Límite Superior (Xs).
+   - ¡Importante! Asegúrate de que la raíz esté en medio de esos dos números (uno debe dar resultado positivo y el otro negativo al evaluarlos).
+
+2. MÉTODOS ABIERTOS (Newton-Raphson, Secante):
+   - Newton-Raphson solo te pedirá un valor inicial (Xi). Pon un número que creas que está cerca de la respuesta.
+   - Secante te pedirá dos valores iniciales, pero no tienen que encerrar la raíz obligatoriamente.
+
+TOLERANCIA:
+- Es el margen de error que permites. Entre más ceros pongas (ej: 0.0001), más preciso será el resultado, pero tardará más iteraciones.";
+
+                    try
+                    {
+                        // 4. Creamos y guardamos el archivo físico
+                        File.WriteAllText(saveFileDialog.FileName, contenido);
+                        MessageBox.Show("¡Manual descargado correctamente! Revísalo donde lo guardaste.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Hubo un error al guardar el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
     }
-    
+
 }

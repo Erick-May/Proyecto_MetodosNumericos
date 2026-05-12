@@ -45,12 +45,16 @@
             label6 = new Label();
             label7 = new Label();
             label8 = new Label();
+            btnManual = new Button();
+            label9 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvIteraciones).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.Controls.Add(label9);
+            panel1.Controls.Add(btnManual);
             panel1.Controls.Add(cmbMetodos);
             panel1.Controls.Add(label1);
             panel1.Dock = DockStyle.Top;
@@ -214,6 +218,25 @@
             label8.TabIndex = 14;
             label8.Text = "label8";
             // 
+            // btnManual
+            // 
+            btnManual.Location = new Point(1246, 5);
+            btnManual.Name = "btnManual";
+            btnManual.Size = new Size(112, 34);
+            btnManual.TabIndex = 2;
+            btnManual.Text = "Manual";
+            btnManual.UseVisualStyleBackColor = true;
+            btnManual.Click += btnManual_Click;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(1109, 11);
+            label9.Name = "label9";
+            label9.Size = new Size(131, 22);
+            label9.TabIndex = 3;
+            label9.Text = "Manual de uso:";
+            // 
             // FormPrincipal
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -263,5 +286,7 @@
         private Label label6;
         private Label label7;
         private Label label8;
+        private Label label9;
+        private Button btnManual;
     }
 }

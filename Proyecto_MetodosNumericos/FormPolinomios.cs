@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Numerics;
+using System.IO;
 
 namespace Proyecto_MetodosNumericos
 {
@@ -501,6 +502,60 @@ namespace Proyecto_MetodosNumericos
             else
             {
                 MessageBox.Show("Ingresa un grado válido (entero mayor a 0).", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnManual_Click(object sender, EventArgs e)
+        {
+            // 1. Preguntamos si quiere descargar el manual
+            DialogResult respuesta = MessageBox.Show("¿Quieres descargar el manual de uso?", "Descargar Manual", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (respuesta == DialogResult.Yes)
+            {
+                // 2. Abrimos la ventana para guardar el archivo
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Archivo de Texto (*.txt)|*.txt";
+                saveFileDialog.Title = "Guardar Manual de Uso";
+                saveFileDialog.FileName = "Manual_Polinomios.txt"; // Nombre por defecto
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // 3. El texto que va a llevar el bloc de notas (Cámbialo según el Form)
+                    string contenido = @"==================================================
+        MANUAL DE USUARIO - MÉTODOS DE POLINOMIOS
+==================================================
+¡Bienvenido! Este programa te ayuda a encontrar las raíces (soluciones) de polinomios sin que tengas que hacer los cálculos a mano. No necesitas ser un experto en matemáticas para usarlo.
+
+1. MÉTODO DE BAIRSTOW:
+   - Útil para encontrar raíces reales y complejas.
+   - En 'Coeficientes', escribe los números de tu polinomio separados por comas. 
+     (Ejemplo: Si tu polinomio es 1x^3 - 2x^2 + 3, debes escribir: 1, -2, 0, 3).
+     *Nota: Si falta una 'x', ponle un 0. El grado debe ser 2 o mayor.
+   - Ingresa los valores iniciales 'r' y 's' (puedes probar con 1 y 1 si no sabes cuáles poner).
+   - Pon la tolerancia (ej: 0.01) y presiona Calcular.
+
+2. MÉTODO DE MULLER:
+   - Escribe los coeficientes separados por comas, igual que en Bairstow.
+   - Este método necesita 3 puntos de inicio (X0, X1, X2). Escribe tres números que estén cerca de donde crees que la gráfica cruza el cero (ejemplo: -1.5, -1.45, -1.4).
+
+3. MÉTODO DE HORNER-NEWTON:
+   - Selecciona el 'Grado' de tu polinomio (ej: 3 si empieza con x^3) y haz clic en 'Generar Cajas'.
+   - Aparecerán cajitas para que pongas el número que acompaña a cada 'x'.
+   - Ingresa un solo valor inicial (X0) y tu tolerancia.
+
+¡Listo! El programa hará todas las iteraciones y se detendrá cuando el error sea menor a tu tolerancia.";
+
+                    try
+                    {
+                        // 4. Creamos y guardamos el archivo físico
+                        File.WriteAllText(saveFileDialog.FileName, contenido);
+                        MessageBox.Show("¡Manual descargado correctamente! Revísalo donde lo guardaste.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Hubo un error al guardar el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
     }

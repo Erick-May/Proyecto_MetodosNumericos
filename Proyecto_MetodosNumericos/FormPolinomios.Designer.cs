@@ -53,6 +53,8 @@
             flpCoeficientes = new FlowLayoutPanel();
             btnGenerarCajas = new Button();
             txtGradoHN = new TextBox();
+            label11 = new Label();
+            btnManual = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvBairstow).BeginInit();
             SuspendLayout();
             // 
@@ -277,11 +279,32 @@
             txtGradoHN.Size = new Size(150, 31);
             txtGradoHN.TabIndex = 24;
             // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(1250, 38);
+            label11.Name = "label11";
+            label11.Size = new Size(133, 25);
+            label11.TabIndex = 26;
+            label11.Text = "Manual de uso:";
+            // 
+            // btnManual
+            // 
+            btnManual.Location = new Point(1387, 32);
+            btnManual.Name = "btnManual";
+            btnManual.Size = new Size(112, 34);
+            btnManual.TabIndex = 25;
+            btnManual.Text = "Manual";
+            btnManual.UseVisualStyleBackColor = true;
+            btnManual.Click += btnManual_Click;
+            // 
             // FormPolinomios
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1510, 648);
+            Controls.Add(label11);
+            Controls.Add(btnManual);
             Controls.Add(txtGradoHN);
             Controls.Add(btnGenerarCajas);
             Controls.Add(lblGradoHN);
@@ -344,5 +367,7 @@
         private FlowLayoutPanel flpCoeficientes;
         private Button btnGenerarCajas;
         private TextBox txtGradoHN;
+        private Label label11;
+        private Button btnManual;
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using NCalc;
+using System.IO;
 
 namespace Proyecto_MetodosNumericos
 {
@@ -228,8 +229,65 @@ namespace Proyecto_MetodosNumericos
             {
                 label1.Text = "Metodo de Newton-Raphson para SENL";
                 btnCalcular.Text = "Calcular Newton-Raphson";
-            }     
+            }
 
+        }
+
+        private void btnManual_Click(object sender, EventArgs e)
+        {
+            // 1. Preguntamos si quiere descargar el manual
+            DialogResult respuesta = MessageBox.Show("¿Quieres descargar el manual de uso?", "Descargar Manual", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (respuesta == DialogResult.Yes)
+            {
+                // 2. Abrimos la ventana para guardar el archivo
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Archivo de Texto (*.txt)|*.txt";
+                saveFileDialog.Title = "Guardar Manual de Uso";
+                saveFileDialog.FileName = "Manual_MetodosMatrices.txt"; // Nombre por defecto
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // 3. El texto que va a llevar el bloc de notas (Cámbialo según el Form)
+                    string contenido = @"==================================================
+ MANUAL DE USUARIO - SISTEMAS DE ECUACIONES NO LINEALES
+==================================================
+¡Bienvenido! Esta sección resuelve sistemas de ecuaciones complejos usando el método de Newton-Raphson para múltiples variables (Matrices).
+
+¿CÓMO INGRESAR LOS DATOS?
+1. Ecuaciones:
+   - Escribe UNA ecuación por línea en el cuadro de texto grande.
+   - Usa las letras que prefieras (x, y, z, etc.). El programa las detectará automáticamente.
+   - Iguala tus ecuaciones a cero mentalmente (Ejemplo: Si tu ecuación es x^2 + y^2 = 10, debes escribir x^2 + y^2 - 10).
+
+2. Valores Iniciales:
+   - Escribe un valor inicial por línea en el segundo cuadro.
+   - Deben estar en el mismo orden alfabético de las letras que usaste.
+   - ¡Debe haber la misma cantidad de ecuaciones que de valores iniciales!
+
+Ejemplo práctico:
+[Ecuaciones]
+x^2 + y^2 - 10
+x^2 - y^2 - 1
+
+[Valores Iniciales]
+2.5
+2.0
+
+Luego, ingresa tu Tolerancia (ej: 0.01) y el programa generará la matriz Jacobiana paso a paso por colores.";
+
+                    try
+                    {
+                        // 4. Creamos y guardamos el archivo físico
+                        File.WriteAllText(saveFileDialog.FileName, contenido);
+                        MessageBox.Show("¡Manual descargado correctamente! Revísalo donde lo guardaste.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Hubo un error al guardar el archivo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
     }
 }
