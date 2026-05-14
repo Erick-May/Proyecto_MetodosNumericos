@@ -80,6 +80,7 @@ namespace Proyecto_MetodosNumericos
                 dgvIteraciones.Columns.Add("Iteracion", "Iteración");
                 dgvIteraciones.Columns.Add("Ci", "Ci");
                 dgvIteraciones.Columns.Add("GCi", "g(Ci)");
+                dgvIteraciones.Columns.Add("GpCi", "g'(Ci)"); // NUEVA COLUMNA DE LA DERIVADA
                 dgvIteraciones.Columns.Add("Er", "Er%");
             }
         }
@@ -88,88 +89,129 @@ namespace Proyecto_MetodosNumericos
         {
             try
             {
-                // 1. Arreglamos potencias con paréntesis (Ej: e^(2*x) -> Pow(e, 2*x))
-                string funcionCorregida = Regex.Replace(funcion, @"([a-zA-Z0-9_.]+)\^\(([^)]+)\)", "Pow($1, $2)");
+                string funcionCorregida = funcion.ToLower();
 
-                // 2. Arreglamos potencias simples sin paréntesis (Ej: x^2 -> Pow(x, 2))
-                funcionCorregida = Regex.Replace(funcionCorregida, @"([a-zA-Z0-9_.]+)\^([a-zA-Z0-9_.]+)", "Pow($1, $2)");
+                // 1. EVITAR DIVISIÓN ENTERA
+                funcionCorregida = Regex.Replace(funcionCorregida, @"(?<!\.)\b(\d+)\b(?!\.)", "$1.0");
+
+                // 🔥 2. EL FIX DE MULTIPLICACIÓN IMPLÍCITA: Ya detecta ()() y x(x-4)
+                funcionCorregida = Regex.Replace(funcionCorregida, @"(\d)([a-z\(])", "$1*$2");
+                funcionCorregida = Regex.Replace(funcionCorregida, @"(x)([a-z0-9\(])", "$1*$2");
+                funcionCorregida = Regex.Replace(funcionCorregida, @"(\))([a-z0-9x\(])", "$1*$2");
+
+                // 3. MOTOR DE POTENCIAS ARREGLADO
+                funcionCorregida = ArreglarPotencias(funcionCorregida);
 
                 Expression e = new Expression(funcionCorregida);
-
-                // 3. Parámetros principales
                 e.Parameters["x"] = valorX;
                 e.Parameters["e"] = Math.E;
                 e.Parameters["pi"] = Math.PI;
 
-                // 4. EL CEREBRO MATEMÁTICO EXPANDIDO
                 e.EvaluateFunction += delegate (string name, FunctionArgs args)
                 {
                     string nombreFuncion = name.ToLower();
-
                     if (args.Parameters.Length > 0)
                     {
                         double numero = Convert.ToDouble(args.Parameters[0].Evaluate());
 
-                        // --- Funciones Básicas ---
-                        if (nombreFuncion == "ln")
-                        {
-                            args.Result = Math.Log(numero);
-                            args.HasResult = true;
-                        }
-                        else if (nombreFuncion == "tan")
-                        {
-                            args.Result = Math.Tan(numero);
-                            args.HasResult = true;
-                        }
-                        else if (nombreFuncion == "sin" || nombreFuncion == "sen" || nombreFuncion == "seno")
-                        {
-                            args.Result = Math.Sin(numero);
-                            args.HasResult = true;
-                        }
-                        else if (nombreFuncion == "cos")
-                        {
-                            args.Result = Math.Cos(numero);
-                            args.HasResult = true;
-                        }
-
-                        // --- Funciones Recíprocas (Las que preguntaste) ---
-                        else if (nombreFuncion == "sec")
-                        {
-                            // Secante = 1 / Coseno
-                            args.Result = 1.0 / Math.Cos(numero);
-                            args.HasResult = true;
-                        }
-                        else if (nombreFuncion == "csc" || nombreFuncion == "cosec")
-                        {
-                            // Cosecante = 1 / Seno
-                            args.Result = 1.0 / Math.Sin(numero);
-                            args.HasResult = true;
-                        }
-                        else if (nombreFuncion == "cot" || nombreFuncion == "cotan")
-                        {
-                            // Cotangente = 1 / Tangente
-                            args.Result = 1.0 / Math.Tan(numero);
-                            args.HasResult = true;
-                        }
+                        if (nombreFuncion == "ln") { args.Result = Math.Log(numero); args.HasResult = true; }
+                        else if (nombreFuncion == "tan") { args.Result = Math.Tan(numero); args.HasResult = true; }
+                        else if (nombreFuncion == "sin" || nombreFuncion == "sen" || nombreFuncion == "seno") { args.Result = Math.Sin(numero); args.HasResult = true; }
+                        else if (nombreFuncion == "cos") { args.Result = Math.Cos(numero); args.HasResult = true; }
+                        else if (nombreFuncion == "sqrt" || nombreFuncion == "raiz") { args.Result = Math.Sqrt(numero); args.HasResult = true; }
+                        else if (nombreFuncion == "sec") { args.Result = 1.0 / Math.Cos(numero); args.HasResult = true; }
+                        else if (nombreFuncion == "csc" || nombreFuncion == "cosec") { args.Result = 1.0 / Math.Sin(numero); args.HasResult = true; }
+                        else if (nombreFuncion == "cot" || nombreFuncion == "cotan") { args.Result = 1.0 / Math.Tan(numero); args.HasResult = true; }
                     }
                 };
 
-                return Convert.ToDouble(e.Evaluate());
+                double resultadoFinal = Convert.ToDouble(e.Evaluate());
+
+                // 🔥 MEGA ESCUDO ANTI-IMAGINARIOS Y ANTI-INFINITO
+                if (double.IsNaN(resultadoFinal) || double.IsInfinity(resultadoFinal))
+                {
+                    throw new Exception("ERROR_MATEMATICO");
+                }
+
+                return resultadoFinal;
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al evaluar la función: " + ex.Message);
+                // Si fue el escudo, lanzamos el mensaje de divergencia/dominio. Si fue otra cosa, el de sintaxis.
+                if (ex.Message == "ERROR_MATEMATICO")
+                {
+                    throw new Exception("La función se indefine matemáticamente en este punto (genera un número imaginario, NaN o división entre cero).\n\nCambia tu valor inicial o revisa el dominio de tu función.");
+                }
+                throw new Exception("Revise la sintaxis de su función. Probablemente te faltó cerrar un paréntesis o el orden es incorrecto.");
             }
+        }
+
+        private string ArreglarPotencias(string expresion)
+        {
+            while (expresion.Contains("^"))
+            {
+                int index = expresion.IndexOf('^');
+
+                // Buscar la BASE (hacia atrás)
+                int start = index - 1;
+                int openParens = 0;
+                if (start >= 0 && expresion[start] == ')')
+                {
+                    openParens = 1;
+                    start--;
+                    while (start >= 0 && openParens > 0)
+                    {
+                        if (expresion[start] == ')') openParens++;
+                        if (expresion[start] == '(') openParens--;
+                        start--;
+                    }
+                    start++;
+                    while (start - 1 >= 0 && char.IsLetter(expresion[start - 1])) start--;
+                }
+                else
+                {
+                    while (start >= 0 && (char.IsLetterOrDigit(expresion[start]) || expresion[start] == '.')) start--;
+                    start++;
+                }
+                string baseStr = expresion.Substring(start, index - start);
+
+                // Buscar el EXPONENTE (hacia adelante)
+                int end = index + 1;
+                openParens = 0;
+                if (end < expresion.Length && expresion[end] == '(')
+                {
+                    openParens = 1;
+                    end++;
+                    while (end < expresion.Length && openParens > 0)
+                    {
+                        if (expresion[end] == '(') openParens++;
+                        if (expresion[end] == ')') openParens--;
+                        end++;
+                    }
+                    end--;
+                }
+                else
+                {
+                    if (end < expresion.Length && expresion[end] == '-') end++;
+
+                    // AQUÍ ESTÁ EL FIX: Le quité la lectura de la división (/)
+                    while (end < expresion.Length && (char.IsLetterOrDigit(expresion[end]) || expresion[end] == '.')) end++;
+
+                    end--;
+                }
+                string expStr = expresion.Substring(index + 1, end - index);
+
+                string prefijo = expresion.Substring(0, start);
+                string sufijo = expresion.Substring(end + 1);
+                expresion = prefijo + $"Pow({baseStr}, {expStr})" + sufijo;
+            }
+            return expresion;
         }
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
             string funcion = txtFuncion.Text.Trim();
-            if (string.IsNullOrEmpty(funcion))
-            {
-                MessageBox.Show("¡Ey! No has escrito ninguna función para evaluar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+
             string metodoSeleccionado = cmbMetodos.SelectedItem?.ToString() ?? "";
 
             if (string.IsNullOrEmpty(metodoSeleccionado))
@@ -177,6 +219,34 @@ namespace Proyecto_MetodosNumericos
                 MessageBox.Show("Por favor, selecciona un método.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
+            // =====================================
+            // 🛡️ ESCUDO DE VALIDACIÓN DE LA FUNCIÓN
+            // =====================================
+            string funcionMinuscula = funcion.ToLower();
+
+            if (string.IsNullOrEmpty(funcion))
+            {
+                MessageBox.Show("¡Ey! No has escrito ninguna función para evaluar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 1. Validar que tenga la letra 'x' para que no pongan solo "1/2"
+            if (!funcionMinuscula.Contains("x"))
+            {
+                MessageBox.Show("Tu función debe contener la variable 'x'. Si escribiste una fracción o constante numérica (ej. 1/2), agrégale la variable para que sea una ecuación válida.", "Falta la variable", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Validar que los paréntesis estén balanceados (mismo número de abiertos y cerrados)
+            int abiertos = funcion.Split('(').Length - 1;
+            int cerrados = funcion.Split(')').Length - 1;
+            if (abiertos != cerrados)
+            {
+                MessageBox.Show($"Revisa tu ecuación. Tienes {abiertos} paréntesis abiertos y {cerrados} cerrados. Te faltó cerrar o abrir alguno.", "Error de Paréntesis", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            // =====================================
 
             ConfigurarTabla(metodoSeleccionado);
             dgvIteraciones.Rows.Clear();
@@ -462,48 +532,74 @@ namespace Proyecto_MetodosNumericos
                 // ==========================================
                 else if (metodoSeleccionado == "Punto Fijo")
                 {
-                    double ci = a; // Usamos el cuadro A como valor inicial
-                    double ci_anterior = 0; // NUEVO: Para guardar el histórico y calcular el error como en Excel
+                    if (string.IsNullOrEmpty(txtFxOriginal.Text))
+                    {
+                        MessageBox.Show("Tiene que escribir la funcion original para poder continuar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    // Pasar el texto del f(x) original al Label y limpiar
+                    if (txtFxOriginal != null && lblFxOriginal != null && !string.IsNullOrWhiteSpace(txtFxOriginal.Text))
+                    {
+                        lblFxOriginal.Text = "f(x) original: " + txtFxOriginal.Text;
+                        txtFxOriginal.Clear();
+                    }
+
+                    double ci = a;
+                    double ci_anterior = 0;
                     double errorRelativo = 100.0;
-                    int iteracion = 0; // Tu Excel inicia en 0
+                    int iteracion = 0;
+
+                    // Salto microscópico para calcular la derivada g'(x) numéricamente
+                    double h = 0.00001;
 
                     while (true)
                     {
                         // Evaluamos la función g(x)
                         double g_ci = EvaluarFuncion(funcion, ci);
 
-                        string erMostrar = "";
+                        // CALCULAMOS LA DERIVADA g'(ci) POR DIFERENCIAS CENTRALES
+                        double g_ci_mas_h = EvaluarFuncion(funcion, ci + h);
+                        double g_ci_menos_h = EvaluarFuncion(funcion, ci - h);
+                        double gp_ci = (g_ci_mas_h - g_ci_menos_h) / (2.0 * h);
 
-                        // Calculamos el error imitando exactamente las celdas de tu Excel
+                        string erMostrar = "-";
+
                         if (iteracion > 0)
                         {
-                            // Excel usa: |(Ci actual - Ci anterior) / Ci actual|
-                            errorRelativo = Math.Abs((ci - ci_anterior) / ci);
-                            erMostrar = Math.Round(errorRelativo, 6).ToString() + "%";
+                            errorRelativo = Math.Abs((ci - ci_anterior) / ci) * 100.0;
+                            erMostrar = Math.Round(errorRelativo, 4).ToString() + "%";
                         }
 
-                        // Agregamos a la tabla
-                        dgvIteraciones.Rows.Add(iteracion, Math.Round(ci, 8), Math.Round(g_ci, 8), erMostrar);
+                        // Agregamos a la tabla INCLUYENDO la derivada
+                        dgvIteraciones.Rows.Add(
+                            iteracion,
+                            Math.Round(ci, 6),
+                            Math.Round(g_ci, 6),
+                            Math.Round(gp_ci, 6), // Se muestra la derivada
+                            erMostrar
+                        );
 
                         // Freno: Si llegamos a la tolerancia
                         if (iteracion > 0 && errorRelativo < tolerancia)
                         {
-                            // Imprimimos el Ci que acaba de cumplir la tolerancia
-                            lblResultado.Text = $"Resultado: {Math.Round(ci, 8)}";
+                            lblResultado.Text = $"Resultado: {Math.Round(ci, 6)}";
+
+                            // Evaluamos si el método fue estable
+                            if (Math.Abs(gp_ci) >= 1)
+                            {
+                                MessageBox.Show("¡Alerta matemática! Llegaste a la respuesta, pero nota que |g'(x)| >= 1. Esto significa que la función es inestable y de milagro no divergió.", "Aviso de convergencia dudosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
                             break;
                         }
 
-                        // ==========================================
-                        // ROTACIÓN DE VARIABLES (Como en tu Excel)
-                        // ==========================================
-                        ci_anterior = ci; // El Ci actual se vuelve el viejo
-                        ci = g_ci;        // El g(Ci) recién calculado se vuelve el nuevo Ci de entrada
+                        ci_anterior = ci;
+                        ci = g_ci;
                         iteracion++;
 
-                        // Freno de emergencia por si la función diverge (g'(x) > 1)
                         if (iteracion > 100)
                         {
-                            MessageBox.Show("El método no convergió después de 100 iteraciones. Probablemente la función diverge porque su derivada es mayor a 1 en este punto.", "Aviso de Divergencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            // Si divergió, le explicamos a la profe por qué usando la derivada
+                            MessageBox.Show($"El método no convergió. La última derivada g'(x) calculada fue {Math.Round(gp_ci, 4)}.\n\nRegla de Punto Fijo: Si |g'(x)| > 1, el método diverge. Debes buscar otra forma de despejar x.", "Divergencia Matemática", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
                         }
                     }
@@ -571,6 +667,9 @@ namespace Proyecto_MetodosNumericos
 
             label2.Text = "Escribir Funcion f(x)";
             label8.Text = ".";
+            lblFxOriginal.Visible = false;
+            txtFxOriginal.Visible = false;
+            label10.Visible = false;
 
             if (metodo == "Biseccion" || metodo == "Regla Falsa")
             {
@@ -595,6 +694,9 @@ namespace Proyecto_MetodosNumericos
                 label7.Text = ". (No se usa)";
                 btnCalcular.Text = "Calcular Punto Fijo";
                 txtB.Enabled = false;
+                lblFxOriginal.Visible = true;
+                txtFxOriginal.Visible = true;
+                label10.Visible = true;
                 txtB.Clear();
             }
             else if (metodo == "Secante")
