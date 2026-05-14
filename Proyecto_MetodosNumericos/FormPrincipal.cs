@@ -298,11 +298,11 @@ namespace Proyecto_MetodosNumericos
 
                         if (iteracion > 1)
                         {
-                            errorRelativo = Math.Abs((xm - xm_anterior) / xm);
-                            erMostrar = Math.Round(errorRelativo, 2).ToString() + "%";
+                            errorRelativo = Math.Abs((xm - xm_anterior) / xm) * 100;
+                            erMostrar = Math.Round(errorRelativo, 8).ToString() + "%";
                         }
 
-                        dgvIteraciones.Rows.Add(iteracion, Math.Round(a, 8), Math.Round(b, 8), Math.Round(xm, 8), Math.Round(fa, 8), Math.Round(fxm, 8), Math.Round(errorAbsoluto, 5), erMostrar);
+                        dgvIteraciones.Rows.Add(iteracion, Math.Round(a, 8), Math.Round(b, 8), Math.Round(xm, 8), Math.Round(fa, 8), Math.Round(fxm, 8), Math.Round(errorAbsoluto, 8), erMostrar);
 
                         if (Math.Abs(fxm) < 0.0000001 || (iteracion > 1 && errorRelativo < tolerancia)) break;
 
@@ -350,7 +350,7 @@ namespace Proyecto_MetodosNumericos
                         if (iteracion > 1)
                         {
                             errorRelativo = Math.Abs((c - c_anterior) / c);
-                            errorMostrar = Math.Round(errorRelativo, 2).ToString() + "%";
+                            errorMostrar = Math.Round(errorRelativo, 8).ToString() + "%";
                         }
 
                         dgvIteraciones.Rows.Add(iteracion, Math.Round(a, 8), Math.Round(b, 8), Math.Round(fa, 8), Math.Round(fb, 8), Math.Round(c, 8), Math.Round(fc, 8), Math.Round(productoSignos, 8), errorMostrar);
@@ -414,17 +414,17 @@ namespace Proyecto_MetodosNumericos
                                 errorRelativo = Math.Abs(ea / ci) * 100.0;
                             }
 
-                            eaMostrar = Math.Round(ea, 6).ToString();
-                            erMostrar = Math.Round(errorRelativo, 4).ToString() + "%";
+                            eaMostrar = Math.Round(ea, 8).ToString();
+                            erMostrar = Math.Round(errorRelativo, 8).ToString() + "%";
                         }
 
                         // Imprimimos la fila limpia
                         dgvIteraciones.Rows.Add(
                             iteracion,
-                            Math.Round(ci, 6),
-                            Math.Round(f_ci, 6),
-                            Math.Round(fp_ci, 6),
-                            Math.Round(c_nuevo, 6),
+                            Math.Round(ci, 8),
+                            Math.Round(f_ci, 8),
+                            Math.Round(fp_ci, 8),
+                            Math.Round(c_nuevo, 8),
                             eaMostrar,
                             erMostrar
                         );
@@ -491,26 +491,26 @@ namespace Proyecto_MetodosNumericos
                         // Calculamos el Er% evaluando la diferencia entre el nuevo (c_mas1) y el actual (ci)
                         if (iteracion > 1)
                         {
-                            errorRelativo = Math.Abs((c_mas1 - ci) / c_mas1);
-                            erMostrar = Math.Round(errorRelativo, 4).ToString() + "%";
+                            errorRelativo = Math.Abs((c_mas1 - ci) / c_mas1) * 100;
+                            erMostrar = Math.Round(errorRelativo, 8).ToString() + "%";
                         }
 
                         // Imprimimos la fila en el orden exacto de tu Excel
                         dgvIteraciones.Rows.Add(
                             iteracion,
-                            Math.Round(ci, 6),
-                            Math.Round(f_ci, 6),
-                            Math.Round(c_menos1, 6),
-                            Math.Round(f_c_menos1, 6),
-                            Math.Round(c_mas1, 6),
-                            Math.Round(f_c_mas1, 6),
+                            Math.Round(ci, 8),
+                            Math.Round(f_ci, 8),
+                            Math.Round(c_menos1, 8),
+                            Math.Round(f_c_menos1, 8),
+                            Math.Round(c_mas1, 8),
+                            Math.Round(f_c_mas1, 8),
                             erMostrar
                         );
 
                         // Freno: Si llegamos a la raíz exacta o si vencimos a la tolerancia
                         if (Math.Abs(f_c_mas1) < 0.0000001 || (iteracion > 1 && errorRelativo < tolerancia))
                         {
-                            lblResultado.Text = $"Resultado: {Math.Round(c_mas1, 6)}";
+                            lblResultado.Text = $"Resultado: {Math.Round(c_mas1, 8)}";
                             break;
                         }
 
@@ -523,7 +523,7 @@ namespace Proyecto_MetodosNumericos
                         ci = c_mas1;
 
                         iteracion++;
-                        if (iteracion > 50) break; // Límite de seguridad
+                        if (iteracion > 100) break; // Límite de seguridad
                     }
                     GuardarHistorial(metodoSeleccionado, funcion);
                 }
@@ -537,7 +537,7 @@ namespace Proyecto_MetodosNumericos
                         MessageBox.Show("Tiene que escribir la funcion original para poder continuar.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    // Pasar el texto del f(x) original al Label y limpiar
+
                     if (txtFxOriginal != null && lblFxOriginal != null && !string.IsNullOrWhiteSpace(txtFxOriginal.Text))
                     {
                         lblFxOriginal.Text = "f(x) original: " + txtFxOriginal.Text;
@@ -548,16 +548,33 @@ namespace Proyecto_MetodosNumericos
                     double ci_anterior = 0;
                     double errorRelativo = 100.0;
                     int iteracion = 0;
-
-                    // Salto microscópico para calcular la derivada g'(x) numéricamente
                     double h = 0.00001;
 
+                    // ========================================================
+                    // 🛡️ ESCUDO PRE-ARRANQUE: Evaluar divergencia ANTES de iterar
+                    // ========================================================
+                    double g_ci_pre_mas_h = EvaluarFuncion(funcion, ci + h);
+                    double g_ci_pre_menos_h = EvaluarFuncion(funcion, ci - h);
+                    double gp_ci_pre = (g_ci_pre_mas_h - g_ci_pre_menos_h) / (2.0 * h);
+
+                    if (Math.Abs(gp_ci_pre) >= 1)
+                    {
+                        MessageBox.Show(
+                            $"¡Alerta de Divergencia!\n\nEl sistema analizó tu punto inicial y detectó que la derivada absoluta es |g'(x)| = {Math.Round(Math.Abs(gp_ci_pre), 4)}.\n\n" +
+                            "Como es MAYOR o IGUAL a 1, la matemática dicta que el método va a rebotar y NUNCA encontrará la raíz (va a divergir).\n\n" +
+                            "El programa detuvo el cálculo para ahorrar recursos. ¡Intenta con otro despeje de g(x) o cambia el valor inicial!",
+                            "Despeje Inestable",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+
+                        return; // 🛑 EL FRENO DE MANO: Corta la ejecución, no arma la tabla.
+                    }
+                    // ========================================================
+
+                    // Si pasó el escudo, significa que |g'(x)| < 1 y arrancamos el motor
                     while (true)
                     {
-                        // Evaluamos la función g(x)
                         double g_ci = EvaluarFuncion(funcion, ci);
-
-                        // CALCULAMOS LA DERIVADA g'(ci) POR DIFERENCIAS CENTRALES
                         double g_ci_mas_h = EvaluarFuncion(funcion, ci + h);
                         double g_ci_menos_h = EvaluarFuncion(funcion, ci - h);
                         double gp_ci = (g_ci_mas_h - g_ci_menos_h) / (2.0 * h);
@@ -567,28 +584,14 @@ namespace Proyecto_MetodosNumericos
                         if (iteracion > 0)
                         {
                             errorRelativo = Math.Abs((ci - ci_anterior) / ci) * 100.0;
-                            erMostrar = Math.Round(errorRelativo, 4).ToString() + "%";
+                            erMostrar = Math.Round(errorRelativo, 8).ToString() + "%";
                         }
 
-                        // Agregamos a la tabla INCLUYENDO la derivada
-                        dgvIteraciones.Rows.Add(
-                            iteracion,
-                            Math.Round(ci, 6),
-                            Math.Round(g_ci, 6),
-                            Math.Round(gp_ci, 6), // Se muestra la derivada
-                            erMostrar
-                        );
+                        dgvIteraciones.Rows.Add(iteracion, Math.Round(ci, 8), Math.Round(g_ci, 8), Math.Round(gp_ci, 8), erMostrar);
 
-                        // Freno: Si llegamos a la tolerancia
                         if (iteracion > 0 && errorRelativo < tolerancia)
                         {
-                            lblResultado.Text = $"Resultado: {Math.Round(ci, 6)}";
-
-                            // Evaluamos si el método fue estable
-                            if (Math.Abs(gp_ci) >= 1)
-                            {
-                                MessageBox.Show("¡Alerta matemática! Llegaste a la respuesta, pero nota que |g'(x)| >= 1. Esto significa que la función es inestable y de milagro no divergió.", "Aviso de convergencia dudosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
+                            lblResultado.Text = $"Resultado: {Math.Round(ci, 8)}";
                             break;
                         }
 
@@ -598,8 +601,13 @@ namespace Proyecto_MetodosNumericos
 
                         if (iteracion > 100)
                         {
-                            // Si divergió, le explicamos a la profe por qué usando la derivada
-                            MessageBox.Show($"El método no convergió. La última derivada g'(x) calculada fue {Math.Round(gp_ci, 4)}.\n\nRegla de Punto Fijo: Si |g'(x)| > 1, el método diverge. Debes buscar otra forma de despejar x.", "Divergencia Matemática", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(
+                                $"El método se detuvo por límite de iteraciones.\n\n" +
+                                $"La última derivada calculada en su viaje fue {Math.Round(gp_ci, 6)}.\n\n" +
+                                $"EXPLICACIÓN MATEMÁTICA:\nAunque arrancaste en una zona estable, la curva cambió y generó un efecto 'pinball', haciendo que los valores rebotaran alejándose de la respuesta.",
+                                "Divergencia en el camino",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
                             break;
                         }
                     }

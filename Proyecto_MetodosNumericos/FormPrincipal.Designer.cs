@@ -158,10 +158,10 @@
             dgvIteraciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvIteraciones.BackgroundColor = SystemColors.Control;
             dgvIteraciones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvIteraciones.Location = new Point(0, 233);
+            dgvIteraciones.Location = new Point(11, 248);
             dgvIteraciones.Name = "dgvIteraciones";
             dgvIteraciones.RowHeadersWidth = 62;
-            dgvIteraciones.Size = new Size(1624, 397);
+            dgvIteraciones.Size = new Size(1646, 382);
             dgvIteraciones.TabIndex = 5;
             // 
             // txtFuncion
