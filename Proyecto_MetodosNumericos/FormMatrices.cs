@@ -1,13 +1,14 @@
-﻿using System;
+﻿using NCalc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using NCalc;
-using System.IO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Proyecto_MetodosNumericos
 {
@@ -53,10 +54,13 @@ namespace Proyecto_MetodosNumericos
                 {
                     double num = Convert.ToDouble(args.Parameters[0].Evaluate());
                     if (nombre == "sen" || nombre == "seno") { args.Result = Math.Sin(num); args.HasResult = true; }
+                    else if (nombre == "ln") { args.Result = Math.Log(num); args.HasResult = true; }
+                    else if (nombre == "tan") { args.Result = Math.Tan(num); args.HasResult = true; }
                     else if (nombre == "sec") { args.Result = 1.0 / Math.Cos(num); args.HasResult = true; }
                     else if (nombre == "csc") { args.Result = 1.0 / Math.Sin(num); args.HasResult = true; }
                     else if (nombre == "cot") { args.Result = 1.0 / Math.Tan(num); args.HasResult = true; }
                 }
+
             };
 
             return Convert.ToDouble(e.Evaluate());
