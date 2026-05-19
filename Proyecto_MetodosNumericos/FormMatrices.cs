@@ -80,7 +80,7 @@ namespace Proyecto_MetodosNumericos
             for (int i = 0; i < n; i++)
             {
                 double pivote = aug[i, i];
-                if (Math.Abs(pivote) < 1E-15) throw new Exception("La matriz Jacobiana es singular. No se puede invertir.");
+                if (Math.Abs(pivote) < 1E-15) throw new Exception("La matriz Jacobiana es singular. No se puede invertir, revise sus datos.");
                 for (int k = 0; k < 2 * n; k++) aug[i, k] /= pivote;
                 for (int j = 0; j < n; j++)
                 {
