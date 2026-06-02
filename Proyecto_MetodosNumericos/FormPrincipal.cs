@@ -661,6 +661,13 @@ namespace Proyecto_MetodosNumericos
                 cmbMetodos.SelectedIndex = 0;
                 return;
             }
+            else if (metodo == "Otros Metodos (Iterativos)")
+            {
+                FormIterativos formIterativos = new FormIterativos();
+                formIterativos.ShowDialog();
+                cmbMetodos.SelectedIndex = 0;
+                return;
+            }
 
             // Actualizamos las columnas de la tabla en vivo
             ConfigurarTabla(metodo);
