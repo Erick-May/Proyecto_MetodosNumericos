@@ -15,6 +15,7 @@ namespace Proyecto_MetodosNumericos
 {
     public partial class FormPrincipal : Form
     {
+        bool regresandoAlMenu = false;
         private int idUsuarioActual;
         public FormPrincipal(int idUsuario)
         {
@@ -832,6 +833,16 @@ TOLERANCIA:
             if (e.KeyChar == '-' && (sender as TextBox).SelectionStart != 0)
             {
                 e.Handled = true;
+            }
+        }
+
+        private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Si la bandera es FALSA, significa que el usuario le dio a la "X" roja.
+            if (regresandoAlMenu == false)
+            {
+                // En lugar de Application.Exit(), usamos Environment.Exit(0)
+                Environment.Exit(0);
             }
         }
     }

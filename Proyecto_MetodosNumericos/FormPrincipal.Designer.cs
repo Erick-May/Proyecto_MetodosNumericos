@@ -306,6 +306,7 @@
             Name = "FormPrincipal";
             Text = "FormPrincipal";
             WindowState = FormWindowState.Maximized;
+            FormClosed += FormPrincipal_FormClosed;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvIteraciones).EndInit();

@@ -236,6 +236,7 @@
             MaximizeBox = false;
             Name = "FormInicioSesion";
             Text = "FormInicioSesion";
+            FormClosed += FormInicioSesion_FormClosed;
             pnlRegistro.ResumeLayout(false);
             pnlRegistro.PerformLayout();
             ResumeLayout(false);

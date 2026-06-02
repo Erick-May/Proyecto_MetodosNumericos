@@ -123,5 +123,10 @@ namespace Proyecto_MetodosNumericos
             txtNuevaContrasena.Clear();
             txtConfirmarContrasena.Clear();
         }
+
+        private void FormInicioSesion_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
     }
 }

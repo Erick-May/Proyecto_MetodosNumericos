@@ -381,6 +381,7 @@
             Name = "FormPolinomios";
             Text = "FormPolinomios";
             WindowState = FormWindowState.Maximized;
+            FormClosed += FormPolinomios_FormClosed;
             Load += FormPolinomios_Load;
             ((System.ComponentModel.ISupportInitialize)dgvBairstow).EndInit();
             panel1.ResumeLayout(false);

@@ -211,6 +211,7 @@
             Name = "FormMatrices";
             Text = "FormMatrices";
             WindowState = FormWindowState.Maximized;
+            FormClosed += FormMatrices_FormClosed;
             ((System.ComponentModel.ISupportInitialize)dgvMatrices).EndInit();
             ResumeLayout(false);
             PerformLayout();

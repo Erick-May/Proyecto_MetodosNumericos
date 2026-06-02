@@ -10,6 +10,7 @@ namespace Proyecto_MetodosNumericos
 {
     public partial class FormIterativos : Form
     {
+        bool regresandoAlMenu = false;
         public FormIterativos()
         {
             InitializeComponent();
@@ -237,9 +238,40 @@ namespace Proyecto_MetodosNumericos
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            dgvResultados.Rows.Clear();
-            dgvSistema.Rows.Clear();
-            txtValoresIniciales.Clear();   
+            dgvResultados.Columns.Clear();
+            dgvSistema.Columns.Clear();
+            txtValoresIniciales.Clear();
+        }
+
+        private void FormIterativos_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Si la bandera es FALSA, significa que el usuario le dio a la "X" roja.
+            if (regresandoAlMenu == false)
+            {
+                // En lugar de Application.Exit(), usamos Environment.Exit(0)
+                Environment.Exit(0);
+            }
+        }
+
+        private void btnRegresar_Click(object sender, EventArgs e)
+        {
+            // Encendemos el semáforo para avisar que SÍ queremos regresar al menú
+            regresandoAlMenu = true;
+
+            // TRUCO: Buscamos el formulario principal que está oculto y lo volvemos a mostrar
+            Form frmPrincipal = Application.OpenForms["FormPrincipal"];
+            if (frmPrincipal != null)
+            {
+                frmPrincipal.Show();
+            }
+
+            // Ahora sí cerramos este formulario (esto disparará el evento de abajo)
+            this.Close();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

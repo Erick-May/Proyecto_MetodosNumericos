@@ -12,6 +12,7 @@ namespace Proyecto_MetodosNumericos
 {
     public partial class FormPolinomios : Form
     {
+        bool regresandoAlMenu = false;
         private List<TextBox> cajasCoeficientes = new List<TextBox>();
         public FormPolinomios()
         {
@@ -430,6 +431,17 @@ namespace Proyecto_MetodosNumericos
 
         private void btnRegresar_Click(object sender, EventArgs e)
         {
+            // Encendemos el semáforo para avisar que SÍ queremos regresar al menú
+            regresandoAlMenu = true;
+
+            // TRUCO: Buscamos el formulario principal que está oculto y lo volvemos a mostrar
+            Form frmPrincipal = Application.OpenForms["FormPrincipal"];
+            if (frmPrincipal != null)
+            {
+                frmPrincipal.Show();
+            }
+
+            // Ahora sí cerramos este formulario (esto disparará el evento de abajo)
             this.Close();
         }
 
@@ -688,6 +700,16 @@ namespace Proyecto_MetodosNumericos
         private void FormPolinomios_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void FormPolinomios_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Si la bandera es FALSA, significa que el usuario le dio a la "X" roja.
+            if (regresandoAlMenu == false)
+            {
+                // En lugar de Application.Exit(), usamos Environment.Exit(0)
+                Environment.Exit(0);
+            }
         }
     }
 }
