@@ -29,15 +29,90 @@ namespace Proyecto_MetodosNumericos
         // Limpiador de ruido de punto flotante (Evita basura microscópica de la CPU)
         private string FormatearValor(double valor)
         {
-            if (Math.Abs(valor) < 1E-14) return "0";
-            return valor.ToString("G10"); // Usa notación científica si es muy pequeño
+            // 1. Hacemos el redondeo a 8 decimales que pediste para los números normales
+            double redondeado = Math.Round(valor, 8);
+
+            // 2. Si el redondeo lo convirtió en un 0, PERO el número original no era un 0 perfecto (la "basura" microscópica)
+            if (redondeado == 0 && Math.Abs(valor) > 0)
+            {
+                // Lo mostramos en notación científica para que salgan tus números morados de la profe
+                return valor.ToString("E4");
+            }
+
+            // 3. Si es un número normal o un cero real, lo muestra redondeado y limpio
+            return redondeado.ToString("0.########");
         }
 
-        // Evaluador Multivariable: Ahora detecta variables dinámicamente
+        private string ArreglarPotencias(string expresion)
+        {
+            while (expresion.Contains("^"))
+            {
+                int index = expresion.IndexOf('^');
+                int start = index - 1;
+                int openParens = 0;
+                if (start >= 0 && expresion[start] == ')')
+                {
+                    openParens = 1;
+                    start--;
+                    while (start >= 0 && openParens > 0)
+                    {
+                        if (expresion[start] == ')') openParens++;
+                        if (expresion[start] == '(') openParens--;
+                        start--;
+                    }
+                    start++;
+                    while (start - 1 >= 0 && char.IsLetter(expresion[start - 1])) start--;
+                }
+                else
+                {
+                    while (start >= 0 && (char.IsLetterOrDigit(expresion[start]) || expresion[start] == '.' || expresion[start] == '_')) start--;
+                    start++;
+                }
+                string baseStr = expresion.Substring(start, index - start);
+
+                int end = index + 1;
+                openParens = 0;
+                if (end < expresion.Length && expresion[end] == '(')
+                {
+                    openParens = 1;
+                    end++;
+                    while (end < expresion.Length && openParens > 0)
+                    {
+                        if (expresion[end] == '(') openParens++;
+                        if (expresion[end] == ')') openParens--;
+                        end++;
+                    }
+                    end--;
+                }
+                else
+                {
+                    if (end < expresion.Length && expresion[end] == '-') end++;
+                    // Eliminamos el '/' para evitar el bug del exponente division
+                    while (end < expresion.Length && (char.IsLetterOrDigit(expresion[end]) || expresion[end] == '.' || expresion[end] == '_')) end++;
+                    end--;
+                }
+                string expStr = expresion.Substring(index + 1, end - index);
+
+                string prefijo = expresion.Substring(0, start);
+                string sufijo = expresion.Substring(end + 1);
+                expresion = prefijo + $"Pow({baseStr}, {expStr})" + sufijo;
+            }
+            return expresion;
+        }
+
         private double EvaluarNoLineal(string funcion, List<string> vars, double[] vals)
         {
-            string funcFix = Regex.Replace(funcion, @"([a-zA-Z0-9_.]+)\^\(([^)]+)\)", "Pow($1, $2)");
-            funcFix = Regex.Replace(funcFix, @"([a-zA-Z0-9_.]+)\^([a-zA-Z0-9_.]+)", "Pow($1, $2)");
+            string funcFix = funcion.ToLower();
+
+            // 1. Evitar división entera (Convierte 1/2 a 1.0/2.0)
+            funcFix = Regex.Replace(funcFix, @"(?<!\.)\b(\d+)\b(?!\.)", "$1.0");
+
+            // 2. Multiplicación Implícita Segura
+            funcFix = Regex.Replace(funcFix, @"(\d)([a-z\(])", "$1*$2"); // 2x -> 2*x
+            funcFix = Regex.Replace(funcFix, @"(\))([a-z0-9\(])", "$1*$2"); // )( -> )*(
+
+            // 3. Motor de Potencias
+            funcFix = ArreglarPotencias(funcFix);
 
             Expression e = new Expression(funcFix);
             for (int i = 0; i < vars.Count; i++)
@@ -45,22 +120,20 @@ namespace Proyecto_MetodosNumericos
                 e.Parameters[vars[i]] = vals[i];
             }
             e.Parameters["e"] = Math.E;
+            e.Parameters["pi"] = Math.PI;
 
-            // Agregamos soporte para funciones trigonométricas en español o abreviadas
             e.EvaluateFunction += delegate (string name, FunctionArgs args)
             {
                 string nombre = name.ToLower();
                 if (args.Parameters.Length > 0)
                 {
                     double num = Convert.ToDouble(args.Parameters[0].Evaluate());
-                    if (nombre == "sen" || nombre == "seno") { args.Result = Math.Sin(num); args.HasResult = true; }
+                    if (nombre == "sen" || nombre == "seno" || nombre == "sin") { args.Result = Math.Sin(num); args.HasResult = true; }
                     else if (nombre == "ln") { args.Result = Math.Log(num); args.HasResult = true; }
                     else if (nombre == "tan") { args.Result = Math.Tan(num); args.HasResult = true; }
-                    else if (nombre == "sec") { args.Result = 1.0 / Math.Cos(num); args.HasResult = true; }
-                    else if (nombre == "csc") { args.Result = 1.0 / Math.Sin(num); args.HasResult = true; }
-                    else if (nombre == "cot") { args.Result = 1.0 / Math.Tan(num); args.HasResult = true; }
+                    else if (nombre == "cos") { args.Result = Math.Cos(num); args.HasResult = true; }
+                    else if (nombre == "sqrt" || nombre == "raiz") { args.Result = Math.Sqrt(num); args.HasResult = true; }
                 }
-
             };
 
             return Convert.ToDouble(e.Evaluate());
@@ -142,6 +215,11 @@ namespace Proyecto_MetodosNumericos
                 dgvMatrices.Columns.Add("DeltaX", "[J(X)]^-1 * F(X)");
                 dgvMatrices.Columns.Add("Er", "Error %");
 
+                dgvMatrices.AllowUserToAddRows = false; // Quita la fea fila blanca vacía del final
+                dgvMatrices.RowHeadersVisible = false; // Quita la columna gris inútil de la izquierda
+                dgvMatrices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Estira las columnas para rellenar los vacíos
+                dgvMatrices.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // Que la selección no rompa la celda
+
                 int iteracion = 0;
                 double h = 1E-6; // Salto para derivada numérica
                 Color[] coloresExcel = { Color.LightGray, Color.CornflowerBlue, Color.SandyBrown, Color.LightGoldenrodYellow, Color.DarkSeaGreen, Color.SlateGray, Color.MediumOrchid };
@@ -151,29 +229,67 @@ namespace Proyecto_MetodosNumericos
                     double[] F = new double[N];
                     double[,] J = new double[N, N];
 
-                    // Evaluar funciones
-                    for (int i = 0; i < N; i++) F[i] = EvaluarNoLineal(ecuaciones[i], varsDetectadas, X);
+                    // 1. Evaluar F(X) y aplicar Escudo Anti-NaN
+                    for (int i = 0; i < N; i++)
+                    {
+                        F[i] = EvaluarNoLineal(ecuaciones[i], varsDetectadas, X);
+                        if (double.IsNaN(F[i]) || double.IsInfinity(F[i]))
+                        {
+                            MessageBox.Show($"¡Divergencia detectada! La ecuación {i + 1} se indefine en los valores actuales. La matriz explotó matemáticamente.", "Escudo Activado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
 
-                    // Jacobiana Numérica
+                    // 2. Construir Matriz Jacobiana Numérica (POR DIFERENCIAS CENTRALES)
                     for (int i = 0; i < N; i++)
                     {
                         for (int j = 0; j < N; j++)
                         {
                             double original = X[j];
-                            X[j] += h;
-                            double f_h = EvaluarNoLineal(ecuaciones[i], varsDetectadas, X);
+
+                            // Salto hacia adelante
+                            X[j] = original + h;
+                            double f_mas_h = EvaluarNoLineal(ecuaciones[i], varsDetectadas, X);
+
+                            // Salto hacia atrás
+                            X[j] = original - h;
+                            double f_menos_h = EvaluarNoLineal(ecuaciones[i], varsDetectadas, X);
+
+                            // Restaurar valor y calcular derivada
                             X[j] = original;
-                            J[i, j] = (f_h - F[i]) / h;
+                            J[i, j] = (f_mas_h - f_menos_h) / (2.0 * h);
+
+                            if (double.IsNaN(J[i, j]) || double.IsInfinity(J[i, j]))
+                            {
+                                MessageBox.Show($"¡Error! La derivada parcial de la ecuación {i + 1} respecto a {varsDetectadas[j]} se volvió infinita o imaginaria.", "Divergencia Numérica", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
                         }
                     }
 
-                    double[,] J_inv = InvertirMatriz(J);
+                    // 3. Invertir Jacobiana (Atrapar si es Singular)
+                    double[,] J_inv;
+                    try
+                    {
+                        J_inv = InvertirMatriz(J);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message + "\n\nSugerencia: El método requiere empezar desde un punto inicial diferente donde las curvas no sean paralelas.", "Falla del Sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
-                    // Delta X = J^-1 * F
+                    // 4. Calcular Delta X = J_inv * F
                     double[] deltaX = new double[N];
                     for (int i = 0; i < N; i++)
-                        for (int j = 0; j < N; j++) deltaX[i] += J_inv[i, j] * F[j];
+                    {
+                        for (int j = 0; j < N; j++)
+                        {
+                            deltaX[i] += J_inv[i, j] * F[j];
+                        }
+                    }
 
+                    // 5. Calcular nuevo X y el Error de convergencia
                     double[] X_nuevo = new double[N];
                     double[] errores = new double[N];
                     bool fin = true;
@@ -181,11 +297,19 @@ namespace Proyecto_MetodosNumericos
                     for (int i = 0; i < N; i++)
                     {
                         X_nuevo[i] = X[i] - deltaX[i];
-                        errores[i] = Math.Abs(deltaX[i] / (X_nuevo[i] == 0 ? 1 : X_nuevo[i])) * 100.0;
+
+                        // Cuidarse de la división entre cero en el cálculo del error
+                        if (X_nuevo[i] == 0)
+                            errores[i] = Math.Abs(deltaX[i]) * 100.0;
+                        else
+                            errores[i] = Math.Abs(deltaX[i] / X_nuevo[i]) * 100.0;
+
                         if (errores[i] >= tolerancia) fin = false;
                     }
 
-                    // Llenar tabla y aplicar colores
+                    // ==========================================
+                    // 6. IMPRESIÓN Y COLORES EN BLOQUE
+                    // ==========================================
                     int filaInicio = dgvMatrices.Rows.Count;
                     for (int r = 0; r < N; r++)
                     {
@@ -195,16 +319,39 @@ namespace Proyecto_MetodosNumericos
                         row.Add(FormatearValor(F[r]));
                         row.Add(FormatearValor(deltaX[r]));
                         row.Add(iteracion == 0 ? "-" : $"{Math.Round(errores[r], 4)}%");
+
                         dgvMatrices.Rows.Add(row.ToArray());
                     }
 
+                    // Aplicar color sólido a todo el bloque de esta iteración
                     Color colorIter = coloresExcel[iteracion % coloresExcel.Length];
                     for (int k = filaInicio; k < dgvMatrices.Rows.Count; k++)
+                    {
                         dgvMatrices.Rows[k].DefaultCellStyle.BackColor = colorIter;
 
+                        // TRUCO: Que el color de selección sea igual al del bloque para que no se ponga azul al darle clic
+                        dgvMatrices.Rows[k].DefaultCellStyle.SelectionBackColor = colorIter;
+                        dgvMatrices.Rows[k].DefaultCellStyle.SelectionForeColor = Color.Black;
+                    }
+
+                    // 7. Rotar variables para la siguiente vuelta
                     X = X_nuevo;
-                    if (fin && iteracion > 0) break;
-                    if (++iteracion > 50) break;
+
+                    // 8. Freno de Éxito
+                    if (fin && iteracion > 0)
+                    {
+                        MessageBox.Show("¡Convergencia alcanzada! Las raíces del sistema han sido encontradas.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    }
+
+                    iteracion++;
+
+                    // 9. Freno de Emergencia (Para no trabar la RAM)
+                    if (iteracion > 50)
+                    {
+                        MessageBox.Show("Límite de iteraciones alcanzado. El sistema es altamente inestable o diverge con estos valores iniciales. Prueba con otro punto de partida.", "Aviso de Divergencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    }
                 }
             }
             catch (Exception ex)
