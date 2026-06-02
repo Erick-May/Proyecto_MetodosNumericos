@@ -67,21 +67,24 @@ namespace Proyecto_MetodosNumericos
 
             try
             {
-                // 1. LEER TOLERANCIA
-                if (!double.TryParse(txtTolerancia.Text.Replace(".", ","), out tolerancia))
+                // 1. LEER TOLERANCIA DE FORMA SEGURA (A prueba de fallos regionales)
+                string tolTexto = txtTolerancia.Text.Replace(",", ".");
+                if (!double.TryParse(tolTexto, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out tolerancia))
                 {
                     MessageBox.Show("Ingresa una tolerancia válida.");
                     return;
                 }
 
-                // 2. LEER MATRIZ A Y VECTOR B
+                // 2. LEER MATRIZ A Y VECTOR B (Blindado con InvariantCulture)
                 for (int i = 0; i < n; i++)
                 {
                     for (int j = 0; j < n; j++)
                     {
-                        A[i, j] = Convert.ToDouble(dgvSistema.Rows[i].Cells[j].Value);
+                        string valStr = dgvSistema.Rows[i].Cells[j].Value?.ToString().Replace(",", ".");
+                        A[i, j] = Convert.ToDouble(valStr, System.Globalization.CultureInfo.InvariantCulture);
                     }
-                    B[i] = Convert.ToDouble(dgvSistema.Rows[i].Cells[n].Value);
+                    string bStr = dgvSistema.Rows[i].Cells[n].Value?.ToString().Replace(",", ".");
+                    B[i] = Convert.ToDouble(bStr, System.Globalization.CultureInfo.InvariantCulture);
 
                     // 🛡️ ESCUDO: Verificar ceros en la diagonal
                     if (Math.Abs(A[i, i]) < 1E-12)
@@ -98,9 +101,13 @@ namespace Proyecto_MetodosNumericos
                     MessageBox.Show($"Debes ingresar exactamente {n} valores iniciales (uno por línea).");
                     return;
                 }
-                for (int i = 0; i < n; i++) X[i] = Convert.ToDouble(valoresTexto[i]);
+                for (int i = 0; i < n; i++)
+                {
+                    string valInitStr = valoresTexto[i].Replace(",", ".");
+                    X[i] = Convert.ToDouble(valInitStr, System.Globalization.CultureInfo.InvariantCulture);
+                }
 
-                // 4. PREPARAR TABLA DE RESULTADOS (Idéntica a tu Excel)
+                // 4. PREPARAR TABLA DE RESULTADOS
                 ConfigurarTablaResultados(n);
 
                 // 5. EJECUTAR EL MÉTODO
@@ -111,7 +118,6 @@ namespace Proyecto_MetodosNumericos
                 else if (metodoSeleccionado == "Jacobi")
                 {
                     MessageBox.Show("Jacobi todavía está en construcción. Prueba Gauss-Seidel primero.");
-                    // Aquí pondremos a Jacobi cuando termines de validar Gauss.
                 }
             }
             catch (Exception ex)
@@ -152,7 +158,7 @@ namespace Proyecto_MetodosNumericos
             {
                 double[] X_viejo = (double[])X.Clone();
                 double[] errores = new double[n];
-                convergeGlobal = true; // Asumimos que converge hasta que un error diga lo contrario
+                convergeGlobal = true; // Asumimos convergencia hasta probar lo contrario
 
                 for (int i = 0; i < n; i++)
                 {
@@ -161,27 +167,30 @@ namespace Proyecto_MetodosNumericos
                     {
                         if (i != j)
                         {
-                            // Usa X[j] que ya viene actualizado en esta iteración
+                            // La lógica fundamental: X[j] se actualiza en tiempo real
                             suma += A[i, j] * X[j];
                         }
                     }
 
                     X[i] = (B[i] - suma) / A[i, i];
 
-                    // Calcular Error Relativo (Estilo Excel)
+                    // Calcular Error Relativo Fraccional (Exactamente como tu Excel)
                     if (X[i] != 0)
+                    {
                         errores[i] = Math.Abs((X[i] - X_viejo[i]) / X[i]);
+                    }
                     else
-                        errores[i] = 1.0; // Si es 0, forzamos un error alto
+                    {
+                        errores[i] = 1.0;
+                    }
 
-                    // Revisar si algún error supera la tolerancia
+                    // Validar criterio de parada
                     if (iteracion == 1 || errores[i] > tolerancia)
                     {
                         convergeGlobal = false;
                     }
                 }
 
-                // Imprimir la fila con todo el detalle de esta iteración
                 ImprimirFilaDetallada(iteracion, X_viejo, X, errores, n, iteracion == 1);
 
                 // 🛡️ ESCUDO ANTI-DIVERGENCIA
