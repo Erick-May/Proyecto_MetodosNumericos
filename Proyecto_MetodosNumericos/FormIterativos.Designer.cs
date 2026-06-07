@@ -174,7 +174,7 @@
             dgvResultados.Location = new Point(12, 413);
             dgvResultados.Name = "dgvResultados";
             dgvResultados.RowHeadersWidth = 62;
-            dgvResultados.Size = new Size(1762, 354);
+            dgvResultados.Size = new Size(1762, 336);
             dgvResultados.TabIndex = 34;
             // 
             // btnLimpiar
