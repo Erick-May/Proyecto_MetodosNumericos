@@ -118,13 +118,34 @@ namespace Proyecto_MetodosNumericos
                 }
                 else if (metodoSeleccionado == "Jacobi")
                 {
-                    MessageBox.Show("Jacobi todavía está en construcción. Prueba Gauss-Seidel primero.");
+                    EjecutarJacobi(A, B, X, n, tolerancia);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al leer los datos. Verifica que la matriz y los valores no tengan letras o celdas vacías.\n\nDetalle: " + ex.Message, "Error de Formato", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private bool EsDiagonalmenteDominante(double[,] A, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                double sumaFila = 0;
+                for (int j = 0; j < n; j++)
+                {
+                    if (i != j)
+                    {
+                        sumaFila += Math.Abs(A[i, j]);
+                    }
+                }
+                // Si el valor absoluto de la diagonal principal es menor que la suma del resto de la fila
+                if (Math.Abs(A[i, i]) < sumaFila)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void ConfigurarTablaResultados(int n)
@@ -211,6 +232,90 @@ namespace Proyecto_MetodosNumericos
             else
             {
                 MessageBox.Show($"¡Convergencia alcanzada en {iteracion - 1} iteraciones usando Gauss-Seidel!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        // ==========================================
+        // MOTOR JACOBI
+        // ==========================================
+        private void EjecutarJacobi(double[,] A, double[] B, double[] X, int n, double tolerancia)
+        {
+            // 1. Escudo de Diagonal Dominante (Requisito de tus apuntes)
+            if (!EsDiagonalmenteDominante(A, n))
+            {
+                MessageBox.Show("Advertencia: La matriz ingresada NO es estrictamente diagonalmente dominante.\n\nEl método de Jacobi intentará resolverse, pero existe el riesgo de que el sistema diverja (rebotar sin encontrar solución).", "Advertencia de Convergencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            int iteracion = 1;
+            int iteracionesMaximas = 100;
+            bool convergeGlobal = false;
+
+            // VECTOR TEMPORAL: Requisito clave de Jacobi para guardar los resultados nuevos
+            // sin afectar los cálculos de la misma iteración.
+            double[] X_nuevo = new double[n];
+
+            while (!convergeGlobal && iteracion <= iteracionesMaximas)
+            {
+                double[] X_viejo = (double[])X.Clone();
+                double[] errores = new double[n];
+                convergeGlobal = true; // Asumimos convergencia hasta probar lo contrario
+
+                // Calcular todos los nuevos valores simultáneamente
+                for (int i = 0; i < n; i++)
+                {
+                    double suma = 0;
+                    for (int j = 0; j < n; j++)
+                    {
+                        if (i != j)
+                        {
+                            // LA DIFERENCIA MATEMÁTICA CON SEIDEL:
+                            // Usamos EXCLUSIVAMENTE X_viejo[j] de la iteración anterior.
+                            suma += A[i, j] * X_viejo[j];
+                        }
+                    }
+
+                    // Despejamos la variable de la diagonal principal
+                    X_nuevo[i] = (B[i] - suma) / A[i, i];
+
+                    // Calcular Error Relativo (Criterio de Parada)
+                    if (X_nuevo[i] != 0)
+                    {
+                        errores[i] = Math.Abs((X_nuevo[i] - X_viejo[i]) / X_nuevo[i]);
+                    }
+                    else
+                    {
+                        errores[i] = 1.0;
+                    }
+
+                    if (iteracion == 1 || errores[i] > tolerancia)
+                    {
+                        convergeGlobal = false;
+                    }
+                }
+
+                // Una vez calculadas TODAS las variables, actualizamos el vector solución real
+                X = (double[])X_nuevo.Clone();
+
+                // Enviamos los datos a tu DataGridView
+                ImprimirFilaDetallada(iteracion, X_viejo, X, errores, n, iteracion == 1);
+
+                // 🛡️ ESCUDO ANTI-DIVERGENCIA (Detectar si se va al infinito)
+                if (errores.Max() > 1000 || double.IsNaN(errores[0]) || double.IsInfinity(X[0]))
+                {
+                    MessageBox.Show($"¡Divergencia detectada en la iteración {iteracion}!\n\nEl error está creciendo de forma descontrolada. El sistema no tiene solución mediante Jacobi con este orden de matriz.", "Fallo por Divergencia", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                iteracion++;
+            }
+
+            if (iteracion > iteracionesMaximas)
+            {
+                MessageBox.Show($"Se alcanzó el límite de {iteracionesMaximas} iteraciones sin llegar a la tolerancia permitida.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                MessageBox.Show($"¡Convergencia alcanzada en {iteracion - 1} iteraciones usando Jacobi!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
