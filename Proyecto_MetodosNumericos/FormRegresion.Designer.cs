@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            lblTipoRegresion = new Label();
             btnRegresar = new Button();
             lblR2 = new Label();
             lblEcuacion = new Label();
@@ -37,12 +38,12 @@
             nudGrado = new NumericUpDown();
             label3 = new Label();
             dgvDatos = new DataGridView();
+            X = new DataGridViewTextBoxColumn();
+            Y = new DataGridViewTextBoxColumn();
             label2 = new Label();
             cmbTipoRegresion = new ComboBox();
             label1 = new Label();
             dgvResultados = new DataGridView();
-            X = new DataGridViewTextBoxColumn();
-            Y = new DataGridViewTextBoxColumn();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudGrado).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvDatos).BeginInit();
@@ -51,6 +52,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(lblTipoRegresion);
             panel1.Controls.Add(btnRegresar);
             panel1.Controls.Add(lblR2);
             panel1.Controls.Add(lblEcuacion);
@@ -67,6 +69,15 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1472, 469);
             panel1.TabIndex = 0;
+            // 
+            // lblTipoRegresion
+            // 
+            lblTipoRegresion.AutoSize = true;
+            lblTipoRegresion.Location = new Point(791, 25);
+            lblTipoRegresion.Name = "lblTipoRegresion";
+            lblTipoRegresion.Size = new Size(83, 25);
+            lblTipoRegresion.TabIndex = 10;
+            lblTipoRegresion.Text = "Modelo: ";
             // 
             // btnRegresar
             // 
@@ -125,6 +136,7 @@
             nudGrado.Size = new Size(119, 31);
             nudGrado.TabIndex = 4;
             nudGrado.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            nudGrado.ValueChanged += nudGrado_ValueChanged;
             // 
             // label3
             // 
@@ -145,6 +157,22 @@
             dgvDatos.Size = new Size(277, 315);
             dgvDatos.TabIndex = 1;
             // 
+            // X
+            // 
+            X.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            X.HeaderText = "X";
+            X.MinimumWidth = 8;
+            X.Name = "X";
+            X.Width = 150;
+            // 
+            // Y
+            // 
+            Y.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            Y.HeaderText = "Y";
+            Y.MinimumWidth = 8;
+            Y.Name = "Y";
+            Y.Width = 150;
+            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -157,12 +185,11 @@
             // cmbTipoRegresion
             // 
             cmbTipoRegresion.FormattingEnabled = true;
-            cmbTipoRegresion.Items.AddRange(new object[] { "Regresion Simple", "Regresion Polinomial" });
+            cmbTipoRegresion.Items.AddRange(new object[] { "Regresion Polinomial" });
             cmbTipoRegresion.Location = new Point(12, 41);
             cmbTipoRegresion.Name = "cmbTipoRegresion";
             cmbTipoRegresion.Size = new Size(233, 33);
             cmbTipoRegresion.TabIndex = 1;
-            cmbTipoRegresion.SelectedIndexChanged += cmbTipoRegresion_SelectedIndexChanged;
             // 
             // label1
             // 
@@ -182,20 +209,6 @@
             dgvResultados.RowHeadersWidth = 62;
             dgvResultados.Size = new Size(1448, 356);
             dgvResultados.TabIndex = 1;
-            // 
-            // X
-            // 
-            X.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            X.HeaderText = "X";
-            X.MinimumWidth = 8;
-            X.Name = "X";
-            // 
-            // Y
-            // 
-            Y.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            Y.HeaderText = "Y";
-            Y.MinimumWidth = 8;
-            Y.Name = "Y";
             // 
             // FormRegresion
             // 
@@ -235,5 +248,6 @@
         private DataGridView dgvResultados;
         private DataGridViewTextBoxColumn X;
         private DataGridViewTextBoxColumn Y;
+        private Label lblTipoRegresion;
     }
 }

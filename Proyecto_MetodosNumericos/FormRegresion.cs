@@ -15,7 +15,7 @@ namespace Proyecto_MetodosNumericos
         public FormRegresion()
         {
             InitializeComponent();
-            cmbTipoRegresion.SelectedIndex = 1;
+            cmbTipoRegresion.SelectedIndex = 0;
 
             // Desactivamos el auto-relleno por si lo tenías activado
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
@@ -25,23 +25,6 @@ namespace Proyecto_MetodosNumericos
             dgvDatos.Columns[0].Width = 100;
             dgvDatos.Columns[1].Width = 100;
         }
-
-        private void cmbTipoRegresion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbTipoRegresion.SelectedItem.ToString() == "Regresion Simple")
-            {
-                MessageBox.Show("Módulo de Regresión Simple próximamente en desarrollo.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                btnCalcular.Enabled = false;
-                nudGrado.Enabled = false;
-            }
-            else
-            {
-                btnCalcular.Enabled = true;
-                nudGrado.Enabled = true;
-            }
-        }
-
-
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
@@ -333,6 +316,19 @@ namespace Proyecto_MetodosNumericos
             if (regresandoAlMenu == false)
             {
                 Environment.Exit(0);
+            }
+        }
+
+        private void nudGrado_ValueChanged(object sender, EventArgs e)
+        {
+            // Revisamos el valor actual del NumericUpDown
+            if (nudGrado.Value == 1)
+            {
+                lblTipoRegresion.Text = "Modelo: Simple";
+            }
+            else if (nudGrado.Value >= 2)
+            {
+                lblTipoRegresion.Text = "Modelo: Polinomial";
             }
         }
     }
