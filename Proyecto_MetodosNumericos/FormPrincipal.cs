@@ -669,6 +669,13 @@ namespace Proyecto_MetodosNumericos
                 cmbMetodos.SelectedIndex = 0;
                 return;
             }
+            else if (metodo == "Metodos de Regresion")
+            {
+                FormRegresion frmRegresion = new FormRegresion();
+                frmRegresion.ShowDialog();
+                cmbMetodos.SelectedIndex = 0;
+                return;
+            }
 
             // Actualizamos las columnas de la tabla en vivo
             ConfigurarTabla(metodo);
