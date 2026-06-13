@@ -16,7 +16,13 @@ namespace Proyecto_MetodosNumericos
         {
             InitializeComponent();
 
-            if (cmbMetodoInterpolacion.Items.Count > 0)
+            if (cmbMetodoInterpolacion.Items.Count == 0)
+            {
+                cmbMetodoInterpolacion.Items.Add("Newton Diferencias Divididas");
+                cmbMetodoInterpolacion.Items.Add("Lagrange");
+            }
+            // Seleccionar Newton por defecto
+            if (cmbMetodoInterpolacion.Items.Count > 0 && cmbMetodoInterpolacion.SelectedIndex == -1)
             {
                 cmbMetodoInterpolacion.SelectedIndex = 0;
             }
@@ -31,13 +37,14 @@ namespace Proyecto_MetodosNumericos
         {
             try
             {
-                // 1. VALIDACIÓN Y LECTURA DE DATOS (Con escudo anti-celdas vacías)
+                // ==========================================================
+                // 1. VALIDACIÓN Y LECTURA DE DATOS (COMÚN PARA AMBOS MÉTODOS)
+                // ==========================================================
                 List<double> listaX = new List<double>();
                 List<double> listaY = new List<double>();
 
                 foreach (DataGridViewRow row in dgvInput.Rows)
                 {
-                    // Ignoramos la fila vacía extra que pone el DataGridView al final
                     if (!row.IsNewRow)
                     {
                         if (row.Cells[0].Value == null || row.Cells[1].Value == null ||
@@ -72,68 +79,98 @@ namespace Proyecto_MetodosNumericos
                 double[] Y = listaY.ToArray();
                 int n = X.Length;
 
-                // 2. INSTANCIAR LA CLASE MATEMÁTICA Y PROCESAR
-                NewtonDiferenciasDivididas newton = new NewtonDiferenciasDivididas();
+                string metodoSeleccionado = cmbMetodoInterpolacion.SelectedItem.ToString();
 
-                // Extraer la matriz completa para la tabla visual
-                double[,] matrizDiferencias = newton.CalcularTablaDiferencias(X, Y);
-
-                // Extraer los coeficientes (primera fila de la matriz)
-                double[] coeficientes = new double[n];
-                for (int j = 0; j < n; j++)
+                // ==========================================================
+                // RUTA 1: NEWTON POR DIFERENCIAS DIVIDIDAS (INTACTO)
+                // ==========================================================
+                if (metodoSeleccionado == "Newton Diferencias Divididas")
                 {
-                    coeficientes[j] = matrizDiferencias[0, j];
-                }
+                    NewtonDiferenciasDivididas newton = new NewtonDiferenciasDivididas();
 
-                // 3. POPULAR DINÁMICAMENTE EL dgvTablaDiferencias
-                dgvTablaDiferencias.Columns.Clear();
-                dgvTablaDiferencias.Rows.Clear();
+                    double[,] matrizDiferencias = newton.CalcularTablaDiferencias(X, Y);
 
-                // Crear columnas
-                dgvTablaDiferencias.Columns.Add("ColX", "X");
-                dgvTablaDiferencias.Columns.Add("ColY", "f(X) [Orden 0]");
-                for (int j = 1; j < n; j++)
-                {
-                    dgvTablaDiferencias.Columns.Add($"Orden{j}", $"Orden {j}");
-                }
-
-                // Llenar filas de la tabla
-                for (int i = 0; i < n; i++)
-                {
-                    List<object> fila = new List<object>();
-                    fila.Add(Math.Round(X[i], 6)); // Columna X
-
+                    double[] coeficientes = new double[n];
                     for (int j = 0; j < n; j++)
                     {
-                        if (i < n - j)
-                        {
-                            // Si hay un valor válido, lo mostramos redondeado
-                            fila.Add(Math.Round(matrizDiferencias[i, j], 6));
-                        }
-                        else
-                        {
-                            // Espacios en blanco para el triángulo inferior de la matriz
-                            fila.Add("");
-                        }
+                        coeficientes[j] = matrizDiferencias[0, j];
                     }
-                    dgvTablaDiferencias.Rows.Add(fila.ToArray());
+
+                    dgvTablaDiferencias.Columns.Clear();
+                    dgvTablaDiferencias.Rows.Clear();
+
+                    dgvTablaDiferencias.Columns.Add("ColX", "X");
+                    dgvTablaDiferencias.Columns.Add("ColY", "f(X) [Orden 0]");
+                    for (int j = 1; j < n; j++)
+                    {
+                        dgvTablaDiferencias.Columns.Add($"Orden{j}", $"Orden {j}");
+                    }
+
+                    for (int i = 0; i < n; i++)
+                    {
+                        List<object> fila = new List<object>();
+                        fila.Add(Math.Round(X[i], 6));
+
+                        for (int j = 0; j < n; j++)
+                        {
+                            if (i < n - j)
+                            {
+                                fila.Add(Math.Round(matrizDiferencias[i, j], 6));
+                            }
+                            else
+                            {
+                                fila.Add("");
+                            }
+                        }
+                        dgvTablaDiferencias.Rows.Add(fila.ToArray());
+                    }
+
+                    double resultadoInterpolacion = newton.Evaluar(coeficientes, X, valorX);
+                    string polinomioSimbolico = newton.ObtenerPolinomioExpandido(coeficientes, X);
+
+                    // Imprime en el txtResultado original de Newton
+                    lblResultado.Text = $"=== POLINOMIO DE NEWTON ===\n" +
+                                        $"P(x) = {polinomioSimbolico}\n\n" +
+                                        $"=== RESULTADO DE LA INTERPOLACIÓN ===\n" +
+                                        $"Para X = {valorX}, \n" +
+                                        $"la aproximación es f({valorX}) = {Math.Round(resultadoInterpolacion, 6)}";
                 }
+                // ==========================================================
+                // RUTA 2: INTERPOLACIÓN DE LAGRANGE (NUEVO)
+                // ==========================================================
+                else if (metodoSeleccionado == "Lagrange")
+                {
+                    // Limpiamos la tabla de Newton por si había datos viejos
+                    dgvTablaDiferencias.Columns.Clear();
+                    dgvTablaDiferencias.Rows.Clear();
 
-                // 4. EVALUACIÓN Y CONSTRUCCIÓN DEL POLINOMIO
-                double resultadoInterpolacion = newton.Evaluar(coeficientes, X, valorX);
-                string polinomioSimbolico = newton.ObtenerPolinomioExpandido(coeficientes, X);
+                    // Instanciamos la clase de Lagrange
+                    LagrangeInterpolacion lagrange = new LagrangeInterpolacion();
 
-                // 5. MOSTRAR RESULTADOS
-                lblResultado.Text = $"Resultado y Polinomio: \n" +
-                                    $"=== POLINOMIO DE NEWTON ===\n" +
-                                    $"P(x) = {polinomioSimbolico}\n\n" +
-                                    $"=== RESULTADO DE LA INTERPOLACIÓN ===\n" +
-                                    $"Para X = {valorX}, \n" +
-                                    $"la aproximación es f({valorX}) = {Math.Round(resultadoInterpolacion, 6)}";
+                    // Obtenemos los datos calculados
+                    List<string> polinomiosLi = lagrange.ObtenerPolinomiosLiExpandidos(X);
+                    string polinomioFinal = lagrange.ObtenerPolinomioFinal(X, Y);
+                    double resultadoInterpolacion = lagrange.Evaluar(X, Y, valorX);
+
+                    // Formateamos y mostramos en el nuevo RichTextBox
+                    rtbResultados.Clear();
+                    rtbResultados.AppendText("=== POLINOMIOS BASE DE LAGRANGE (L_i) ===\n");
+
+                    foreach (string li in polinomiosLi)
+                    {
+                        rtbResultados.AppendText(li + "\n\n");
+                    }
+
+                    rtbResultados.AppendText("\n=== POLINOMIO FINAL ===\n");
+                    rtbResultados.AppendText($"P(x) = {polinomioFinal}\n");
+
+                    rtbResultados.AppendText("\n=== RESULTADO DE LA INTERPOLACIÓN ===\n");
+                    rtbResultados.AppendText($"Aproximación para x = {valorX}:\nf({valorX}) = {Math.Round(resultadoInterpolacion, 6)}\n");
+                }
             }
             catch (FormatException)
             {
-                MessageBox.Show("Asegúrate de ingresar solo números válidos. Revisa que no haya letras.", "Error de Formato", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Asegúrate de ingresar solo números válidos. Revisa que no haya letras o símbolos erróneos.", "Error de Formato", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {

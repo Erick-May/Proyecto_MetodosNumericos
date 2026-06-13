@@ -43,6 +43,7 @@
             cmbMetodoInterpolacion = new ComboBox();
             label1 = new Label();
             dgvTablaDiferencias = new DataGridView();
+            rtbResultados = new RichTextBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvTablaDiferencias).BeginInit();
@@ -64,7 +65,7 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1561, 499);
+            panel1.Size = new Size(1662, 499);
             panel1.TabIndex = 0;
             // 
             // btnRegresar
@@ -81,7 +82,7 @@
             // 
             lblResultado.AutoSize = true;
             lblResultado.Font = new Font("Comic Sans MS", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            lblResultado.Location = new Point(887, 188);
+            lblResultado.Location = new Point(791, 188);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(273, 34);
             lblResultado.TabIndex = 20;
@@ -173,7 +174,7 @@
             // 
             cmbMetodoInterpolacion.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodoInterpolacion.FormattingEnabled = true;
-            cmbMetodoInterpolacion.Items.AddRange(new object[] { "Newton Diferencias Divididas" });
+            cmbMetodoInterpolacion.Items.AddRange(new object[] { "Newton Diferencias Divididas", "Lagrange" });
             cmbMetodoInterpolacion.Location = new Point(12, 44);
             cmbMetodoInterpolacion.Name = "cmbMetodoInterpolacion";
             cmbMetodoInterpolacion.Size = new Size(298, 33);
@@ -196,14 +197,25 @@
             dgvTablaDiferencias.Location = new Point(5, 505);
             dgvTablaDiferencias.Name = "dgvTablaDiferencias";
             dgvTablaDiferencias.RowHeadersWidth = 62;
-            dgvTablaDiferencias.Size = new Size(1544, 410);
+            dgvTablaDiferencias.Size = new Size(896, 410);
             dgvTablaDiferencias.TabIndex = 1;
+            // 
+            // rtbResultados
+            // 
+            rtbResultados.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            rtbResultados.Font = new Font("Comic Sans MS", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            rtbResultados.Location = new Point(914, 505);
+            rtbResultados.Name = "rtbResultados";
+            rtbResultados.Size = new Size(736, 410);
+            rtbResultados.TabIndex = 22;
+            rtbResultados.Text = "";
             // 
             // FormInterpolantes
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1561, 927);
+            ClientSize = new Size(1662, 927);
+            Controls.Add(rtbResultados);
             Controls.Add(dgvTablaDiferencias);
             Controls.Add(panel1);
             MaximizeBox = false;
@@ -236,5 +248,6 @@
         private Label lblResultado;
         private Button btnCalcular;
         private Button btnRegresar;
+        private RichTextBox rtbResultados;
     }
 }
