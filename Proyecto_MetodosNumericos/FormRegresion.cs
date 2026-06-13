@@ -331,5 +331,50 @@ namespace Proyecto_MetodosNumericos
                 lblTipoRegresion.Text = "Modelo: Polinomial";
             }
         }
+
+        private void dgvDatos_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            // Primero desvinculamos el evento por si ya estaba conectado (para que no se duplique)
+            e.Control.KeyPress -= new KeyPressEventHandler(ValidarNumeros_KeyPress);
+
+            // Si la celda que están editando es de tipo texto (TextBox)
+            if (e.Control is TextBox tb)
+            {
+                // Le conectamos nuestra regla de validación
+                tb.KeyPress += new KeyPressEventHandler(ValidarNumeros_KeyPress);
+            }
+        }
+        private void ValidarNumeros_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // 1. Permitimos números, borrar, el punto decimal y el signo negativo
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != '-'))
+            {
+                e.Handled = true; // Bloqueamos cualquier otra cosa (letras, símbolos raros)
+            }
+
+            // 2. Solo permitimos un punto decimal
+            TextBox txt = sender as TextBox;
+            if ((e.KeyChar == '.') && (txt.Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+
+            // 3. El signo negativo solo puede ir al principio
+            if (e.KeyChar == '-')
+            {
+                // Si ya hay un menos, o si no están escribiendo en la primera posición
+                if (txt.Text.Contains("-") || txt.SelectionStart != 0)
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void dgvDatos_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            // Si meten basura pegándola, simplemente cancelamos el error y les avisamos
+            MessageBox.Show("Solo se permiten números válidos en esta tabla.", "Error de entrada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            e.Cancel = true;
+        }
     }
 }

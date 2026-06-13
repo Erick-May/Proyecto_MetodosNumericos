@@ -136,6 +136,7 @@
             // 
             // cmbMetodos
             // 
+            cmbMetodos.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodos.FormattingEnabled = true;
             cmbMetodos.Items.AddRange(new object[] { "Gauss-Seidel", "Jacobi" });
             cmbMetodos.Location = new Point(23, 38);

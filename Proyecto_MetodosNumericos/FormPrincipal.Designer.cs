@@ -95,7 +95,7 @@
             cmbMetodos.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMetodos.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             cmbMetodos.FormattingEnabled = true;
-            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson", "Secante", "Punto Fijo", "Otros Metodos (Polinomios)", "Otros Metodos (Matrices)", "Otros Metodos (Iterativos)", "Metodos de Regresion" });
+            cmbMetodos.Items.AddRange(new object[] { "Biseccion", "Regla Falsa", "Newton-Raphson", "Secante", "Punto Fijo", "Otros Metodos (Polinomios)", "Otros Metodos (Matrices)", "Otros Metodos (Iterativos)", "Metodos de Regresion", "Metodos Interpolantes" });
             cmbMetodos.Location = new Point(194, 9);
             cmbMetodos.Name = "cmbMetodos";
             cmbMetodos.Size = new Size(328, 30);

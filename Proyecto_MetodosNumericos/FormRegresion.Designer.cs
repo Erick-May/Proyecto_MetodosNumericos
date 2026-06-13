@@ -73,7 +73,7 @@
             // lblTipoRegresion
             // 
             lblTipoRegresion.AutoSize = true;
-            lblTipoRegresion.Location = new Point(791, 25);
+            lblTipoRegresion.Location = new Point(783, 25);
             lblTipoRegresion.Name = "lblTipoRegresion";
             lblTipoRegresion.Size = new Size(83, 25);
             lblTipoRegresion.TabIndex = 10;
@@ -120,7 +120,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(16, 128);
+            label4.Location = new Point(12, 131);
             label4.Name = "label4";
             label4.Size = new Size(175, 25);
             label4.TabIndex = 5;
@@ -128,12 +128,12 @@
             // 
             // nudGrado
             // 
-            nudGrado.Location = new Point(16, 165);
+            nudGrado.Location = new Point(32, 159);
             nudGrado.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
             nudGrado.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             nudGrado.Name = "nudGrado";
             nudGrado.ReadOnly = true;
-            nudGrado.Size = new Size(119, 31);
+            nudGrado.Size = new Size(123, 31);
             nudGrado.TabIndex = 4;
             nudGrado.Value = new decimal(new int[] { 1, 0, 0, 0 });
             nudGrado.ValueChanged += nudGrado_ValueChanged;
@@ -156,6 +156,8 @@
             dgvDatos.RowHeadersWidth = 62;
             dgvDatos.Size = new Size(277, 315);
             dgvDatos.TabIndex = 1;
+            dgvDatos.DataError += dgvDatos_DataError;
+            dgvDatos.EditingControlShowing += dgvDatos_EditingControlShowing;
             // 
             // X
             // 
@@ -184,6 +186,7 @@
             // 
             // cmbTipoRegresion
             // 
+            cmbTipoRegresion.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipoRegresion.FormattingEnabled = true;
             cmbTipoRegresion.Items.AddRange(new object[] { "Regresion Polinomial" });
             cmbTipoRegresion.Location = new Point(12, 41);

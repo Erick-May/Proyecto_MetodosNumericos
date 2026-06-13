@@ -676,6 +676,13 @@ namespace Proyecto_MetodosNumericos
                 cmbMetodos.SelectedIndex = 0;
                 return;
             }
+            else if (metodo == "Metodos Interpolantes")
+            {
+                FormInterpolantes frmInterpolantes = new FormInterpolantes();
+                frmInterpolantes.ShowDialog();
+                cmbMetodos.SelectedIndex = 0;
+                return;
+            }
 
             // Actualizamos las columnas de la tabla en vivo
             ConfigurarTabla(metodo);
