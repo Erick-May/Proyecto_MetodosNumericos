@@ -234,6 +234,7 @@
             dgvResultados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvResultados.Location = new Point(12, 475);
             dgvResultados.Name = "dgvResultados";
+            dgvResultados.ReadOnly = true;
             dgvResultados.RowHeadersWidth = 62;
             dgvResultados.Size = new Size(1287, 356);
             dgvResultados.TabIndex = 1;

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            rtbResultados = new RichTextBox();
             btnRegresar = new Button();
             lblResultado = new Label();
             btnCalcular = new Button();
@@ -43,7 +44,6 @@
             cmbMetodoInterpolacion = new ComboBox();
             label1 = new Label();
             dgvTablaDiferencias = new DataGridView();
-            rtbResultados = new RichTextBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvTablaDiferencias).BeginInit();
@@ -69,6 +69,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1662, 499);
             panel1.TabIndex = 0;
+            // 
+            // rtbResultados
+            // 
+            rtbResultados.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            rtbResultados.Font = new Font("Comic Sans MS", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            rtbResultados.Location = new Point(1133, 24);
+            rtbResultados.Name = "rtbResultados";
+            rtbResultados.Size = new Size(508, 450);
+            rtbResultados.TabIndex = 22;
+            rtbResultados.Text = "";
             // 
             // btnRegresar
             // 
@@ -164,7 +174,7 @@
             // 
             lblTipoInterpolacion.AutoSize = true;
             lblTipoInterpolacion.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            lblTipoInterpolacion.Location = new Point(458, 47);
+            lblTipoInterpolacion.Location = new Point(629, 24);
             lblTipoInterpolacion.Name = "lblTipoInterpolacion";
             lblTipoInterpolacion.Size = new Size(84, 22);
             lblTipoInterpolacion.TabIndex = 14;
@@ -209,19 +219,10 @@
             dgvTablaDiferencias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvTablaDiferencias.Location = new Point(5, 505);
             dgvTablaDiferencias.Name = "dgvTablaDiferencias";
+            dgvTablaDiferencias.ReadOnly = true;
             dgvTablaDiferencias.RowHeadersWidth = 62;
             dgvTablaDiferencias.Size = new Size(1645, 410);
             dgvTablaDiferencias.TabIndex = 1;
-            // 
-            // rtbResultados
-            // 
-            rtbResultados.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            rtbResultados.Font = new Font("Comic Sans MS", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            rtbResultados.Location = new Point(1086, 24);
-            rtbResultados.Name = "rtbResultados";
-            rtbResultados.Size = new Size(555, 450);
-            rtbResultados.TabIndex = 22;
-            rtbResultados.Text = "";
             // 
             // FormInterpolantes
             // 

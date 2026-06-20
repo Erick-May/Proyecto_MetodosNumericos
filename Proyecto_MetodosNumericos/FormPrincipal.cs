@@ -683,6 +683,13 @@ namespace Proyecto_MetodosNumericos
                 cmbMetodos.SelectedIndex = 0;
                 return;
             }
+            else if (metodo == "Integracion Numerica x Aproximacion")
+            {
+                FormIntegracion frmIntegracion = new FormIntegracion();
+                frmIntegracion.ShowDialog();
+                cmbMetodos.SelectedIndex = 0;
+                return;
+            }
 
             // Actualizamos las columnas de la tabla en vivo
             ConfigurarTabla(metodo);
