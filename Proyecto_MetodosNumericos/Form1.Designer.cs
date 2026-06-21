@@ -233,8 +233,10 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
+            Cursor = Cursors.Hand;
             MaximizeBox = false;
             Name = "FormInicioSesion";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FormInicioSesion";
             FormClosed += FormInicioSesion_FormClosed;
             pnlRegistro.ResumeLayout(false);
