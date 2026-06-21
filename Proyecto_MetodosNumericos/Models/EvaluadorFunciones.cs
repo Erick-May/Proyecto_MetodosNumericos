@@ -51,6 +51,48 @@ namespace Proyecto_MetodosNumericos.Models
             return resultadoFinal;
         }
 
+
+        // PARA INTEGRALES DOBLES (X e Y)
+        public static double EvaluarDoble(string funcion, double valorX, double valorY)
+        {
+            string funcionCorregida = funcion.ToLower();
+
+            // Fix divisiones enteras y multiplicaciones implícitas
+            funcionCorregida = Regex.Replace(funcionCorregida, @"(?<!\.)\b(\d+)\b(?!\.)", "$1.0");
+            funcionCorregida = Regex.Replace(funcionCorregida, @"(\d)([a-z\(])", "$1*$2");
+            // Aquí le enseñamos que tanto X como Y pueden multiplicarse implícitamente
+            funcionCorregida = Regex.Replace(funcionCorregida, @"([xy])([a-z0-9\(])", "$1*$2");
+            funcionCorregida = Regex.Replace(funcionCorregida, @"(\))([a-z0-9xy\(])", "$1*$2");
+
+            funcionCorregida = ArreglarPotencias(funcionCorregida);
+
+            Expression e = new Expression(funcionCorregida);
+            e.Parameters["x"] = valorX;
+            e.Parameters["y"] = valorY; // Este es para tomar en cuenta la Y
+            e.Parameters["e"] = Math.E;
+            e.Parameters["pi"] = Math.PI;
+
+            e.EvaluateFunction += delegate (string name, FunctionArgs args)
+            {
+                string nombreFuncion = name.ToLower();
+                if (args.Parameters.Length > 0)
+                {
+                    double numero = Convert.ToDouble(args.Parameters[0].Evaluate());
+                    if (nombreFuncion == "ln") { args.Result = Math.Log(numero); args.HasResult = true; }
+                    else if (nombreFuncion == "tan") { args.Result = Math.Tan(numero); args.HasResult = true; }
+                    else if (nombreFuncion == "sin" || nombreFuncion == "sen" || nombreFuncion == "seno") { args.Result = Math.Sin(numero); args.HasResult = true; }
+                    else if (nombreFuncion == "cos") { args.Result = Math.Cos(numero); args.HasResult = true; }
+                    else if (nombreFuncion == "sqrt" || nombreFuncion == "raiz") { args.Result = Math.Sqrt(numero); args.HasResult = true; }
+                }
+            };
+
+            double resultadoFinal = Convert.ToDouble(e.Evaluate());
+            if (double.IsNaN(resultadoFinal) || double.IsInfinity(resultadoFinal))
+                throw new Exception("ERROR_MATEMATICO");
+
+            return resultadoFinal;
+        }
+
         private static string ArreglarPotencias(string expresion)
         {
             while (expresion.Contains("^"))

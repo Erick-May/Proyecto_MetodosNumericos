@@ -39,19 +39,94 @@ namespace Proyecto_MetodosNumericos
 
             try
             {
-                if (metodo == "Simpson 1/3")
+                // ============================================
+                // INTEGRALES DOBLES
+                // ============================================
+                if (chkIntegralDoble.Checked)
                 {
-                    EjecutarSimpson13(funcion, a, b, n);
+                    if (!double.TryParse(txtC.Text, out double c) || !double.TryParse(txtD.Text, out double d))
+                    {
+                        MessageBox.Show("Asegúrate de ingresar números válidos en C y D.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    int ny = (int)nudNy.Value;
+
+                    if (metodo == "Simpson 1/3")
+                    {
+                        System.Data.DataTable tabla;
+                        double res = IntegracionNumerica.CalcularSimpson13Doble(funcion, a, b, n, c, d, ny, out tabla);
+
+                        dgvResultados.Columns.Clear();
+                        dgvResultados.DataSource = tabla;
+                        lblResultado.Text = $"Resultado Aproximado Para la Integral Doble con 1/3:\nI ≈ {Math.Round(res, 9)}";
+                    }
+                    else if (metodo == "Simpson 3/8")
+                    {
+                        System.Data.DataTable tabla;
+                        double res = IntegracionNumerica.CalcularSimpson38Doble(funcion, a, b, n, c, d, ny, out tabla);
+
+                        dgvResultados.Columns.Clear();
+                        dgvResultados.DataSource = tabla;
+                        lblResultado.Text = $"Resultado Aproximado Para la Integral Doble con 3/8:\nI ≈ {Math.Round(res, 8)}";
+                    }
+                    else if (metodo == "Integracion de Romberg")
+                    {
+                        // Aquí 'n' es la cantidad de niveles que queremos generar (ej: 3 o 4)
+                        double[,] matrizRomberg = IntegracionNumerica.CalcularRombergDoble(funcion, a, b, c, d, n);
+
+                        // Limpiamos y armamos las columnas para pintar el triángulo
+                        dgvResultados.Columns.Clear();
+                        dgvResultados.Rows.Clear();
+                        dgvResultados.Columns.Add("J", "j");
+
+                        for (int k = 1; k <= n; k++)
+                        {
+                            dgvResultados.Columns.Add($"K{k}", $"k={k}");
+                        }
+                        dgvResultados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                        // Imprimimos la matriz con la forma triangular inferior derecha 0
+                        for (int j = 1; j <= n; j++)
+                        {
+                            List<object> filaDgv = new List<object> { j };
+
+                            for (int k = 1; k <= n; k++)
+                            {
+                                if (k <= n - j + 1)
+                                {
+                                    filaDgv.Add(Math.Round(matrizRomberg[j, k], 8));
+                                }
+                                else
+                                {
+                                    filaDgv.Add(""); // Celda vacía para el Triangulo 0
+                                }
+                            }
+                            dgvResultados.Rows.Add(filaDgv.ToArray());
+                        }
+
+                        lblResultado.Text = $"Resultado Aproximado Para la Integral Doble con Romberg:\nI ≈ {Math.Round(matrizRomberg[1, n], 8)}";
+                    }
                 }
-                else if (metodo == "Simpson 3/8")
+                // ============================================
+                // INTEGRALES SIMPLES 
+                // ============================================
+                else
                 {
-                    EjecutarSimpson38(funcion, a, b, n);
+                    if (metodo == "Simpson 1/3")
+                    {
+                        EjecutarSimpson13(funcion, a, b, n);
+                    }
+                    else if (metodo == "Simpson 3/8")
+                    {
+                        EjecutarSimpson38(funcion, a, b, n);
+                    }
+                    else if (metodo == "Integracion de Romberg")
+                    {
+                        // n es la cantidad de niveles o filas de la matriz
+                        EjecutarRomberg(funcion, a, b, n);
+                    }
                 }
-                else if (metodo == "Integracion de Romberg")
-                {
-                    // n es la cantidad de niveles o filas de la matriz
-                    EjecutarRomberg(funcion, a, b, n);
-                }
+
             }
             catch (Exception ex)
             {
@@ -235,6 +310,18 @@ namespace Proyecto_MetodosNumericos
             {
                 Environment.Exit(0);
             }
+        }
+
+        private void chkIntegralDoble_CheckedChanged(object sender, EventArgs e)
+        {
+            bool esDoble = chkIntegralDoble.Checked;
+            txtC.Visible = esDoble;
+            txtD.Visible = esDoble;
+            nudNy.Visible = esDoble;
+            lblLimiteY.Visible = esDoble;
+            label7.Visible = esDoble;
+            label8.Visible = esDoble;
+            label9.Visible = esDoble;
         }
     }
 }
