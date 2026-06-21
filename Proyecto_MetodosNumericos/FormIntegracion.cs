@@ -293,6 +293,31 @@ namespace Proyecto_MetodosNumericos
             lblResultado.Text = $"Resultado Aproximado (Romberg): \nI ≈ {Math.Round(matrizRomberg[1, niveles], 8)}";
         }
 
+        private void ActualizarEtiquetas(string metodo)
+        {
+            if (lblTipoIntegracion == null) return;
+
+            lblTipoIntegracion.Text = "Tema: ";
+
+            if (metodo == "Simpson 1/3")
+            {
+                lblTipoIntegracion.Text = "Tema: Regla de Simpson 1/3";
+            }
+            else if (metodo == "Simpson 3/8")
+            {
+                lblTipoIntegracion.Text = "Tema: Regla de Simpson 3/8";
+            }
+            else if (metodo == "Integracion de Romberg")
+            {
+                lblTipoIntegracion.Text = "Tema: Integracion y Matriz de Romberg";
+            }
+        }
+        private void cmbMetodosIntegracion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string metodo = cmbMetodosIntegracion.SelectedItem?.ToString() ?? "";
+            ActualizarEtiquetas(metodo);
+        }
+
         private void btnRegresar_Click(object sender, EventArgs e)
         {
             regresandoAlMenu = true;
@@ -323,5 +348,6 @@ namespace Proyecto_MetodosNumericos
             label8.Visible = esDoble;
             label9.Visible = esDoble;
         }
+
     }
 }

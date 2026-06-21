@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            label10 = new Label();
             lblLimiteY = new Label();
             chkIntegralDoble = new CheckBox();
             nudNy = new NumericUpDown();
@@ -53,7 +54,6 @@
             cmbMetodosIntegracion = new ComboBox();
             label1 = new Label();
             dgvResultados = new DataGridView();
-            label10 = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudNy).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudN).BeginInit();
@@ -91,6 +91,17 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1464, 437);
             panel1.TabIndex = 0;
+            // 
+            // label10
+            // 
+            label10.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            label10.AutoSize = true;
+            label10.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
+            label10.Location = new Point(1027, 148);
+            label10.Name = "label10";
+            label10.Size = new Size(139, 22);
+            label10.TabIndex = 48;
+            label10.Text = "Toque Check si:";
             // 
             // lblLimiteY
             // 
@@ -285,7 +296,7 @@
             // 
             lblTipoIntegracion.AutoSize = true;
             lblTipoIntegracion.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            lblTipoIntegracion.Location = new Point(730, 37);
+            lblTipoIntegracion.Location = new Point(693, 37);
             lblTipoIntegracion.Name = "lblTipoIntegracion";
             lblTipoIntegracion.Size = new Size(64, 22);
             lblTipoIntegracion.TabIndex = 18;
@@ -311,6 +322,7 @@
             cmbMetodosIntegracion.Name = "cmbMetodosIntegracion";
             cmbMetodosIntegracion.Size = new Size(320, 30);
             cmbMetodosIntegracion.TabIndex = 16;
+            cmbMetodosIntegracion.SelectedIndexChanged += cmbMetodosIntegracion_SelectedIndexChanged;
             // 
             // label1
             // 
@@ -332,18 +344,6 @@
             dgvResultados.RowHeadersWidth = 62;
             dgvResultados.Size = new Size(1456, 301);
             dgvResultados.TabIndex = 1;
-            // 
-            // label10
-            // 
-            label10.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            label10.AutoSize = true;
-            label10.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            label10.Location = new Point(1027, 148);
-            label10.Name = "label10";
-            label10.Size = new Size(139, 22);
-            label10.TabIndex = 48;
-            label10.Text = "Toque Check si:";
-            label10.Visible = false;
             // 
             // FormIntegracion
             // 

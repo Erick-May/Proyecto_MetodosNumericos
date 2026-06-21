@@ -206,6 +206,11 @@ namespace Proyecto_MetodosNumericos
             {
                 lblTipoInterpolacion.Text = "Modelo: Newton por Diferencias Divididas";
             }
+            else if (metodo == "Lagrange")
+            {
+                lblTipoInterpolacion.Text = "Modelo: Metodo de Lagran";
+            }
+
         }
 
         private void cmbMetodoInterpolacion_SelectedIndexChanged(object sender, EventArgs e)

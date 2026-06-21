@@ -224,7 +224,7 @@
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(192, 192, 255);
-            ClientSize = new Size(699, 748);
+            ClientSize = new Size(699, 775);
             Controls.Add(pnlRegistro);
             Controls.Add(btnMostrarRegistro);
             Controls.Add(btnIniciarSesion);

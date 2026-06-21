@@ -350,7 +350,7 @@ namespace Proyecto_MetodosNumericos
 
                         if (iteracion > 1)
                         {
-                            errorRelativo = Math.Abs((c - c_anterior) / c);
+                            errorRelativo = Math.Abs((c - c_anterior) / c) * 100;
                             errorMostrar = Math.Round(errorRelativo, 8).ToString() + "%";
                         }
 
@@ -568,7 +568,7 @@ namespace Proyecto_MetodosNumericos
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Warning);
 
-                        return; // 🛑 EL FRENO DE MANO: Corta la ejecución, no arma la tabla.
+                        return; // EL FRENO DE MANO: Corta la ejecución, no arma la tabla.
                     }
                     // ========================================================
 
@@ -690,6 +690,13 @@ namespace Proyecto_MetodosNumericos
                 cmbMetodos.SelectedIndex = 0;
                 return;
             }
+            else if (metodo == "Aproximacion de Soluciones de EDO")
+            {
+                FormDiferenciales frmDiferenciales = new FormDiferenciales();
+                frmDiferenciales.ShowDialog();
+                cmbMetodos.SelectedIndex = 0;
+                return;
+            }
 
             // Actualizamos las columnas de la tabla en vivo
             ConfigurarTabla(metodo);
@@ -768,7 +775,7 @@ namespace Proyecto_MetodosNumericos
 
 ¿CÓMO ESCRIBIR TU ECUACIÓN?
 - Usa la letra 'x' minúscula.
-- Para potencias usa el símbolo '^' (Ejemplo: x^2 - 4).
+- Para potencias usa el símbolo '^' (Ejemplo: x^2 - 4). 
 - Para funciones matemáticas escribe: sin(x), cos(x), log(x), exp(x).
 
 MÉTODOS DISPONIBLES:
