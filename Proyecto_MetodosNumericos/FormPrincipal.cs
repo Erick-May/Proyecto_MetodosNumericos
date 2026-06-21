@@ -697,6 +697,13 @@ namespace Proyecto_MetodosNumericos
                 cmbMetodos.SelectedIndex = 0;
                 return;
             }
+            else if (metodo == "Diferenciacion Numerica")
+            {
+                FormDerivadas frmDerivadas = new FormDerivadas();
+                frmDerivadas.ShowDialog();
+                cmbMetodos.SelectedIndex = 0;
+                return;
+            }
 
             // Actualizamos las columnas de la tabla en vivo
             ConfigurarTabla(metodo);
