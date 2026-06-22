@@ -36,11 +36,11 @@
             // 
             // btnEntrar
             // 
-            btnEntrar.BackColor = Color.RoyalBlue;
+            btnEntrar.BackColor = Color.LightSkyBlue;
             btnEntrar.Cursor = Cursors.Hand;
             btnEntrar.FlatStyle = FlatStyle.Flat;
             btnEntrar.Font = new Font("Comic Sans MS", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnEntrar.ForeColor = Color.White;
+            btnEntrar.ForeColor = Color.Black;
             btnEntrar.Location = new Point(467, 494);
             btnEntrar.Name = "btnEntrar";
             btnEntrar.Size = new Size(217, 64);
@@ -52,9 +52,9 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.IteraCore_Logo;
-            pictureBox1.Location = new Point(374, 12);
+            pictureBox1.Location = new Point(403, 97);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(416, 369);
+            pictureBox1.Size = new Size(342, 301);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
@@ -62,7 +62,9 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
             label1.Font = new Font("Comic Sans MS", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.Black;
             label1.Location = new Point(300, 413);
             label1.Name = "label1";
             label1.Size = new Size(561, 45);
@@ -73,7 +75,9 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.SkyBlue;
+            BackColor = SystemColors.Control;
+            BackgroundImage = Properties.Resources.Matematica_Fondo_21;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1117, 599);
             Controls.Add(label1);
             Controls.Add(pictureBox1);

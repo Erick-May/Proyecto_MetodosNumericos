@@ -54,9 +54,9 @@
             label1.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
             label1.Location = new Point(618, 0);
             label1.Name = "label1";
-            label1.Size = new Size(212, 22);
+            label1.Size = new Size(274, 22);
             label1.TabIndex = 23;
-            label1.Text = "METODOS ITERATIVOS";
+            label1.Text = "DIFERENCIACION NUMERICA";
             // 
             // panel1
             // 
@@ -83,10 +83,10 @@
             // lblResultado
             // 
             lblResultado.AutoSize = true;
-            lblResultado.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
+            lblResultado.Font = new Font("Times New Roman", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblResultado.Location = new Point(836, 259);
             lblResultado.Name = "lblResultado";
-            lblResultado.Size = new Size(99, 22);
+            lblResultado.Size = new Size(145, 32);
             lblResultado.TabIndex = 39;
             lblResultado.Text = "Resultados";
             // 
@@ -175,6 +175,7 @@
             txtXEval.Name = "txtXEval";
             txtXEval.Size = new Size(150, 31);
             txtXEval.TabIndex = 27;
+            txtXEval.KeyPress += txtXEval_KeyPress;
             // 
             // label3
             // 
@@ -204,6 +205,8 @@
             dgvDatos.RowHeadersWidth = 62;
             dgvDatos.Size = new Size(368, 225);
             dgvDatos.TabIndex = 24;
+            dgvDatos.DataError += dgvDatos_DataError;
+            dgvDatos.EditingControlShowing += dgvDatos_EditingControlShowing;
             // 
             // FormDerivadas
             // 

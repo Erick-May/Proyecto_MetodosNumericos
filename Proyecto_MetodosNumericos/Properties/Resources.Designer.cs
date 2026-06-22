@@ -63,9 +63,49 @@ namespace Proyecto_MetodosNumericos.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Fondo_Matematico {
+            get {
+                object obj = ResourceManager.GetObject("Fondo Matematico", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IteraCore_Logo {
             get {
                 object obj = ResourceManager.GetObject("IteraCore Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Matematica_Fondo_11 {
+            get {
+                object obj = ResourceManager.GetObject("Matematica Fondo 11", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Matematica_Fondo_21 {
+            get {
+                object obj = ResourceManager.GetObject("Matematica Fondo 21", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Matematica_Fondo_31 {
+            get {
+                object obj = ResourceManager.GetObject("Matematica Fondo 31", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

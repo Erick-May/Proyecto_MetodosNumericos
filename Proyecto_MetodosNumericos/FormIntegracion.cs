@@ -16,6 +16,12 @@ namespace Proyecto_MetodosNumericos
         {
             InitializeComponent();
             cmbMetodosIntegracion.SelectedIndex = 0;
+
+            // Validaciones
+            txtA.KeyPress += ValidarNumero_KeyPress;
+            txtB.KeyPress += ValidarNumero_KeyPress;
+            txtC.KeyPress += ValidarNumero_KeyPress;
+            txtD.KeyPress += ValidarNumero_KeyPress;
         }
 
         private void btnCalcular_Click(object sender, EventArgs e)
@@ -347,6 +353,32 @@ namespace Proyecto_MetodosNumericos
             label7.Visible = esDoble;
             label8.Visible = esDoble;
             label9.Visible = esDoble;
+        }
+
+        private void ValidarNumero_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permitimos números, borrar, el punto y el signo negativo
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != '-'))
+            {
+                e.Handled = true;
+            }
+
+            // Solo un punto decimal
+            TextBox txt = sender as TextBox; // Lo guardamos en una variable para que se vea más limpio
+            if ((e.KeyChar == '.') && (txt.Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+
+            // El signo negativo solo puede ir al principio y solo una vez
+            if (e.KeyChar == '-')
+            {
+                // Si ya hay un signo negativo, o si el cursor no está en la primera posición, lo bloqueamos
+                if ((txt.Text.Contains("-")) || (txt.SelectionStart != 0))
+                {
+                    e.Handled = true;
+                }
+            }
         }
 
     }
