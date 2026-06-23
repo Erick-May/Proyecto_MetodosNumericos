@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMatrices));
             label10 = new Label();
             cmbMetodosMatrices = new ComboBox();
             label1 = new Label();
@@ -210,6 +211,7 @@
             Controls.Add(label10);
             Controls.Add(cmbMetodosMatrices);
             Controls.Add(label1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormMatrices";

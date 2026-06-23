@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormIterativos));
             label2 = new Label();
             nudVariables = new NumericUpDown();
             txtValoresIniciales = new TextBox();
@@ -243,6 +244,7 @@
             ClientSize = new Size(1786, 779);
             Controls.Add(panel1);
             Controls.Add(dgvResultados);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormIterativos";

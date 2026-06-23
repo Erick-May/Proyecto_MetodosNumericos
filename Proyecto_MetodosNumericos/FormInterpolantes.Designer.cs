@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormInterpolantes));
             panel1 = new Panel();
             rtbResultados = new RichTextBox();
             btnRegresar = new Button();
@@ -235,6 +236,7 @@
             ClientSize = new Size(1662, 927);
             Controls.Add(dgvTablaDiferencias);
             Controls.Add(panel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormInterpolantes";

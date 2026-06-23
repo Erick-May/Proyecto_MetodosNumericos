@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormIntegracion));
             panel1 = new Panel();
             label10 = new Label();
             lblLimiteY = new Label();
@@ -358,6 +359,7 @@
             ClientSize = new Size(1464, 756);
             Controls.Add(dgvResultados);
             Controls.Add(panel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormIntegracion";

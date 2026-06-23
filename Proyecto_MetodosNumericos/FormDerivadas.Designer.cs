@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDerivadas));
             label1 = new Label();
             panel1 = new Panel();
             lblResultado = new Label();
@@ -220,6 +221,7 @@
             BackColor = Color.Plum;
             ClientSize = new Size(1454, 737);
             Controls.Add(panel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormDerivadas";

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPolinomios));
             btnCalcularBairstow = new Button();
             label1 = new Label();
             label2 = new Label();
@@ -380,6 +381,7 @@
             Controls.Add(label6);
             Controls.Add(txtToleranciaP);
             Controls.Add(btnCalcularBairstow);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormPolinomios";

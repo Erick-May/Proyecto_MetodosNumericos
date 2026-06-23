@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTaylor));
             panel1 = new Panel();
             lblResultado = new Label();
             btnRegresar = new Button();
@@ -209,6 +210,7 @@
             ClientSize = new Size(1489, 773);
             Controls.Add(panel1);
             Controls.Add(dgvDerivadas);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormTaylor";

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormDiferenciales));
             lblTipoDiferencial = new Label();
             label2 = new Label();
             cmbMetodosEDO = new ComboBox();
@@ -257,6 +258,7 @@
             ClientSize = new Size(1512, 681);
             Controls.Add(dgvResultados);
             Controls.Add(panel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormDiferenciales";

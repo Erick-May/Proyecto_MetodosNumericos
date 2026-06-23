@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRegresion));
             panel1 = new Panel();
             lblTipoRegresion = new Label();
             btnRegresar = new Button();
@@ -250,6 +251,7 @@
             ClientSize = new Size(1311, 843);
             Controls.Add(dgvResultados);
             Controls.Add(panel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormRegresion";

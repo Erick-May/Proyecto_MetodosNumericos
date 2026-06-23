@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormInicioSesion));
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -243,6 +244,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Cursor = Cursors.Hand;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "FormInicioSesion";
             StartPosition = FormStartPosition.CenterScreen;

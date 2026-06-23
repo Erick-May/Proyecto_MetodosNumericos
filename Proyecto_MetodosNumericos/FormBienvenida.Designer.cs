@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBienvenida));
             btnEntrar = new Button();
             pictureBox1 = new PictureBox();
             label1 = new Label();
@@ -123,6 +124,7 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1689, 788);
             Controls.Add(panel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormBienvenida";
