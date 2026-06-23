@@ -44,7 +44,7 @@ namespace Proyecto_MetodosNumericos.Models
                 }
             }
 
-            return I; // Devolvemos la matriz armadita
+            return I;
         }
 
         // PARA SIMPSON 1/3 DOBLE

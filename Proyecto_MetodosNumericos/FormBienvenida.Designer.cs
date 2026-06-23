@@ -46,6 +46,8 @@
             btnEntrar.FlatStyle = FlatStyle.Flat;
             btnEntrar.Font = new Font("Comic Sans MS", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEntrar.ForeColor = Color.Black;
+            btnEntrar.Image = Properties.Resources.usuario__1_;
+            btnEntrar.ImageAlign = ContentAlignment.MiddleRight;
             btnEntrar.Location = new Point(207, 516);
             btnEntrar.Name = "btnEntrar";
             btnEntrar.Size = new Size(300, 86);
