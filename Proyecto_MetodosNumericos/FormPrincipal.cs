@@ -95,7 +95,7 @@ namespace Proyecto_MetodosNumericos
                 // 1. EVITAR DIVISIÓN ENTERA
                 funcionCorregida = Regex.Replace(funcionCorregida, @"(?<!\.)\b(\d+)\b(?!\.)", "$1.0");
 
-                // 🔥 2. EL FIX DE MULTIPLICACIÓN IMPLÍCITA: Ya detecta ()() y x(x-4)
+                // 2. EL FIX DE MULTIPLICACIÓN IMPLÍCITA: Ya detecta ()() y x(x-4)
                 funcionCorregida = Regex.Replace(funcionCorregida, @"(\d)([a-z\(])", "$1*$2");
                 funcionCorregida = Regex.Replace(funcionCorregida, @"(x)([a-z0-9\(])", "$1*$2");
                 funcionCorregida = Regex.Replace(funcionCorregida, @"(\))([a-z0-9x\(])", "$1*$2");
@@ -128,7 +128,6 @@ namespace Proyecto_MetodosNumericos
 
                 double resultadoFinal = Convert.ToDouble(e.Evaluate());
 
-                // 🔥 MEGA ESCUDO ANTI-IMAGINARIOS Y ANTI-INFINITO
                 if (double.IsNaN(resultadoFinal) || double.IsInfinity(resultadoFinal))
                 {
                     throw new Exception("ERROR_MATEMATICO");
@@ -221,9 +220,6 @@ namespace Proyecto_MetodosNumericos
                 return;
             }
 
-            // =====================================
-            // 🛡️ ESCUDO DE VALIDACIÓN DE LA FUNCIÓN
-            // =====================================
             string funcionMinuscula = funcion.ToLower();
 
             if (string.IsNullOrEmpty(funcion))
@@ -701,6 +697,13 @@ namespace Proyecto_MetodosNumericos
             {
                 FormDerivadas frmDerivadas = new FormDerivadas();
                 frmDerivadas.ShowDialog();
+                cmbMetodos.SelectedIndex = 0;
+                return;
+            }
+            else if (metodo == "Serie de Taylor y Lagrange")
+            {
+                FormTaylor frmTaylor = new FormTaylor();
+                frmTaylor.ShowDialog();
                 cmbMetodos.SelectedIndex = 0;
                 return;
             }

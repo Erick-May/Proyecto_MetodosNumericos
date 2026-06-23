@@ -51,7 +51,8 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Image = Properties.Resources.IteraCore_Logo;
+            pictureBox1.BackColor = Color.Transparent;
+            pictureBox1.Image = Properties.Resources.Logo_Circular_IteraCore_1;
             pictureBox1.Location = new Point(403, 97);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(342, 301);
@@ -64,7 +65,7 @@
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Comic Sans MS", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.Black;
+            label1.ForeColor = Color.White;
             label1.Location = new Point(300, 413);
             label1.Name = "label1";
             label1.Size = new Size(561, 45);
@@ -75,14 +76,17 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoValidate = AutoValidate.EnablePreventFocusChange;
             BackColor = SystemColors.Control;
-            BackgroundImage = Properties.Resources.Matematica_Fondo_21;
+            BackgroundImage = Properties.Resources.Matematica_Fondo_11;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1117, 599);
             Controls.Add(label1);
             Controls.Add(pictureBox1);
             Controls.Add(btnEntrar);
             FormBorderStyle = FormBorderStyle.None;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormBienvenida";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FormBienvenida";
