@@ -49,6 +49,7 @@
             // 
             // panel1
             // 
+            panel1.BackColor = Color.Transparent;
             panel1.Controls.Add(lblResultado);
             panel1.Controls.Add(btnRegresar);
             panel1.Controls.Add(btnCalcular);
@@ -79,6 +80,8 @@
             // 
             // btnRegresar
             // 
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.ImageAlign = ContentAlignment.MiddleLeft;
             btnRegresar.Location = new Point(1248, 148);
             btnRegresar.Name = "btnRegresar";
             btnRegresar.Size = new Size(165, 34);
@@ -89,6 +92,8 @@
             // 
             // btnCalcular
             // 
+            btnCalcular.Image = Properties.Resources.simbolo_igual;
+            btnCalcular.ImageAlign = ContentAlignment.MiddleLeft;
             btnCalcular.Location = new Point(1027, 148);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(165, 34);
@@ -188,6 +193,7 @@
             // dgvDerivadas
             // 
             dgvDerivadas.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvDerivadas.BackgroundColor = SystemColors.Control;
             dgvDerivadas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDerivadas.Location = new Point(24, 416);
             dgvDerivadas.Name = "dgvDerivadas";
@@ -199,10 +205,14 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Bisque;
             ClientSize = new Size(1489, 773);
             Controls.Add(panel1);
             Controls.Add(dgvDerivadas);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "FormTaylor";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FormTaylor";
             FormClosed += FormTaylor_FormClosed;
             panel1.ResumeLayout(false);

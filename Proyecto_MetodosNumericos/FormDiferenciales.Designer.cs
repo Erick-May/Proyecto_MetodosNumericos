@@ -145,9 +145,11 @@
             // 
             // btnRegresar
             // 
-            btnRegresar.Location = new Point(801, 292);
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.ImageAlign = ContentAlignment.MiddleLeft;
+            btnRegresar.Location = new Point(796, 292);
             btnRegresar.Name = "btnRegresar";
-            btnRegresar.Size = new Size(165, 34);
+            btnRegresar.Size = new Size(170, 34);
             btnRegresar.TabIndex = 36;
             btnRegresar.Text = "Regresar";
             btnRegresar.UseVisualStyleBackColor = true;
@@ -155,9 +157,11 @@
             // 
             // btnCalcular
             // 
+            btnCalcular.Image = Properties.Resources.simbolo_igual;
+            btnCalcular.ImageAlign = ContentAlignment.MiddleLeft;
             btnCalcular.Location = new Point(576, 292);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(165, 34);
+            btnCalcular.Size = new Size(179, 34);
             btnCalcular.TabIndex = 35;
             btnCalcular.Text = "Calcular";
             btnCalcular.UseVisualStyleBackColor = true;
@@ -237,6 +241,7 @@
             // dgvResultados
             // 
             dgvResultados.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvResultados.BackgroundColor = SystemColors.Control;
             dgvResultados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvResultados.Location = new Point(12, 366);
             dgvResultados.Name = "dgvResultados";
@@ -248,6 +253,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.RosyBrown;
             ClientSize = new Size(1512, 681);
             Controls.Add(dgvResultados);
             Controls.Add(panel1);

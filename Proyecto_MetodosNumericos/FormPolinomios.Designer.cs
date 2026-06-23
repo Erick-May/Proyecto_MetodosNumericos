@@ -63,7 +63,9 @@
             // btnCalcularBairstow
             // 
             btnCalcularBairstow.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            btnCalcularBairstow.Location = new Point(1196, 157);
+            btnCalcularBairstow.Image = Properties.Resources.simbolo_igual;
+            btnCalcularBairstow.ImageAlign = ContentAlignment.MiddleLeft;
+            btnCalcularBairstow.Location = new Point(1147, 157);
             btnCalcularBairstow.Name = "btnCalcularBairstow";
             btnCalcularBairstow.Size = new Size(171, 34);
             btnCalcularBairstow.TabIndex = 0;
@@ -185,9 +187,11 @@
             // btnRegresar
             // 
             btnRegresar.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            btnRegresar.Location = new Point(1387, 156);
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.ImageAlign = ContentAlignment.MiddleLeft;
+            btnRegresar.Location = new Point(1340, 156);
             btnRegresar.Name = "btnRegresar";
-            btnRegresar.Size = new Size(112, 34);
+            btnRegresar.Size = new Size(159, 34);
             btnRegresar.TabIndex = 12;
             btnRegresar.Text = "Regresar";
             btnRegresar.UseVisualStyleBackColor = true;

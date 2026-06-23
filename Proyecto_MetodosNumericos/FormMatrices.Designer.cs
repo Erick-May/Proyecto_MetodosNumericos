@@ -124,7 +124,9 @@
             // btnCalcular
             // 
             btnCalcular.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            btnCalcular.Location = new Point(897, 161);
+            btnCalcular.Image = Properties.Resources.simbolo_igual;
+            btnCalcular.ImageAlign = ContentAlignment.MiddleLeft;
+            btnCalcular.Location = new Point(890, 161);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(272, 34);
             btnCalcular.TabIndex = 30;
@@ -135,9 +137,11 @@
             // btnRegresar
             // 
             btnRegresar.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            btnRegresar.Location = new Point(1184, 158);
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.ImageAlign = ContentAlignment.MiddleLeft;
+            btnRegresar.Location = new Point(912, 239);
             btnRegresar.Name = "btnRegresar";
-            btnRegresar.Size = new Size(150, 34);
+            btnRegresar.Size = new Size(217, 34);
             btnRegresar.TabIndex = 31;
             btnRegresar.Text = "Regresar";
             btnRegresar.UseVisualStyleBackColor = true;

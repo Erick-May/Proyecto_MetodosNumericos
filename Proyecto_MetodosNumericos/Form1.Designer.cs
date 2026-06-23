@@ -51,10 +51,10 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            label1.Location = new Point(249, 20);
+            label1.Font = new Font("Times New Roman", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(225, 9);
             label1.Name = "label1";
-            label1.Size = new Size(173, 22);
+            label1.Size = new Size(262, 32);
             label1.TabIndex = 0;
             label1.Text = "INICIO DE SESION";
             // 
@@ -101,9 +101,11 @@
             // btnIniciarSesion
             // 
             btnIniciarSesion.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            btnIniciarSesion.Location = new Point(100, 253);
+            btnIniciarSesion.Image = Properties.Resources.usuario;
+            btnIniciarSesion.ImageAlign = ContentAlignment.MiddleLeft;
+            btnIniciarSesion.Location = new Point(97, 253);
             btnIniciarSesion.Name = "btnIniciarSesion";
-            btnIniciarSesion.Size = new Size(177, 50);
+            btnIniciarSesion.Size = new Size(180, 50);
             btnIniciarSesion.TabIndex = 5;
             btnIniciarSesion.Text = "Iniciar Sesion ";
             btnIniciarSesion.UseVisualStyleBackColor = true;
@@ -112,6 +114,8 @@
             // btnMostrarRegistro
             // 
             btnMostrarRegistro.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
+            btnMostrarRegistro.Image = Properties.Resources.agregar;
+            btnMostrarRegistro.ImageAlign = ContentAlignment.MiddleLeft;
             btnMostrarRegistro.Location = new Point(364, 253);
             btnMostrarRegistro.Name = "btnMostrarRegistro";
             btnMostrarRegistro.Size = new Size(171, 50);
@@ -140,6 +144,8 @@
             // 
             // btnCerrarPanel
             // 
+            btnCerrarPanel.Image = Properties.Resources.error;
+            btnCerrarPanel.ImageAlign = ContentAlignment.MiddleLeft;
             btnCerrarPanel.Location = new Point(319, 293);
             btnCerrarPanel.Name = "btnCerrarPanel";
             btnCerrarPanel.Size = new Size(166, 52);
@@ -150,6 +156,8 @@
             // 
             // btnCrearCuenta
             // 
+            btnCrearCuenta.Image = Properties.Resources.agregar_usuario;
+            btnCrearCuenta.ImageAlign = ContentAlignment.MiddleLeft;
             btnCrearCuenta.Location = new Point(59, 293);
             btnCrearCuenta.Name = "btnCrearCuenta";
             btnCrearCuenta.Size = new Size(173, 52);
@@ -213,9 +221,10 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(243, 17);
+            label4.Font = new Font("Times New Roman", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.Location = new Point(224, 17);
             label4.Name = "label4";
-            label4.Size = new Size(120, 22);
+            label4.Size = new Size(154, 26);
             label4.TabIndex = 0;
             label4.Text = "Crear Cuenta";
             // 

@@ -158,6 +158,8 @@
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             btnCalcular.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
+            btnCalcular.Image = Properties.Resources.simbolo_igual;
+            btnCalcular.ImageAlign = ContentAlignment.MiddleLeft;
             btnCalcular.Location = new Point(1298, 219);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(171, 34);
@@ -223,6 +225,8 @@
             // 
             // btnRegresar
             // 
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.ImageAlign = ContentAlignment.MiddleLeft;
             btnRegresar.Location = new Point(1566, 217);
             btnRegresar.Name = "btnRegresar";
             btnRegresar.Size = new Size(158, 34);

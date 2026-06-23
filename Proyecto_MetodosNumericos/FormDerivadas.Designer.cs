@@ -92,6 +92,8 @@
             // 
             // btnRegresar
             // 
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.ImageAlign = ContentAlignment.MiddleLeft;
             btnRegresar.Location = new Point(530, 383);
             btnRegresar.Name = "btnRegresar";
             btnRegresar.Size = new Size(165, 34);
@@ -102,6 +104,8 @@
             // 
             // btnCalcular
             // 
+            btnCalcular.Image = Properties.Resources.simbolo_igual;
+            btnCalcular.ImageAlign = ContentAlignment.MiddleLeft;
             btnCalcular.Location = new Point(305, 383);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(165, 34);
@@ -199,6 +203,7 @@
             // 
             // dgvDatos
             // 
+            dgvDatos.BackgroundColor = SystemColors.Control;
             dgvDatos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDatos.Location = new Point(316, 110);
             dgvDatos.Name = "dgvDatos";
@@ -212,6 +217,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Plum;
             ClientSize = new Size(1454, 737);
             Controls.Add(panel1);
             MaximizeBox = false;

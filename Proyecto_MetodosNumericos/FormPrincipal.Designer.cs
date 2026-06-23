@@ -202,6 +202,8 @@
             // btnCalcular
             // 
             btnCalcular.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
+            btnCalcular.Image = Properties.Resources.simbolo_igual;
+            btnCalcular.ImageAlign = ContentAlignment.MiddleLeft;
             btnCalcular.Location = new Point(1078, 180);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(280, 47);

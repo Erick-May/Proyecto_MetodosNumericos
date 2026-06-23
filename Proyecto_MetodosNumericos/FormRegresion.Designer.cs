@@ -87,6 +87,8 @@
             // 
             btnRegresar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRegresar.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
+            btnRegresar.Image = Properties.Resources.esquema_de_boton_circular_de_flecha_hacia_atras_izquierda;
+            btnRegresar.ImageAlign = ContentAlignment.MiddleLeft;
             btnRegresar.Location = new Point(870, 292);
             btnRegresar.Name = "btnRegresar";
             btnRegresar.Size = new Size(195, 34);
@@ -121,6 +123,8 @@
             // 
             btnCalcular.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnCalcular.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
+            btnCalcular.Image = Properties.Resources.simbolo_igual;
+            btnCalcular.ImageAlign = ContentAlignment.MiddleLeft;
             btnCalcular.Location = new Point(570, 295);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(201, 35);
@@ -221,7 +225,7 @@
             label1.Anchor = AnchorStyles.Top;
             label1.AutoSize = true;
             label1.Font = new Font("Times New Roman", 10F, FontStyle.Italic);
-            label1.Location = new Point(455, 0);
+            label1.Location = new Point(527, 0);
             label1.Name = "label1";
             label1.Size = new Size(244, 22);
             label1.TabIndex = 0;
